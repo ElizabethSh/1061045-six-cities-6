@@ -5,7 +5,7 @@ import PlaceCard from '../place-card/place-card';
 import {placePropTypes} from '../../common/place-prop-types';
 
 const FavoriteLocations = (props) => {
-  const {places, city, onMouseEnter} = props;
+  const {places, city} = props;
   return (
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
@@ -21,7 +21,6 @@ const FavoriteLocations = (props) => {
             <PlaceCard key={place.id}
               place={place}
               cardName={CardName.FAVORITES}
-              onMouseEnter={onMouseEnter}
             />
           );
         })}
@@ -35,7 +34,6 @@ FavoriteLocations.propTypes = {
       PropTypes.shape(placePropTypes)
   ).isRequired,
   city: PropTypes.string.isRequired,
-  onMouseEnter: PropTypes.func.isRequired,
 };
 
 export default FavoriteLocations;
