@@ -5,6 +5,25 @@ import {formatString, convertRatingToPersent} from '../../common/utils';
 import {placePropTypes} from '../../common/place-prop-types';
 import {CardName} from '../../common/const';
 
+const CardSettings = {
+  [CardName.FAVORITES]: {
+    cardClass: `favorites__card`,
+    imgSize: {
+      width: 150,
+      height: 110,
+    },
+    cardInfoClass: `favorites__card-info`
+  },
+  [CardName.CITIES]: {
+    cardClass: `cities__place-card`,
+    imgSize: {
+      width: 260,
+      height: 200,
+    },
+    cardInfoClass: ``,
+  }
+};
+
 const PlaceCard = (props) => {
   const {place, cardName, onMouseEnter} = props;
   const {
@@ -27,11 +46,16 @@ const PlaceCard = (props) => {
 
   return (
     <article
-      onMouseEnter={() => onMouseEnter(place)}
+      onMouseEnter={() => {
+        // если обработчик передан, то вызвать его при наведении
+        // на карточку
+        if (onMouseEnter) {
+          onMouseEnter(place);
+        }
+      }}
+
       className={
-        `${(cardName === CardName.FAVORITES)
-          ? `favorites__card`
-          : `cities__place-card`} place-card`
+        `${CardSettings[cardName].cardClass} place-card`
       }
     >
 
@@ -42,19 +66,15 @@ const PlaceCard = (props) => {
           <img
             className="place-card__image"
             src={previewImage}
-            width={(cardName === CardName.FAVORITES) ? 150 : 260}
-            height="200"
+            width={CardSettings[cardName].imgSize.width}
+            height={CardSettings[cardName].imgSize.height}
             alt="Place image"
           />
         </a>
       </div>
-      <div
-        className={
-          `${(cardName === CardName.FAVORITES)
-            ? `favorites__card-info`
-            : ``} place-card__info`
-        }
-      >
+      <div className={
+        `${CardSettings[cardName].cardInfoClass} place-card__info`
+      }>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -72,7 +92,7 @@ const PlaceCard = (props) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: convertRatingToPersent(rating)}}></span>
+            <span style={{width: convertRatingToPersent(rating)}} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -87,8 +107,10 @@ const PlaceCard = (props) => {
 
 PlaceCard.propTypes = {
   place: PropTypes.shape(placePropTypes),
-  cardName: PropTypes.oneOf([CardName.CITIES, CardName.FAVORITES]).isRequired,
-  onMouseEnter: PropTypes.func.isRequired,
+  cardName: PropTypes.oneOf(
+      [CardName.CITIES, CardName.FAVORITES]
+  ).isRequired,
+  onMouseEnter: PropTypes.func,
 };
 
 export default PlaceCard;
