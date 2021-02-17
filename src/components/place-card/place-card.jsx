@@ -59,7 +59,7 @@ const PlaceCard = (props) => {
       }
     >
 
-      {isPremium ? renderPremiumMark() : null}
+      {isPremium && renderPremiumMark()}
 
       <div className={`${cardName}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
