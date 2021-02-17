@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import PlacesList from '../places-list/places-list';
 import PageHeader from '../page-header/page-header';
 import {placePropTypes} from '../../common/place-prop-types';
-import Map from '../Map/Map';
+import Map from '../map/map';
 
 const MainPage = (props) => {
   const {places} = props;
