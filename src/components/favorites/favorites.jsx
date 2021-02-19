@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PageHeader from '../page-header/page-header';
-import {placePropTypes} from '../../common/place-prop-types';
+import {placeProp} from '../../common/prop-types/place.prop';
 import FavoriteLocations from '../favorites-locations/favorites-locations';
 
 const Favorites = (props) => {
@@ -48,7 +48,7 @@ const Favorites = (props) => {
 
 Favorites.propTypes = {
   places: PropTypes.arrayOf(
-      PropTypes.shape(placePropTypes)
+      PropTypes.shape(placeProp)
   ).isRequired,
 };
 
