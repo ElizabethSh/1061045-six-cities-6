@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {formatString, convertRatingToPersent} from '../../common/utils';
-import {placePropTypes} from '../../common/place-prop-types';
+import {placeProp} from '../../common/prop-types/place.prop';
 import {CardName} from '../../common/const';
 
 const CardSettings = {
@@ -16,6 +16,14 @@ const CardSettings = {
   },
   [CardName.CITIES]: {
     cardClass: `cities__place-card`,
+    imgSize: {
+      width: 260,
+      height: 200,
+    },
+    cardInfoClass: ``,
+  },
+  [CardName.NEAR_PLACES]: {
+    cardClass: `near-places__card`,
     imgSize: {
       width: 260,
       height: 200,
@@ -106,9 +114,9 @@ const PlaceCard = (props) => {
 };
 
 PlaceCard.propTypes = {
-  place: PropTypes.shape(placePropTypes),
+  place: PropTypes.shape(placeProp),
   cardName: PropTypes.oneOf(
-      [CardName.CITIES, CardName.FAVORITES]
+      [CardName.CITIES, CardName.FAVORITES, CardName.NEAR_PLACES]
   ).isRequired,
   onMouseEnter: PropTypes.func,
 };
