@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Leaflet from 'leaflet';
-import {placePropTypes} from '../../common/place-prop-types';
+import {placeProp} from '../../common/prop-types/place.prop';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -66,7 +66,7 @@ const Map = ({places}) => {
 
 Map.propTypes = {
   places: PropTypes.arrayOf(
-      PropTypes.shape(placePropTypes)
+      PropTypes.shape(placeProp)
   ).isRequired,
 };
 
