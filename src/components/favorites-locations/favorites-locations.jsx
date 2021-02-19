@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {CardName} from '../../common/const';
 import PlaceCard from '../place-card/place-card';
-import {placePropTypes} from '../../common/place-prop-types';
+import {placeProp} from '../../common/prop-types/place.prop';
 
 const FavoriteLocations = (props) => {
   const {places, city} = props;
@@ -31,7 +31,7 @@ const FavoriteLocations = (props) => {
 
 FavoriteLocations.propTypes = {
   places: PropTypes.arrayOf(
-      PropTypes.shape(placePropTypes)
+      PropTypes.shape(placeProp)
   ).isRequired,
   city: PropTypes.string.isRequired,
 };

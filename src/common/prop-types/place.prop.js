@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const placePropTypes = {
+export const placeProp = {
   id: PropTypes.number.isRequired,
   bedrooms: PropTypes.number.isRequired,
   city: PropTypes.shape({

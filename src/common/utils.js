@@ -8,3 +8,9 @@ export const formatString = (string) => {
 export const convertRatingToPersent = (rating) => {
   return `${rating / MAX_STARS_AMOUNT * 100}%`;
 };
+
+export const formatReviewDate = (date) => {
+  const reviewDate = new Date(date);
+
+  return reviewDate.toLocaleDateString(`en-US`, {year: `numeric`, month: `long`});
+};
