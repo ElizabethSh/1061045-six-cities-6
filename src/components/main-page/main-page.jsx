@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PlacesList from '../places-list/places-list';
 import PageHeader from '../page-header/page-header';
-import {placePropTypes} from '../../common/place-prop-types';
 import Map from '../map/map';
+import {placeProp} from '../../common/prop-types/place.prop';
+import {CardsListName} from '../../common/const';
+
 
 const MainPage = (props) => {
   const {places} = props;
@@ -72,6 +74,7 @@ const MainPage = (props) => {
               </form>
               <PlacesList
                 places={places}
+                placesListName={CardsListName.CITIES_PLACES_LIST}
               />
             </section>
             <div className="cities__right-section">
@@ -90,7 +93,7 @@ const MainPage = (props) => {
 
 MainPage.propTypes = {
   places: PropTypes.arrayOf(
-      PropTypes.shape(placePropTypes)
+      PropTypes.shape(placeProp)
   ).isRequired,
 };
 
