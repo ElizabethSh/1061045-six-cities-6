@@ -1,25 +1,32 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import PlaceCard from '../place-card/place-card';
-import {placePropTypes} from '../../common/place-prop-types';
+import {placeProp} from '../../common/prop-types/place.prop';
+import {CardName, CardsListName} from '../../common/const';
 
 const PlacesList = (props) => {
+  const {places, placesListName} = props;
   const [activePlaceId, setActivePlace] = useState(0);
-  const {places} = props;
+
+  // определение типа карточки
+  let cardName = CardName.CITIES;
+  if (placesListName === CardsListName.NEAR_PLACES_LIST) {
+    cardName = CardName.NEAR_PLACES;
+  }
 
   const handleCardMouseEnter = (place) => {
     setActivePlace(place.id);
   };
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div className={`${placesListName} places__list`}>
       <div>{activePlaceId}</div> {/* ВРЕМЕННО!!!, чтобы линтер не ругался на неиспользование activePlace*/}
       {places.map((place) => {
         return (
           <PlaceCard
             key={place.id}
             place={place}
-            cardName={`cities`}
+            cardName={cardName}
             onMouseEnter={handleCardMouseEnter}
           />
         );
@@ -30,8 +37,9 @@ const PlacesList = (props) => {
 
 PlacesList.propTypes = {
   places: PropTypes.arrayOf(
-      PropTypes.shape(placePropTypes)
+      PropTypes.shape(placeProp)
   ).isRequired,
+  placesListName: PropTypes.string.isRequired,
 };
 
 export default PlacesList;
