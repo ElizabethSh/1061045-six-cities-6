@@ -152,4 +152,75 @@ export const offers = [
     title: `Nice, cozy, warm big bed apartment`,
     type: `hotel`
   },
+  // 5й объект в Париже!
+  {
+    id: 5,
+    bedrooms: 2,
+    city: {
+      location: {
+        latitude: 48.860184,
+        longitude: 2.337412,
+        zoom: 10
+      },
+      name: `Paris`
+    },
+    description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
+    goods: [`Heating`, `Kitchen`, `Cable TV`, `Washing machine`, `Dishwasher`],
+    host: {
+      id: 7,
+      avatarUrl: `img/avatar-max.jpg`,
+      isPro: true,
+      name: `Jan`
+    },
+    images: [`img/apartment-03.jpg`, `img/studio-01.jpg`],
+    isFavorite: true,
+    isPremium: false,
+    location: {
+      latitude: 48.865430,
+      longitude: 2.290543,
+      zoom: 8
+    },
+    maxAdults: 4,
+    previewImage: `img/apartment-03.jpg`,
+    price: 190,
+    rating: 4.9,
+    title: `Nice, cozy, warm big bed apartment`,
+    type: `hotel`
+  },
+  // 6й объект в Париже!
+  {
+    id: 6,
+    bedrooms: 2,
+    city: {
+      location: {
+        latitude: 48.860184,
+        longitude: 2.337412,
+        zoom: 10
+      },
+      name: `Paris`
+    },
+    description: `A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.`,
+    goods: [`Heating`, `Kitchen`, `Cable TV`, `Washing machine`, `Dishwasher`],
+    host: {
+      id: 8,
+      avatarUrl: `img/avatar-max.jpg`,
+      isPro: true,
+      name: `Anry`
+    },
+    images: [`img/apartment-03.jpg`, `img/studio-01.jpg`],
+    isFavorite: false,
+    isPremium: true,
+    location: {
+      latitude: 48.825430,
+      longitude: 2.250543,
+      zoom: 8
+    },
+    maxAdults: 4,
+    previewImage: `img/apartment-03.jpg`,
+    price: 210,
+    rating: 4.9,
+    title: `Nice, cozy, warm big bed apartment`,
+    type: `hotel`
+  },
 ];
+
