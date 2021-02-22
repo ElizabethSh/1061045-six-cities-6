@@ -14,3 +14,7 @@ export const formatReviewDate = (date) => {
 
   return reviewDate.toLocaleDateString(`en-US`, {year: `numeric`, month: `long`});
 };
+
+export const getCityPlaces = (places, city) => {
+  return places.filter((place) => place.city.name === city);
+};

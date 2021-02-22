@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {combineReducers, createStore} from 'redux';
+import {Provider} from 'react-redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import App from './components/app/app';
-import {offers} from './mock/offers';
+import {reducer} from './store/reducer';
 import {reviews} from './mock/reviews';
 
+const rootReducer = combineReducers({reducer});
+
+const store = createStore(
+    rootReducer,
+    composeWithDevTools()
+);
+
 ReactDOM.render(
-    <App
-      places = {offers}
-      reviews = {reviews}
-    />,
+    <Provider store={store}>
+      <App
+        reviews = {reviews}
+      />
+    </Provider>,
     document.getElementById(`root`)
 );

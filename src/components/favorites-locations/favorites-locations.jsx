@@ -16,14 +16,16 @@ const FavoriteLocations = (props) => {
         </div>
       </div>
       <div className="favorites__places">
-        {places.map((place) => {
-          return (
-            <PlaceCard key={place.id}
-              place={place}
-              cardName={CardName.FAVORITES}
-            />
-          );
-        })}
+        {
+          places.map((place) => {
+            return (
+              <PlaceCard key={place.id}
+                place={place}
+                cardName={CardName.FAVORITES}
+              />
+            );
+          })
+        }
       </div>
     </li>
   );

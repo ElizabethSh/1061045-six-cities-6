@@ -24,9 +24,10 @@ const Review = (props) => {
             alt="Reviews avatar"
           />
         </div>
-        <span className="reviews__user-name">
-          {user.name}
-        </span>
+        <span className="reviews__user-name">{user.name}</span>
+        {
+          user.isPro && (<span className="property__user-status">Pro</span>)
+        }
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">

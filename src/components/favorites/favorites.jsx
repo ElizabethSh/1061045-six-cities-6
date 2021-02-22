@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import PageHeader from '../page-header/page-header';
-import {placeProp} from '../../common/prop-types/place.prop';
 import FavoriteLocations from '../favorites-locations/favorites-locations';
+import PageFooter from '../page-footer/page-footer';
+import {placeProp} from '../../common/prop-types/place.prop';
+import {getCityPlaces} from '../../common/utils';
 
 const Favorites = (props) => {
-  const {places} = props; // придут только избранные размещения!
+  const {places} = props;
+
+  // сортировка только по флагу isFavorite
+  const favoritePlaces = places.filter((place) => place.isFavorite === true);
 
   // определение списка городов по которым нужно вывести избранные предложения
   const cities = [];
@@ -21,27 +27,25 @@ const Favorites = (props) => {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
+              {
+                favoriteCities.map((city, index) => {
+                  // фильтрация избранных размещений по городу
+                  const favoriteCityPlaces = getCityPlaces(favoritePlaces, city);
 
-              {favoriteCities.map((city, index) => {
-                // фильтрация избранных размещений по городу
-                const favoritePlaces = places.filter((place) => place.city.name === city);
-                return (
-                  <FavoriteLocations
-                    key={city + index}
-                    places={favoritePlaces}
-                    city={city}
-                  />
-                );
-              })}
+                  return (
+                    <FavoriteLocations
+                      key={city + index}
+                      places={favoriteCityPlaces}
+                      city={city}
+                    />
+                  );
+                })
+              }
             </ul>
           </section>
         </div>
       </main>
-      <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
-          <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-        </a>
-      </footer>
+      <PageFooter />
     </div>
   );
 };
@@ -52,4 +56,10 @@ Favorites.propTypes = {
   ).isRequired,
 };
 
-export default Favorites;
+const mapStateToProps = (state) => {
+  return {
+    places: state.reducer.offers
+  };
+};
+
+export default connect(mapStateToProps)(Favorites);
