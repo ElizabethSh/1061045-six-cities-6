@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
+import {connect} from 'react-redux';
 import ReviewForm from '../review-form/review-form';
 import PageHeader from '../page-header/page-header';
 import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import ReviewList from '../review-list/review-list';
 import {placeProp} from '../../common/prop-types/place.prop';
-import {convertRatingToPersent, formatString} from '../../common/utils';
 import {reviewProp} from '../../common/prop-types/review.prop';
+import {convertRatingToPersent, formatString} from '../../common/utils';
 import {CardsListName} from '../../common/const';
 
 const MAX_IMAGES_AMOUNT = 6;
@@ -21,11 +22,17 @@ const Place = (props) => {
   // в адресной строке
   const offer = places.find((place) => place.id === Number(id));
 
+  // определяем город открытого (выбранного) объекта размещения,
+  // для которого нужно отобразить карту с объектами неподалеку
+  const city = offer.city.name;
+
+  // фильтрация размещений неподалеку по определенному городу
+  const nearPlaces = places.filter((place) => {
+    return place.city.name === city && place.id !== Number(id);
+  });
+
   // фильтрация отзывов, относящихся к этому месту размещения
   const offerReviews = reviews.filter((review) => review.offerId === Number(id));
-
-  // фильтрация объектов размещения, расположенных неподалеку
-  const nearPlaces = places.filter((place) => place.id !== Number(id));
 
   const {
     bedrooms,
@@ -58,26 +65,28 @@ const Place = (props) => {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-
-              {images.slice(0, MAX_IMAGES_AMOUNT).map((image, index) => {
-                return (
-                  <div className="property__image-wrapper" key={`${image}-${index}`}>
-                    <img className="property__image" src={image} alt="Photo studio" />
-                  </div>
-                );
-              })}
-
+              {
+                images.slice(0, MAX_IMAGES_AMOUNT).map((image, index) => {
+                  return (
+                    <div className="property__image-wrapper" key={`${image}-${index}`}>
+                      <img className="property__image" src={image} alt="Photo studio" />
+                    </div>
+                  );
+                })
+              }
             </div>
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-
-              {isPremium && renderPremiumMark()}
-
+              {
+                isPremium && renderPremiumMark()
+              }
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
                 <button
-                  className={`property__bookmark-button ${isFavorite ? `property__bookmark-button--active` : ``} button`}
+                  className={
+                    `property__bookmark-button ${isFavorite ? `property__bookmark-button--active` : ``} button`
+                  }
                   type="button"
                 >
                   <svg className="property__bookmark-icon" width="31" height="33">
@@ -94,7 +103,9 @@ const Place = (props) => {
                 <span className="property__rating-value rating__value">{rating}</span>
               </div>
               <ul className="property__features">
-                <li className="property__feature property__feature--entire">{formatString(type)}</li>
+                <li className="property__feature property__feature--entire">
+                  {formatString(type)}
+                </li>
                 <li className="property__feature property__feature--bedrooms">
                   {bedrooms} Bedrooms
                 </li>
@@ -109,24 +120,33 @@ const Place = (props) => {
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  {goods.map((good, index) => {
-                    return (
-                      <li key={`${good}-${index}`} className="property__inside-item">
-                        {good}
-                      </li>
-                    );
-                  })}
+                  {
+                    goods.map((good, index) => {
+                      return (
+                        <li key={`${good}-${index}`}
+                          className="property__inside-item"
+                        >
+                          {good}
+                        </li>
+                      );
+                    })
+                  }
                 </ul>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
-                  <div className={`property__avatar-wrapper ${host.isPro ? `property__avatar-wrapper--pro` : ``} user__avatar-wrapper}`}>
-                    <img className="property__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
+                  <div className={
+                    `property__avatar-wrapper ${host.isPro ? `property__avatar-wrapper--pro` : ``} user__avatar-wrapper}`
+                  }>
+                    <img className="property__avatar user__avatar"
+                      src={host.avatarUrl}
+                      width="74"
+                      height="74"
+                      alt="Host avatar"
+                    />
                   </div>
-                  <span className="property__user-name">
-                    {host.name}
-                  </span>
+                  <span className="property__user-name">{host.name}</span>
                 </div>
                 <div className="property__description">
                   <p className="property__text">{description}</p>
@@ -146,6 +166,7 @@ const Place = (props) => {
           </div>
           <section className="property__map map">
             <Map
+              city={city}
               places={nearPlaces}
             />
           </section>
@@ -173,4 +194,10 @@ Place.propTypes = {
   ).isRequired,
 };
 
-export default Place;
+const mapStateToProps = (state) => {
+  return {
+    places: state.reducer.offers,
+  };
+};
+
+export default connect(mapStateToProps)(Place);
