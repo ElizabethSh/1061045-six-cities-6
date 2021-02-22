@@ -9,7 +9,7 @@ export const reviews = [
     user: {
       avatarUrl: `img/avatar-max.jpg`,
       id: 4,
-      isPro: false, // зачем нужен этот флаг?
+      isPro: false,
       name: `Max`
     }
   },
@@ -23,7 +23,7 @@ export const reviews = [
     user: {
       avatarUrl: `img/avatar-max.jpg`,
       id: 5,
-      isPro: true, // зачем нужен этот флаг?
+      isPro: true,
       name: `Alex`
     }
   },
@@ -37,8 +37,22 @@ export const reviews = [
     user: {
       avatarUrl: `img/avatar-max.jpg`,
       id: 6,
-      isPro: true, // зачем нужен этот флаг?
+      isPro: true,
       name: `Frederik`
+    }
+  },
+  {
+    offerId: 5,
+    comment: `A quiet cozy and picturesque that hides behind a
+      river by the unique lightness of Amsterdam.`,
+    date: `2019-05-25T14:13:56.569Z`,
+    id: 4,
+    rating: 5,
+    user: {
+      avatarUrl: `img/avatar-max.jpg`,
+      id: 7,
+      isPro: true,
+      name: `Henrik`
     }
   }
 ];
