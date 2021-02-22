@@ -2,16 +2,19 @@ import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Leaflet from 'leaflet';
 import {placeProp} from '../../common/prop-types/place.prop';
+import {cityProp} from '../../common/prop-types/city.prop';
+import {getCityPlaces} from '../../common/utils';
 
 import 'leaflet/dist/leaflet.css';
 
-const cityName = `Amsterdam`;
-
-const Map = ({places}) => {
+const Map = (props) => {
+  const {places, city} = props;
   const mapRef = useRef();
 
   // cортировка по городу
-  const cityPlaces = places.filter((place) => place.city.name === cityName);
+  const cityPlaces = getCityPlaces(places, city);
+
+  // определение координат города
   const mapCitySettings = cityPlaces[0].city.location;
 
   useEffect(() => {
@@ -68,6 +71,7 @@ Map.propTypes = {
   places: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
+  city: cityProp
 };
 
 export default Map;
