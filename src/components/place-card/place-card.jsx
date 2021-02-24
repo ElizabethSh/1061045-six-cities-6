@@ -33,7 +33,7 @@ const CardSettings = {
 };
 
 const PlaceCard = (props) => {
-  const {place, cardName, onMouseEnter} = props;
+  const {place, cardName, onMouseEnter, onMouseLeave} = props;
   const {
     title,
     price,
@@ -59,6 +59,14 @@ const PlaceCard = (props) => {
         // на карточку
         if (onMouseEnter) {
           onMouseEnter(place);
+        }
+      }}
+
+      onMouseLeave={() => {
+        // если обработчик передан, то вызвать его при перемещении
+        // курсора с карточки
+        if (onMouseLeave) {
+          onMouseLeave();
         }
       }}
 
@@ -121,6 +129,7 @@ PlaceCard.propTypes = {
       [CardName.CITIES, CardName.FAVORITES, CardName.NEAR_PLACES]
   ).isRequired,
   onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
 };
 
 export default PlaceCard;
