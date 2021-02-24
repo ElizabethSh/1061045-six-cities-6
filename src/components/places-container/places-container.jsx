@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import Sort from '../sort/sort';
 import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import {placeProp} from '../../common/prop-types/place.prop';
@@ -20,21 +21,7 @@ const PlacesContainer = (props) => {
             `${activeCityPlaces.length} ${(activeCityPlaces.length > 1) ? `places` : `place`} to stay in ${activeCity}`
           }
         </b>
-        <form className="places__sorting" action="#" method="get">
-          <span className="places__sorting-caption">Sort by</span>
-          <span className="places__sorting-type" tabIndex="0">
-            Popular
-            <svg className="places__sorting-arrow" width="7" height="4">
-              <use xlinkHref="#icon-arrow-select"></use>
-            </svg>
-          </span>
-          <ul className="places__options places__options--custom places__options--opened">
-            <li className="places__option places__option--active" tabIndex="0">Popular</li>
-            <li className="places__option" tabIndex="0">Price: low to high</li>
-            <li className="places__option" tabIndex="0">Price: high to low</li>
-            <li className="places__option" tabIndex="0">Top rated first</li>
-          </ul>
-        </form>
+        <Sort />
         <PlacesList
           places={activeCityPlaces}
           placesListName={CardsListName.CITIES_PLACES_LIST}
@@ -61,7 +48,8 @@ PlacesContainer.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    activeCity: state.reducer.activeCity
+    activeCity: state.reducer.activeCity,
+    activeCityPlaces: state.reducer.activeCityPlaces
   };
 };
 
