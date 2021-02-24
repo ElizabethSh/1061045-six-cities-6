@@ -1,8 +1,10 @@
 const MAX_STARS_AMOUNT = 5;
 
+export const capitalizeString = (string) => string[0].toUpperCase() + string.slice(1);
+
 export const formatString = (string) => {
   const strings = string.split(` `);
-  return strings.map((it) => it[0].toUpperCase() + it.slice(1)).join(` `);
+  return strings.map((it) => capitalizeString(it)).join(` `);
 };
 
 export const convertRatingToPersent = (rating) => {
