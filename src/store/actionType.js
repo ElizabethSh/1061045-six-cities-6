@@ -7,5 +7,7 @@ export const ActionType = {
   CARD_HOVER_RESET: `city/cardHoverReset`,
 
   SORT_TYPE_CHANGE: `city/sort-type-change`,
+  SORT_PLACES_LIST: `city/sort-places-list`,
 };
+
 
