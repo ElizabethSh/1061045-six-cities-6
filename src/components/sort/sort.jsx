@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {SortType} from '../../common/const';
 import {capitalizeString} from '../../common/utils';
 import {ActionCreator} from '../../store/action';
+import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
 
 const sortTypes = Object.values(SortType);
 
@@ -50,7 +51,7 @@ const Sort = (props) => {
 };
 
 Sort.propTypes = {
-  sortType: PropTypes.oneOf([SortType.POPULAR, SortType.PRICE_HIGHT_TO_LOW, SortType.PRICE_LOW_TO_HIGHT, SortType.TOP_RATED]),
+  sortType: sortTypeProp,
   setSortType: PropTypes.func,
 };
 
