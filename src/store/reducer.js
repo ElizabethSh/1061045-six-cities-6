@@ -1,4 +1,4 @@
-import {ActionType, SORT_PLACES_LIST} from '../store/actionType';
+import {ActionType} from '../store/actionType';
 import {offers} from '../mock/offers';
 import {getCityPlaces} from '../common/utils';
 import {SortType} from '../common/const';
@@ -51,7 +51,7 @@ export const reducer = (state = initialState, action) => {
         sortType: action.payload
       });
 
-    case SORT_PLACES_LIST:
+    case ActionType.SORT_PLACES_LIST:
       return ({
         ...state,
         sortedPlaces: action.payload
