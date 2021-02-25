@@ -1,12 +1,15 @@
-import {ActionType} from '../store/actionType';
+import {ActionType, SORT_PLACES_LIST} from '../store/actionType';
 import {offers} from '../mock/offers';
 import {getCityPlaces} from '../common/utils';
+import {SortType} from '../common/const';
 
 const initialState = {
   activeCity: `Paris`,
   offers,
   activeCard: 0,
-  activeCityPlaces: []
+  activeCityPlaces: [],
+  sortType: SortType.POPULAR,
+  sortedPlaces: []
 };
 
 export const reducer = (state = initialState, action) => {
@@ -39,6 +42,19 @@ export const reducer = (state = initialState, action) => {
       return ({
         ...state,
         activeCard: 0,
+      });
+
+    // --------------------------------------
+    case ActionType.SORT_TYPE_CHANGE:
+      return ({
+        ...state,
+        sortType: action.payload
+      });
+
+    case SORT_PLACES_LIST:
+      return ({
+        ...state,
+        sortedPlaces: action.payload
       });
 
     default:
