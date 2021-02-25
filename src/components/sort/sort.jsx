@@ -56,7 +56,7 @@ Sort.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    sortType: state.sortReducer.sortType,
+    sortType: state.reducer.sortType,
   };
 };
 
