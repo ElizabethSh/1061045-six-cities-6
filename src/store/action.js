@@ -1,6 +1,6 @@
 import {SortType} from "../common/const";
 import {sortOffersByRating, sortOffersHightToLowPrice, sortOffersLowToHightPrice} from "../common/sort";
-import {ActionType, SORT_PLACES_LIST} from "./actionType";
+import {ActionType} from "./actionType";
 
 export const ActionCreator = {
   cityChangeAction: (activeCity) => ({
@@ -55,7 +55,7 @@ export const ActionCreator = {
     }
 
     return ({
-      type: SORT_PLACES_LIST,
+      type: ActionType.SORT_PLACES_LIST,
       payload: sortedList
     });
   }
