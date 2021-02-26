@@ -1,15 +1,33 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import Sort from '../sort/sort';
 import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
-import {CardsListName} from '../../common/const';
+import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
+import {CardsListName, SortType} from '../../common/const';
+import {ActionCreator} from '../../store/action';
+import {
+  sortOffersByRating,
+  sortOffersHightToLowPrice,
+  sortOffersLowToHightPrice
+} from '../../common/sort';
 
 
 const PlacesContainer = (props) => {
-  const {activeCityPlaces, activeCity} = props;
+  const {
+    activeCityPlaces,
+    activeCity,
+    sortType,
+    sortPlacesList,
+    sortedPlaces
+  } = props;
+
+  useEffect(() => {
+    sortPlacesList(sortType, activeCityPlaces);
+  }, [sortType, activeCity]);
 
   return (
     <div className="cities__places-container container">
@@ -20,23 +38,9 @@ const PlacesContainer = (props) => {
             `${activeCityPlaces.length} ${(activeCityPlaces.length > 1) ? `places` : `place`} to stay in ${activeCity}`
           }
         </b>
-        <form className="places__sorting" action="#" method="get">
-          <span className="places__sorting-caption">Sort by</span>
-          <span className="places__sorting-type" tabIndex="0">
-            Popular
-            <svg className="places__sorting-arrow" width="7" height="4">
-              <use xlinkHref="#icon-arrow-select"></use>
-            </svg>
-          </span>
-          <ul className="places__options places__options--custom places__options--opened">
-            <li className="places__option places__option--active" tabIndex="0">Popular</li>
-            <li className="places__option" tabIndex="0">Price: low to high</li>
-            <li className="places__option" tabIndex="0">Price: high to low</li>
-            <li className="places__option" tabIndex="0">Top rated first</li>
-          </ul>
-        </form>
+        <Sort />
         <PlacesList
-          places={activeCityPlaces}
+          places={sortedPlaces}
           placesListName={CardsListName.CITIES_PLACES_LIST}
         />
       </section>
@@ -57,12 +61,48 @@ PlacesContainer.propTypes = {
   activeCityPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
+  sortType: sortTypeProp,
+  sortPlacesList: PropTypes.func,
+  sortedPlaces: PropTypes.arrayOf(
+      PropTypes.shape(placeProp)
+  ).isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    activeCity: state.reducer.activeCity
+    activeCity: state.reducer.activeCity,
+    activeCityPlaces: state.reducer.activeCityPlaces,
+    sortType: state.reducer.sortType,
+    sortedPlaces: state.reducer.sortedPlaces,
   };
 };
 
-export default connect(mapStateToProps)(PlacesContainer);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    sortPlacesList: (sortType, activeCityPlaces) => {
+      let sortedList = activeCityPlaces.slice();
+
+      switch (sortType) {
+
+        case SortType.TOP_RATED:
+          sortOffersByRating(sortedList);
+          break;
+
+        case SortType.PRICE_HIGHT_TO_LOW:
+          sortOffersHightToLowPrice(sortedList);
+          break;
+
+        case SortType.PRICE_LOW_TO_HIGHT:
+          sortOffersLowToHightPrice(sortedList);
+          break;
+
+        default:
+          break;
+      }
+
+      return dispatch(ActionCreator.sortPlacesListAction(sortedList));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlacesContainer);

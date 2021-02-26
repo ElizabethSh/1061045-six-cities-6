@@ -8,26 +8,27 @@ import CityList from '../city-list/city-list';
 import PlacesContainer from '../places-container/places-container';
 import EmptyPlacesContainer from '../empty-places-container/empty-places-container';
 import {placeProp} from '../../common/prop-types/place.prop';
-import {cityProp} from '../../common/prop-types/city.prop';
 import {CITIES} from '../../common/const';
-import {getCityPlaces} from '../../common/utils';
 
 const MainPage = (props) => {
-  const {places, activeCity, changeActiveCity, cityReset} = props;
+  const {
+    activeCityPlaces,
+    changeActiveCity,
+    cityReset,
+    cityPlacesListChange
+  } = props;
   let {city} = useParams(); // определяем по адресной строке выбранный город
 
   useEffect(() => {
     if (!city) {
-      cityReset();
+      cityReset(); // устанавливаем город по умолчанию
+      cityPlacesListChange(); // обновляем список размещений
       return;
     }
 
-    changeActiveCity(city);
+    changeActiveCity(city); // устанавливаем выбранный город
+    cityPlacesListChange(); // обновляем список размещений
   }, [city]);
-
-
-  // сортировка по выбранному городу
-  const activeCityPlaces = getCityPlaces(places, activeCity);
 
   return (
     <div className="page page--gray page--main">
@@ -51,9 +52,7 @@ const MainPage = (props) => {
         <div className="cities">
           {
             (activeCityPlaces.length)
-              ? <PlacesContainer
-                activeCityPlaces={activeCityPlaces}
-              />
+              ? <PlacesContainer/>
               : <EmptyPlacesContainer />
           }
         </div>
@@ -63,24 +62,24 @@ const MainPage = (props) => {
 };
 
 MainPage.propTypes = {
-  places: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
-  activeCity: cityProp,
   changeActiveCity: PropTypes.func.isRequired,
   cityReset: PropTypes.func.isRequired,
+  activeCityPlaces: PropTypes.arrayOf(
+      PropTypes.shape(placeProp)
+  ).isRequired,
+  cityPlacesListChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    activeCity: state.reducer.activeCity,
-    places: state.reducer.offers
+    activeCityPlaces: state.reducer.activeCityPlaces
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     changeActiveCity: (city) => dispatch(ActionCreator.cityChangeAction(city)),
+    cityPlacesListChange: () => dispatch(ActionCreator.cityPlacesListChangeAction()),
     cityReset: () => dispatch(ActionCreator.cityResetAction()),
   };
 };

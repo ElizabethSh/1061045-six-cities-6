@@ -182,8 +182,8 @@ export const offers = [
     },
     maxAdults: 4,
     previewImage: `img/apartment-03.jpg`,
-    price: 190,
-    rating: 4.9,
+    price: 290,
+    rating: 4.1,
     title: `Nice, cozy, warm big bed apartment`,
     type: `hotel`
   },
