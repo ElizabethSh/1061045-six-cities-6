@@ -1,5 +1,3 @@
-import {SortType} from "../common/const";
-import {sortOffersByRating, sortOffersHightToLowPrice, sortOffersLowToHightPrice} from "../common/sort";
 import {ActionType} from "./actionType";
 
 export const ActionCreator = {
@@ -31,29 +29,7 @@ export const ActionCreator = {
     payload: sortType
   }),
 
-  // -----------------------------------------------
-
-  sortPlacesListAction: (sortType, activeCityPlaces) => {
-    let sortedList = activeCityPlaces.slice();
-
-    switch (sortType) {
-
-      case SortType.TOP_RATED:
-        sortOffersByRating(sortedList);
-        break;
-
-      case SortType.PRICE_HIGHT_TO_LOW:
-        sortOffersHightToLowPrice(sortedList);
-        break;
-
-      case SortType.PRICE_LOW_TO_HIGHT:
-        sortOffersLowToHightPrice(sortedList);
-        break;
-
-      default:
-        break;
-    }
-
+  sortPlacesListAction: (sortedList) => {
     return ({
       type: ActionType.SORT_PLACES_LIST,
       payload: sortedList
