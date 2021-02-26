@@ -7,8 +7,13 @@ import PlacesList from '../places-list/places-list';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
 import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
-import {CardsListName} from '../../common/const';
+import {CardsListName, SortType} from '../../common/const';
 import {ActionCreator} from '../../store/action';
+import {
+  sortOffersByRating,
+  sortOffersHightToLowPrice,
+  sortOffersLowToHightPrice
+} from '../../common/sort';
 
 
 const PlacesContainer = (props) => {
@@ -74,7 +79,29 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    sortPlacesList: (sortType, activeCityPlaces) => dispatch(ActionCreator.sortPlacesListAction(sortType, activeCityPlaces))
+    sortPlacesList: (sortType, activeCityPlaces) => {
+      let sortedList = activeCityPlaces.slice();
+
+      switch (sortType) {
+
+        case SortType.TOP_RATED:
+          sortOffersByRating(sortedList);
+          break;
+
+        case SortType.PRICE_HIGHT_TO_LOW:
+          sortOffersHightToLowPrice(sortedList);
+          break;
+
+        case SortType.PRICE_LOW_TO_HIGHT:
+          sortOffersLowToHightPrice(sortedList);
+          break;
+
+        default:
+          break;
+      }
+
+      return dispatch(ActionCreator.sortPlacesListAction(sortedList));
+    }
   };
 };
 
