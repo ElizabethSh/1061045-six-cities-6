@@ -15,7 +15,7 @@ const Favorites = (props) => {
 
   // определение списка городов по которым нужно вывести избранные предложения
   const cities = [];
-  places.forEach((place) => cities.push(place.city.name));
+  favoritePlaces.forEach((place) => cities.push(place.city.name));
   const favoriteCities = Array.from(new Set(cities));
 
   return (
