@@ -1,13 +1,16 @@
 export const ActionType = {
   CITY_CHANGE: `city/change`,
-  PLACE_LIST_CHANGE: `city/place-list-change`,
+  CHANGE_PLACE_LIST: `city/changePlaceList`,
   CITY_RESET: `city/reset`,
 
   CARD_HOVER: `city/cardHover`,
-  CARD_HOVER_RESET: `city/cardHoverReset`,
+  RESET_CARD_HOVER: `city/resetCardHover`,
 
-  SORT_TYPE_CHANGE: `city/sort-type-change`,
-  SORT_PLACES_LIST: `city/sort-places-list`,
+  CHANGE_SORT_TYPE: `city/changeSortType`,
+  SORT_PLACES_LIST: `city/sortPlacesList`,
+
+  LOAD_OFFERS: `city/loadOffers`,
+  REQUIRED_AUTH: `login/requiredAuth`
 };
 
 
