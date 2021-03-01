@@ -20,15 +20,12 @@ const PlacesList = (props) => {
     cardName = CardName.NEAR_PLACES;
   }
 
-  // возможно нужно оптимизировать условие?
-  // возможно обработчик нужно перенести в PlaceCard?
   const handleCardMouseEnter = (place) => {
     if (cardName === CardName.CITIES) {
       setActiveCard(place.id);
     }
   };
 
-  // возможно обработчик нужно перенести в PlaceCard?
   const handleCardMouseLeave = () => {
     resetActiveCard();
   };
