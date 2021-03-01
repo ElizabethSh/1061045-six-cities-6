@@ -7,7 +7,7 @@ export const ActionCreator = {
   }),
 
   cityPlacesListChangeAction: () => ({
-    type: ActionType.PLACE_LIST_CHANGE
+    type: ActionType.CHANGE_PLACE_LIST
   }),
 
   cityResetAction: () => ({
@@ -20,12 +20,12 @@ export const ActionCreator = {
   }),
 
   resetCardHoverAction: () => ({
-    type: ActionType.CARD_HOVER_RESET,
+    type: ActionType.RESET_CARD_HOVER,
   }),
 
   // устанавливает тип сортировки в сторе
   setSortTypeAction: (sortType) => ({
-    type: ActionType.SORT_TYPE_CHANGE,
+    type: ActionType.CHANGE_SORT_TYPE,
     payload: sortType
   }),
 
@@ -34,5 +34,19 @@ export const ActionCreator = {
       type: ActionType.SORT_PLACES_LIST,
       payload: sortedList
     });
+  },
+
+  loadDataAction: (data) => {
+    return ({
+      type: ActionType.LOAD_OFFERS,
+      payload: data
+    });
+  },
+
+  setAuthStatusAction: (status) => {
+    return {
+      type: ActionType.REQUIRED_AUTH,
+      payload: status
+    };
   }
 };
