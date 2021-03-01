@@ -27,6 +27,5 @@ const adaptData = (data) => {
 export const fetchOffersList = () => (dispatch, _getState, api) => {
   api.get(`/hotels`)
     .then(({data}) => data.map((it) => adaptData(it)))
-    .then((data) => dispatch(ActionCreator.loadDataAction(data)))
-    .then(() => dispatch(ActionCreator.setLoadingStatusAction()));
+    .then((data) => dispatch(ActionCreator.loadDataAction(data)));
 };
