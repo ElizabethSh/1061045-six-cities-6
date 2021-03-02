@@ -24,3 +24,8 @@ export const SortType = {
   PRICE_HIGHT_TO_LOW: `price: high to low`,
   TOP_RATED: `top rated first`
 };
+
+export const AuthStatus = {
+  AUTH: `auth`,
+  NO_AUTH: `no-auth`,
+};

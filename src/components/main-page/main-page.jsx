@@ -13,10 +13,12 @@ import {CITIES} from '../../common/const';
 const MainPage = (props) => {
   const {
     activeCityPlaces,
+    isDataLoaded,
     changeActiveCity,
     cityReset,
-    cityPlacesListChange
+    cityPlacesListChange,
   } = props;
+
   let {city} = useParams(); // определяем по адресной строке выбранный город
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const MainPage = (props) => {
 
     changeActiveCity(city); // устанавливаем выбранный город
     cityPlacesListChange(); // обновляем список размещений
-  }, [city]);
+  }, [isDataLoaded, city]);
 
   return (
     <div className="page page--gray page--main">
@@ -68,11 +70,13 @@ MainPage.propTypes = {
       PropTypes.shape(placeProp)
   ).isRequired,
   cityPlacesListChange: PropTypes.func.isRequired,
+  isDataLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    activeCityPlaces: state.reducer.activeCityPlaces
+    activeCityPlaces: state.reducer.activeCityPlaces,
+    isDataLoaded: state.reducer.isDataLoaded,
   };
 };
 

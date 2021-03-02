@@ -1,15 +1,16 @@
 import {ActionType} from '../store/actionType';
-import {offers} from '../mock/offers';
 import {getCityPlaces} from '../common/utils';
-import {SortType} from '../common/const';
+import {AuthStatus, SortType} from '../common/const';
 
 const initialState = {
   activeCity: `Paris`,
-  offers,
+  offers: [],
   activeCard: 0,
   activeCityPlaces: [],
   sortType: SortType.POPULAR,
-  sortedPlaces: []
+  sortedPlaces: [],
+  authStatus: AuthStatus.NO_AUTH,
+  isDataLoaded: false,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -20,7 +21,7 @@ export const reducer = (state = initialState, action) => {
         activeCity: action.payload
       });
 
-    case ActionType.PLACE_LIST_CHANGE:
+    case ActionType.CHANGE_PLACE_LIST:
       return ({
         ...state,
         activeCityPlaces: getCityPlaces(state.offers, state.activeCity)
@@ -38,14 +39,13 @@ export const reducer = (state = initialState, action) => {
         activeCard: action.payload
       });
 
-    case ActionType.CARD_HOVER_RESET:
+    case ActionType.RESET_CARD_HOVER:
       return ({
         ...state,
         activeCard: 0,
       });
 
-    // --------------------------------------
-    case ActionType.SORT_TYPE_CHANGE:
+    case ActionType.CHANGE_SORT_TYPE:
       return ({
         ...state,
         sortType: action.payload
@@ -55,6 +55,19 @@ export const reducer = (state = initialState, action) => {
       return ({
         ...state,
         sortedPlaces: action.payload
+      });
+
+    case ActionType.LOAD_OFFERS:
+      return ({
+        ...state,
+        offers: action.payload,
+        isDataLoaded: true
+      });
+
+    case ActionType.REQUIRED_AUTH:
+      return ({
+        ...state,
+        authStatus: action.payload
       });
 
     default:
