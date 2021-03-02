@@ -22,18 +22,6 @@ const Map = (props) => {
 
   useEffect(() => {
 
-    // настройка вида иконки
-    const icon = Leaflet.icon({
-      iconUrl: `img/pin.svg`,
-      iconSize: [30, 30]
-    });
-
-    // настройка вида иконки
-    const activeIcon = Leaflet.icon({
-      iconUrl: `img/pin-active.svg`,
-      iconSize: [30, 30]
-    });
-
     // инициализация карты
     mapRef.current = Leaflet.map(`map`, {
       center: {
@@ -44,6 +32,7 @@ const Map = (props) => {
       zoomControl: false,
       marker: true
     });
+
     mapRef.current.setView({
       lat: mapCitySettings.latitude,
       lng: mapCitySettings.longitude
@@ -56,9 +45,27 @@ const Map = (props) => {
           contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
       }).addTo(mapRef.current);
 
+    return () => {
+      mapRef.current.remove();
+    };
+  }, [city]);
+
+  useEffect(() => {
+    // настройка вида иконки
+    const icon = Leaflet.icon({
+      iconUrl: `img/pin.svg`,
+      iconSize: [30, 30]
+    });
+
+    // настройка вида активной иконки
+    const activeIcon = Leaflet.icon({
+      iconUrl: `img/pin-active.svg`,
+      iconSize: [30, 30]
+    });
+
     // отрисовка всех меток на карте
     places.map((place) => {
-      const pin = (place.id === activeCardId) ? activeIcon : icon; // переделать на стейт из редакса
+      const pin = (place.id === activeCardId) ? activeIcon : icon;
       Leaflet
         .marker({
           lat: place.location.latitude,
@@ -66,14 +73,10 @@ const Map = (props) => {
         }, {icon: pin})
         .addTo(mapRef.current);
     });
-
-    return () => {
-      mapRef.current.remove();
-    };
   });
 
   return (
-    <div id="map" style={{height: `100%`}} ref={mapRef}></div>
+    <div id="map" style={{height: `100%`}}></div>
   );
 };
 
