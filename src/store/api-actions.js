@@ -1,3 +1,4 @@
+import {APIRoute} from "../common/const";
 import {ActionCreator} from "./action";
 
 const adaptData = (data) => {
@@ -25,7 +26,28 @@ const adaptData = (data) => {
 };
 
 export const fetchOffersList = () => (dispatch, _getState, api) => {
-  api.get(`/hotels`)
+  api.get(APIRoute.HOTELS)
     .then(({data}) => data.map((it) => adaptData(it)))
     .then((data) => dispatch(ActionCreator.loadDataAction(data)));
+};
+
+export const checkAuth = () => (dispatch, _getState, api) => {
+  api.get(APIRoute.LOGIN)
+    .then(({data}) => dispatch(ActionCreator.setUsersEmailAction(data.email)))
+    .then(() => dispatch(ActionCreator.setAuthStatusAction(true)))
+    .catch(() => {});
+};
+
+export const logIn = ({email, password}) => (dispatch, _getState, api) => {
+  api.post(APIRoute.LOGIN, {email, password})
+    .then(() => dispatch(ActionCreator.setAuthStatusAction(true)))
+    .then(() => dispatch(ActionCreator.setUsersEmailAction(email)))
+    .catch(() => {});
+};
+
+export const logOut = () => (dispatch, _getState, api) => {
+  api.get(APIRoute.LOGOUT)
+    .then(() => dispatch(ActionCreator.setAuthStatusAction(false)))
+    .then(() => dispatch(ActionCreator.setUsersEmailAction(null)))
+    .catch(() => {});
 };
