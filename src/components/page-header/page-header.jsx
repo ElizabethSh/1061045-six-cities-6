@@ -6,7 +6,7 @@ import {AppRoute} from '../../common/const';
 import {logOut} from '../../store/api-actions';
 
 const PageHeader = (props) => {
-  const {isLoggedIn, userLogout} = props;
+  const {isLoggedIn, userLogout, usersEmail} = props;
 
   return (
     <header className="header">
@@ -19,23 +19,29 @@ const PageHeader = (props) => {
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">
-              <li className="header__nav-item user">
-                <a className="header__nav-link header__nav-link--profile" href="#">
-                  <div className="header__avatar-wrapper user__avatar-wrapper" />
-                  {
-                    isLoggedIn
-                      ? (
-                        <>
-                          <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                          <button
-                            style={{marginLeft: `10px`}}
-                            onClick={userLogout}
-                          >Log Out</button>
-                        </>
-                      )
-                      : <span className="header__login">Sign in</span>
-                  }
-                </a>
+              <li className="header__nav-item user" style={{display: `flex`}}>
+                {
+                  isLoggedIn
+                    ? (
+                      <>
+                        <Link to={AppRoute.FAVORITES} className="header__nav-link header__nav-link--profile">
+                          <div className="header__avatar-wrapper user__avatar-wrapper" />
+                          <span className="header__user-name user__name">{usersEmail}</span>
+                        </Link>
+                        <button
+                          style={{marginLeft: `10px`}}
+                          onClick={userLogout}
+                        >
+                          Log Out
+                        </button>
+                      </>
+                    ) : (
+                      <Link to={AppRoute.LOGIN} className="header__nav-link header__nav-link--profile">
+                        <div className="header__avatar-wrapper user__avatar-wrapper" />
+                        <span className="header__login">Sign in</span>
+                      </Link>
+                    )
+                }
               </li>
             </ul>
           </nav>
@@ -48,11 +54,13 @@ const PageHeader = (props) => {
 PageHeader.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   userLogout: PropTypes.func.isRequired,
+  usersEmail: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: state.reducer.isLoggedIn
+    isLoggedIn: state.reducer.isLoggedIn,
+    usersEmail: state.reducer.usersEmail
   };
 };
 
