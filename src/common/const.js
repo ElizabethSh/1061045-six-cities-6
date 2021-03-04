@@ -25,7 +25,16 @@ export const SortType = {
   TOP_RATED: `top rated first`
 };
 
-export const AuthStatus = {
-  AUTH: `auth`,
-  NO_AUTH: `no-auth`,
+export const AppRoute = {
+  ROOT: `/`,
+  LOGIN: `/login`,
+  FAVORITES: `/favorites`,
+  CITY: `/city/:city`,
+  OFFER: `/offer/:id`
+};
+
+export const APIRoute = {
+  HOTELS: `/hotels`,
+  LOGIN: `/login`,
+  LOGOUT: `/logout`
 };

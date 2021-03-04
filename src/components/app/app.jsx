@@ -10,6 +10,8 @@ import Loader from '../loader/loader';
 import NotFoundPage from '../not-found-page/not-found-page';
 import {reviewProp} from '../../common/prop-types/review.prop';
 import {fetchOffersList} from '../../store/api-actions';
+import PrivateRoute from '../private-route/private-route';
+import {AppRoute} from '../../common/const';
 
 const App = (props) => {
   const {reviews, isDataLoaded, onDataLoad} = props;
@@ -29,21 +31,24 @@ const App = (props) => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact>
+        <Route path={AppRoute.ROOT} exact>
           <MainPage/>
         </Route>
-        <Route path="/login" exact>
+        <Route path={AppRoute.LOGIN} exact>
           <AuthPage/>
         </Route>
-        <Route path="/favorites" exact>
-          <Favorites/>
-        </Route>
 
-        <Route path="/city/:city" >
+        <PrivateRoute
+          path={AppRoute.FAVORITES}
+          exact
+          render={() => <Favorites/>}
+        />
+
+        <Route path={AppRoute.CITY} >
           <MainPage/>
         </Route>
 
-        <Route path="/offer/:id">
+        <Route path={AppRoute.OFFER}>
           <Place
             reviews={reviews}
           />

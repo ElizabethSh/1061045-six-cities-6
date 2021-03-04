@@ -1,6 +1,6 @@
 import {ActionType} from '../store/actionType';
 import {getCityPlaces} from '../common/utils';
-import {AuthStatus, SortType} from '../common/const';
+import {SortType} from '../common/const';
 
 const initialState = {
   activeCity: `Paris`,
@@ -9,8 +9,9 @@ const initialState = {
   activeCityPlaces: [],
   sortType: SortType.POPULAR,
   sortedPlaces: [],
-  authStatus: AuthStatus.NO_AUTH,
+  isLoggedIn: false,
   isDataLoaded: false,
+  usersEmail: null,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -67,7 +68,13 @@ export const reducer = (state = initialState, action) => {
     case ActionType.REQUIRED_AUTH:
       return ({
         ...state,
-        authStatus: action.payload
+        isLoggedIn: action.payload
+      });
+
+    case ActionType.SET_USERS_EMAIL:
+      return ({
+        ...state,
+        usersEmail: action.payload
       });
 
     default:

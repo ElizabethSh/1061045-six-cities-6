@@ -48,5 +48,12 @@ export const ActionCreator = {
       type: ActionType.REQUIRED_AUTH,
       payload: status
     };
+  },
+
+  setUsersEmailAction: (email) => {
+    return {
+      type: ActionType.SET_USERS_EMAIL,
+      payload: email
+    };
   }
 };

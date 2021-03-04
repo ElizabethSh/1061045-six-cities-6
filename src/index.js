@@ -9,11 +9,13 @@ import {reducer} from './store/reducer';
 import {reviews} from './mock/reviews';
 import {createAPI} from './services/api';
 import {ActionCreator} from './store/action';
-import {AuthStatus} from './common/const';
+import {checkAuth} from './store/api-actions';
 
 const rootReducer = combineReducers({reducer});
 
-const api = createAPI(() => store.dispatch(ActionCreator.setAuthStatusAction(AuthStatus.NO_AUTH)));
+const api = createAPI(
+    () => store.dispatch(ActionCreator.setAuthStatusAction(false))
+);
 
 const store = createStore(
     rootReducer,
@@ -21,6 +23,8 @@ const store = createStore(
         applyMiddleware(thunk.withExtraArgument(api))
     )
 );
+
+store.dispatch(checkAuth());
 
 ReactDOM.render(
     <Provider store={store}>
