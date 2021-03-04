@@ -10,7 +10,9 @@ export const ActionType = {
   SORT_PLACES_LIST: `city/sortPlacesList`,
 
   LOAD_OFFERS: `city/loadOffers`,
-  REQUIRED_AUTH: `login/requiredAuth`
+
+  REQUIRED_AUTH: `login/requiredAuth`,
+  SET_USERS_EMAIL: `login/setUsersEmail`
 };
 
 
