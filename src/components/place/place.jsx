@@ -1,38 +1,53 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {useParams} from 'react-router-dom';
-import {connect} from 'react-redux';
-import ReviewForm from '../review-form/review-form';
+import React, {useEffect, useState} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import PageHeader from '../page-header/page-header';
 import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
-import ReviewList from '../review-list/review-list';
-import {placeProp} from '../../common/prop-types/place.prop';
-import {reviewProp} from '../../common/prop-types/review.prop';
+import Loader from '../loader/loader';
+import PlaceReview from '../place-review/place-review';
+import {api} from '../../';
 import {convertRatingToPersent, formatString} from '../../common/utils';
-import {CardsListName} from '../../common/const';
+import {AppRoute, CardsListName} from '../../common/const';
+import {adaptOffersData} from '../../services/adapter';
 
 const MAX_IMAGES_AMOUNT = 6;
 
-const Place = (props) => {
+const Place = () => {
+  const [isPlaceInfoLoaded, setPlaceInfoLoaded] = useState(false);
+  const [placeInfo, setPlaceInfo] = useState([]);
+  const [nearPlaces, setNearPlaces] = useState([]);
+  const [isNearPlacesLoaded, setNearPlacesLoaded] = useState(false);
+  const history = useHistory();
   let {id} = useParams();
-  const {places, reviews} = props;
 
-  // находим объект размещения, у которого id совпадает с id
-  // в адресной строке
-  const offer = places.find((place) => place.id === Number(id));
+  useEffect(() => {
+    if (!isPlaceInfoLoaded) {
+      api.get(`hotels/${id}`)
+        .then(({data}) => adaptOffersData(data))
+        .then((data) => setPlaceInfo(data))
+        .then(() => setPlaceInfoLoaded(true))
+        .catch(() => history.push(AppRoute.ERROR));
+    }
+  }, [isPlaceInfoLoaded]);
+
+  useEffect(() => {
+    if (!isNearPlacesLoaded) {
+      api.get(`/hotels/${id}/nearby`)
+        .then(({data}) => data.map((it) => adaptOffersData(it)))
+        .then((data) => setNearPlaces(data))
+        .then(() => setNearPlacesLoaded(true));
+    }
+  }, [isNearPlacesLoaded]);
+
+  if (!(isPlaceInfoLoaded && isNearPlacesLoaded)) {
+    return (
+      <Loader />
+    );
+  }
 
   // определяем город открытого (выбранного) объекта размещения,
   // для которого нужно отобразить карту с объектами неподалеку
-  const city = offer.city.name;
-
-  // фильтрация размещений неподалеку по определенному городу
-  const nearPlaces = places.filter((place) => {
-    return place.city.name === city && place.id !== Number(id);
-  });
-
-  // фильтрация отзывов, относящихся к этому месту размещения
-  const offerReviews = reviews.filter((review) => review.offerId === Number(id));
+  const city = placeInfo.city.name;
 
   const {
     bedrooms,
@@ -47,7 +62,7 @@ const Place = (props) => {
     rating,
     title,
     type,
-  } = offer;
+  } = placeInfo;
 
   const renderPremiumMark = () => {
     return (
@@ -69,7 +84,7 @@ const Place = (props) => {
                 images.slice(0, MAX_IMAGES_AMOUNT).map((image, index) => {
                   return (
                     <div className="property__image-wrapper" key={`${image}-${index}`}>
-                      <img className="property__image" src={image} alt="Photo studio" />
+                      <img className="property__image" src={image} alt={`Photo ${title}`} />
                     </div>
                   );
                 })
@@ -152,16 +167,7 @@ const Place = (props) => {
                   <p className="property__text">{description}</p>
                 </div>
               </div>
-              <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot;
-                  <span className="reviews__amount">{offerReviews.length}</span>
-                </h2>
-                {
-                  (offerReviews.length > 0)
-                    && <ReviewList reviews={offerReviews} />
-                }
-                <ReviewForm />
-              </section>
+              <PlaceReview placeId={id} />
             </div>
           </div>
           <section className="property__map map">
@@ -185,19 +191,4 @@ const Place = (props) => {
   );
 };
 
-Place.propTypes = {
-  places: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
-  reviews: PropTypes.arrayOf(
-      PropTypes.shape(reviewProp)
-  ).isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    places: state.reducer.offers,
-  };
-};
-
-export default connect(mapStateToProps)(Place);
+export default Place;
