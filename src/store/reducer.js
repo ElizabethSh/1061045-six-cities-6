@@ -12,6 +12,8 @@ const initialState = {
   isLoggedIn: false,
   isDataLoaded: false,
   usersEmail: null,
+  placeReviews: [],
+  isReviewsLoaded: false,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -75,6 +77,13 @@ export const reducer = (state = initialState, action) => {
       return ({
         ...state,
         usersEmail: action.payload
+      });
+
+    case ActionType.LOAD_REVIEWS:
+      return ({
+        ...state,
+        placeReviews: action.payload,
+        isReviewsLoaded: true
       });
 
     default:
