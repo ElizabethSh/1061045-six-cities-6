@@ -1,13 +1,29 @@
 import React, {useState} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {sendPlaceReview} from '../../store/api-actions';
+import {reviewProp} from '../../common/prop-types/review.prop';
 
-const ReviewForm = () => {
+const MAX_SIMBOL_AMOUNT = 300;
+const MIN_SIMBOL_AMOUNT = 50;
+
+const ReviewForm = (props) => {
+  const {sendReview, placeId, placeReviews} = props;
   const [commentForm, setCommentForm] = useState({
     rating: null,
-    review: ``,
+    comment: ``
   });
 
   const handleFormSubmit = (evt) => {
     evt.preventDefault();
+
+    sendReview(placeId, commentForm);
+
+    setCommentForm({
+      ...commentForm,
+      rating: null,
+      comment: ``
+    });
   };
 
   const handleInputChange = (evt) => {
@@ -24,9 +40,12 @@ const ReviewForm = () => {
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
 
-      {/* правильно ли использовать обработчик onChange на div? Нужна ли проверка на что именно кликнул пользователь?*/}
-      <div className="reviews__rating-form form__rating" onChange={handleInputChange}>
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio" />
+      <div
+        className="reviews__rating-form form__rating"
+        onChange={handleInputChange}
+        key={placeReviews.length}
+      >
+        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio"/>
         <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
           <svg className="form__star-image" width="37" height="33">
             <use xlinkHref="#icon-star"></use>
@@ -63,20 +82,52 @@ const ReviewForm = () => {
       </div>
       <textarea
         className="reviews__textarea form__textarea"
-        id="review"
-        name="review"
+        id="comment"
+        name="comment"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        value={commentForm.review}
+        value={commentForm.comment}
         onChange={handleInputChange}
+        maxLength={MAX_SIMBOL_AMOUNT}
       ></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please make sure to set
+          <span className="reviews__star">rating</span>
+          and describe your stay with at least
+          <b className="reviews__text-amount">
+            50 characters
+          </b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit">Submit</button>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={
+            !((commentForm.comment.length > MIN_SIMBOL_AMOUNT) && commentForm.rating)
+          }
+        >Submit</button>
       </div>
     </form>
   );
 };
 
-export default ReviewForm;
+ReviewForm.propTypes = {
+  sendReview: PropTypes.func.isRequired,
+  placeId: PropTypes.string.isRequired,
+  placeReviews: PropTypes.arrayOf(
+      PropTypes.shape(reviewProp)
+  ).isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    placeReviews: state.reducer.placeReviews
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    sendReview: (id, formData) => dispatch(sendPlaceReview(id, formData))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewForm);
