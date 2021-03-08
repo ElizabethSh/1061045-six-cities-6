@@ -55,5 +55,12 @@ export const ActionCreator = {
       type: ActionType.SET_USERS_EMAIL,
       payload: email
     };
-  }
+  },
+
+  loadReviewsAction: (reviews) => {
+    return {
+      type: ActionType.LOAD_REVIEWS,
+      payload: reviews
+    };
+  },
 };
