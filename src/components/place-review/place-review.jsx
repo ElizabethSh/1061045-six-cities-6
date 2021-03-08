@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import ReviewForm from '../review-form/review-form';
 import ReviewList from '../review-list/review-list';
 import Loader from '../loader/loader';
-import {adaptReviewsData} from '../../services/adapter';
-import {api} from '../../index';
+import {fetchPlaceReviews} from '../../store/api-actions';
+import {reviewProp} from '../../common/prop-types/review.prop';
 
 const PlaceReview = (props) => {
-  const [placeReviews, setPlaceReviews] = useState([]);
-  const [isReviewsLoaded, setLoadingStatus] = useState(false);
-
-  const {isLoggedIn, placeId} = props;
+  const {
+    isLoggedIn,
+    placeId,
+    loadReviews,
+    isReviewsLoaded,
+    placeReviews
+  } = props;
 
   useEffect(() => {
     if (!isReviewsLoaded) {
-      api.get(`comments/${placeId}`)
-      .then(({data}) => data.map((it) => adaptReviewsData(it)))
-      .then((data) => setPlaceReviews(data))
-      .then(() => setLoadingStatus(true));
+      loadReviews(placeId);
     }
   }, [placeId]);
 
@@ -47,12 +47,25 @@ const PlaceReview = (props) => {
 PlaceReview.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   placeId: PropTypes.string.isRequired,
+  isReviewsLoaded: PropTypes.bool.isRequired,
+  loadReviews: PropTypes.func.isRequired,
+  placeReviews: PropTypes.arrayOf(
+      PropTypes.shape(reviewProp)
+  ).isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.reducer.isLoggedIn,
+    isReviewsLoaded: state.reducer.isReviewsLoaded,
+    placeReviews: state.reducer.placeReviews
   };
 };
 
-export default connect(mapStateToProps)(PlaceReview);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadReviews: (id) => dispatch(fetchPlaceReviews(id))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlaceReview);
