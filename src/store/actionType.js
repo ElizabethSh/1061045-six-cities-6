@@ -12,7 +12,7 @@ export const ActionType = {
   LOAD_OFFERS: `city/loadOffers`,
 
   REQUIRED_AUTH: `login/requiredAuth`,
-  SET_USERS_EMAIL: `login/setUsersEmail`
+  SET_USERS_EMAIL: `login/setUsersEmail`,
+
+  LOAD_REVIEWS: `offer/loadReviews`,
 };
-
-
