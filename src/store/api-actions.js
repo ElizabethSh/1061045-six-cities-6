@@ -1,5 +1,5 @@
 import {APIRoute} from "../common/const";
-import {adaptOffersData} from "../services/adapter";
+import {adaptOffersData, adaptReviewsData} from "../services/adapter";
 import {ActionCreator} from "./action";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => {
@@ -27,4 +27,18 @@ export const logOut = () => (dispatch, _getState, api) => {
     .then(() => dispatch(ActionCreator.setAuthStatusAction(false)))
     .then(() => dispatch(ActionCreator.setUsersEmailAction(null)))
     .catch(() => {});
+};
+
+export const fetchPlaceReviews = (placeId) => (dispatch, _getState, api) => {
+  api.get(`comments/${placeId}`)
+    .then(({data}) => data.map((it) => adaptReviewsData(it)))
+    .then((data) => dispatch(ActionCreator.loadReviewsAction(data)))
+    .catch(() => {});
+};
+
+export const sendPlaceReview = (id, {rating, comment}) => (dispatch, _getState, api) => {
+  api.post(`comments/${id}`, {rating, comment})
+  .then(({data}) => data.map((it) => adaptReviewsData(it)))
+  .then((data) => dispatch(ActionCreator.loadReviewsAction(data)))
+  .catch(() => {});
 };
