@@ -63,4 +63,10 @@ export const ActionCreator = {
       payload: reviews
     };
   },
+
+  checkAuthAction: () => {
+    return {
+      type: ActionType.CHECK_AUTH
+    };
+  },
 };
