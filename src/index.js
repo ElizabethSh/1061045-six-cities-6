@@ -8,7 +8,6 @@ import App from './components/app/app';
 import {reducer} from './store/reducer';
 import {createAPI} from './services/api';
 import {ActionCreator} from './store/action';
-import {checkAuth} from './store/api-actions';
 
 const rootReducer = combineReducers({reducer});
 
@@ -22,8 +21,6 @@ const store = createStore(
         applyMiddleware(thunk.withExtraArgument(api))
     )
 );
-
-store.dispatch(checkAuth());
 
 ReactDOM.render(
     <Provider store={store}>
