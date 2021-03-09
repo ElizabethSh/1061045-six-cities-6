@@ -5,10 +5,9 @@ import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import Loader from '../loader/loader';
 import PlaceReview from '../place-review/place-review';
-import {api} from '../../';
 import {convertRatingToPersent, formatString} from '../../common/utils';
 import {AppRoute, CardsListName} from '../../common/const';
-import {adaptOffersData} from '../../services/adapter';
+import {fetchNearPlaces, fetchPlace} from '../../store/api-actions';
 
 const MAX_IMAGES_AMOUNT = 6;
 
@@ -22,8 +21,7 @@ const Place = () => {
 
   useEffect(() => {
     if (!isPlaceInfoLoaded) {
-      api.get(`hotels/${id}`)
-        .then(({data}) => adaptOffersData(data))
+      fetchPlace(id)
         .then((data) => setPlaceInfo(data))
         .then(() => setPlaceInfoLoaded(true))
         .catch(() => history.push(AppRoute.ERROR));
@@ -32,8 +30,7 @@ const Place = () => {
 
   useEffect(() => {
     if (!isNearPlacesLoaded) {
-      api.get(`/hotels/${id}/nearby`)
-        .then(({data}) => data.map((it) => adaptOffersData(it)))
+      fetchNearPlaces(id)
         .then((data) => setNearPlaces(data))
         .then(() => setNearPlacesLoaded(true));
     }
