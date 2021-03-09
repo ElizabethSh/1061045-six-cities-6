@@ -10,6 +10,7 @@ const initialState = {
   sortType: SortType.POPULAR,
   sortedPlaces: [],
   isLoggedIn: false,
+  isAuthChecked: false,
   isDataLoaded: false,
   usersEmail: null,
   placeReviews: [],
@@ -84,6 +85,12 @@ export const reducer = (state = initialState, action) => {
         ...state,
         placeReviews: action.payload,
         isReviewsLoaded: true
+      });
+
+    case ActionType.CHECK_AUTH:
+      return ({
+        ...state,
+        isAuthChecked: true
       });
 
     default:
