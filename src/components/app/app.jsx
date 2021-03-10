@@ -1,31 +1,26 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
-import {connect} from 'react-redux';
 import MainPage from '../main-page/main-page';
 import AuthPage from '../auth-page/auth-page';
 import Favorites from '../favorites/favorites';
 import Place from '../place/place';
-import Loader from '../loader/loader';
 import NotFoundPage from '../not-found-page/not-found-page';
-import {reviewProp} from '../../common/prop-types/review.prop';
-import {fetchOffersList} from '../../store/api-actions';
 import PrivateRoute from '../private-route/private-route';
 import {AppRoute} from '../../common/const';
+import {connect} from 'react-redux';
+import {checkAuth} from '../../store/api-actions';
+import Loader from '../loader/loader';
 
 const App = (props) => {
-  const {reviews, isDataLoaded, onDataLoad} = props;
+  const {isAuthChecked, chechAuthorization} = props;
 
-  useEffect(() => {
-    if (!isDataLoaded) {
-      onDataLoad();
-    }
-  }, [isDataLoaded]);
+  if (!isAuthChecked) {
+    chechAuthorization();
+  }
 
-  if (!isDataLoaded) {
-    return (
-      <Loader />
-    );
+  if (!isAuthChecked) {
+    return <Loader />;
   }
 
   return (
@@ -49,9 +44,10 @@ const App = (props) => {
         </Route>
 
         <Route path={AppRoute.OFFER}>
-          <Place
-            reviews={reviews}
-          />
+          <Place/>
+        </Route>
+        <Route path={AppRoute.ERROR}>
+          <NotFoundPage />
         </Route>
         <Route>
           <NotFoundPage />
@@ -61,24 +57,21 @@ const App = (props) => {
   );
 };
 
+App.propTypes = {
+  isAuthChecked: PropTypes.bool.isRequired,
+  chechAuthorization: PropTypes.func.isRequired
+};
+
 const mapStateToProps = (state) => {
   return {
-    isDataLoaded: state.reducer.isDataLoaded,
+    isAuthChecked: state.reducer.isAuthChecked
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onDataLoad: () => dispatch(fetchOffersList()),
+    chechAuthorization: () => dispatch(checkAuth())
   };
-};
-
-App.propTypes = {
-  reviews: PropTypes.arrayOf(
-      PropTypes.shape(reviewProp)
-  ).isRequired,
-  isDataLoaded: PropTypes.bool.isRequired,
-  onDataLoad: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

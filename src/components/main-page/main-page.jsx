@@ -7,8 +7,10 @@ import PageHeader from '../page-header/page-header';
 import CityList from '../city-list/city-list';
 import PlacesContainer from '../places-container/places-container';
 import EmptyPlacesContainer from '../empty-places-container/empty-places-container';
+import Loader from '../loader/loader';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {CITIES} from '../../common/const';
+import {fetchOffersList} from '../../store/api-actions';
 
 const MainPage = (props) => {
   const {
@@ -17,9 +19,16 @@ const MainPage = (props) => {
     changeActiveCity,
     cityReset,
     cityPlacesListChange,
+    onDataLoad
   } = props;
 
   let {city} = useParams(); // определяем по адресной строке выбранный город
+
+  useEffect(() => {
+    if (!isDataLoaded) {
+      onDataLoad();
+    }
+  }, [isDataLoaded]);
 
   useEffect(() => {
     if (!city) {
@@ -31,6 +40,12 @@ const MainPage = (props) => {
     changeActiveCity(city); // устанавливаем выбранный город
     cityPlacesListChange(); // обновляем список размещений
   }, [isDataLoaded, city]);
+
+  if (!isDataLoaded) {
+    return (
+      <Loader />
+    );
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -71,6 +86,7 @@ MainPage.propTypes = {
   ).isRequired,
   cityPlacesListChange: PropTypes.func.isRequired,
   isDataLoaded: PropTypes.bool.isRequired,
+  onDataLoad: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -85,6 +101,7 @@ const mapDispatchToProps = (dispatch) => {
     changeActiveCity: (city) => dispatch(ActionCreator.cityChangeAction(city)),
     cityPlacesListChange: () => dispatch(ActionCreator.cityPlacesListChangeAction()),
     cityReset: () => dispatch(ActionCreator.cityResetAction()),
+    onDataLoad: () => dispatch(fetchOffersList()),
   };
 };
 

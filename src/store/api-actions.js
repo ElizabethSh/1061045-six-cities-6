@@ -1,33 +1,11 @@
 import {APIRoute} from "../common/const";
+import {adaptOffersData, adaptReviewsData} from "../services/adapter";
 import {ActionCreator} from "./action";
-
-const adaptData = (data) => {
-  const adaptedData = ({
-    ...data,
-    isFavorite: data.is_favorite,
-    isPremium: data.is_premium,
-    previewImage: data.preview_image,
-    maxAdults: data.max_adults,
-    host: {
-      ...data.host,
-      avatarUrl: data.host.avatar_url,
-      isPro: data.host.is_pro
-    }
-  });
-
-  delete adaptedData.is_favorite;
-  delete adaptedData.is_premium;
-  delete adaptedData.preview_image;
-  delete adaptedData.max_adults;
-  delete adaptedData.host.avatar_url;
-  delete adaptedData.host.is_pro;
-
-  return adaptedData;
-};
+import {api as loadApi} from "../index";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => {
   api.get(APIRoute.HOTELS)
-    .then(({data}) => data.map((it) => adaptData(it)))
+    .then(({data}) => data.map((it) => adaptOffersData(it)))
     .then((data) => dispatch(ActionCreator.loadDataAction(data)));
 };
 
@@ -35,7 +13,8 @@ export const checkAuth = () => (dispatch, _getState, api) => {
   api.get(APIRoute.LOGIN)
     .then(({data}) => dispatch(ActionCreator.setUsersEmailAction(data.email)))
     .then(() => dispatch(ActionCreator.setAuthStatusAction(true)))
-    .catch(() => {});
+    .then(() => dispatch(ActionCreator.checkAuthAction()))
+    .catch(() => dispatch(ActionCreator.checkAuthAction()));
 };
 
 export const logIn = ({email, password}) => (dispatch, _getState, api) => {
@@ -50,4 +29,28 @@ export const logOut = () => (dispatch, _getState, api) => {
     .then(() => dispatch(ActionCreator.setAuthStatusAction(false)))
     .then(() => dispatch(ActionCreator.setUsersEmailAction(null)))
     .catch(() => {});
+};
+
+export const fetchPlace = (id) => {
+  return loadApi.get(`hotels/${id}`)
+    .then(({data}) => adaptOffersData(data));
+};
+
+export const fetchNearPlaces = (id) => {
+  return loadApi.get(`/hotels/${id}/nearby`)
+  .then(({data}) => data.map((it) => adaptOffersData(it)));
+};
+
+export const fetchPlaceReviews = (placeId) => (dispatch, _getState, api) => {
+  api.get(`comments/${placeId}`)
+    .then(({data}) => data.map((it) => adaptReviewsData(it)))
+    .then((data) => dispatch(ActionCreator.loadReviewsAction(data)))
+    .catch(() => {});
+};
+
+export const sendPlaceReview = (id, {rating, comment}) => (dispatch, _getState, api) => {
+  api.post(`comments/${id}`, {rating, comment})
+  .then(({data}) => data.map((it) => adaptReviewsData(it)))
+  .then((data) => dispatch(ActionCreator.loadReviewsAction(data)))
+  .catch(() => {});
 };

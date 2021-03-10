@@ -26,13 +26,15 @@ const Review = (props) => {
         </div>
         <span className="reviews__user-name">{user.name}</span>
         {
-          user.isPro && (<span className="property__user-status">Pro</span>)
+          user.isPro && (
+            <span className="property__user-status">Pro</span>
+          )
         }
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: convertRatingToPersent(rating)}}></span>
+            <span style={{width: convertRatingToPersent(rating)}} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
