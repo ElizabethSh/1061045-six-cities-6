@@ -37,9 +37,9 @@ CityList.propTypes = {
   activeCity: cityProp
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({OFFER}) => {
   return {
-    activeCity: state.reducer.activeCity
+    activeCity: OFFER.activeCity
   };
 };
 
