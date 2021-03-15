@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {sendPlaceReview} from '../../store/api-actions';
@@ -7,23 +7,31 @@ import {reviewProp} from '../../common/prop-types/review.prop';
 const MAX_SIMBOL_AMOUNT = 300;
 const MIN_SIMBOL_AMOUNT = 50;
 
+const estimations = [`perfect`, `good`, `not-bad`, `badly`, `terribly`];
+
+
 const ReviewForm = (props) => {
   const {sendReview, placeId, placeReviews} = props;
   const [commentForm, setCommentForm] = useState({
     rating: null,
     comment: ``
   });
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const handleFormSubmit = (evt) => {
     evt.preventDefault();
+
+    setIsDisabled(true);
 
     sendReview(placeId, commentForm);
 
     setCommentForm({
       ...commentForm,
       rating: null,
-      comment: ``
+      comment: ``,
     });
+
+    setIsDisabled(false);
   };
 
   const handleInputChange = (evt) => {
@@ -45,40 +53,32 @@ const ReviewForm = (props) => {
         onChange={handleInputChange}
         key={placeReviews.length}
       >
-        <input className="form__rating-input visually-hidden" name="rating" value="5" id="5-stars" type="radio"/>
-        <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="4" id="4-stars" type="radio" />
-        <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="3" id="3-stars" type="radio" />
-        <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="2" id="2-stars" type="radio" />
-        <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
-
-        <input className="form__rating-input visually-hidden" name="rating" value="1" id="1-star" type="radio" />
-        <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
-          <svg className="form__star-image" width="37" height="33">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
-        </label>
+        {
+          estimations.map((estimation, index) => {
+            const starsCount = estimations.length - index;
+            return (
+              <Fragment key={`${estimation} - ${isDisabled}`}>
+                <input
+                  className="form__rating-input visually-hidden"
+                  name="rating"
+                  value={starsCount}
+                  id={`${starsCount}-stars`}
+                  type="radio"
+                  disabled={isDisabled}
+                />
+                <label
+                  htmlFor={`${starsCount}-stars`}
+                  className="reviews__rating-label form__rating-label"
+                  title={estimation}
+                >
+                  <svg className="form__star-image" width="37" height="33">
+                    <use xlinkHref="#icon-star"></use>
+                  </svg>
+                </label>
+              </Fragment>
+            );
+          })
+        }
       </div>
       <textarea
         className="reviews__textarea form__textarea"
@@ -88,6 +88,7 @@ const ReviewForm = (props) => {
         value={commentForm.comment}
         onChange={handleInputChange}
         maxLength={MAX_SIMBOL_AMOUNT}
+        disabled={isDisabled}
       ></textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -118,9 +119,9 @@ ReviewForm.propTypes = {
   ).isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({REVIEW}) => {
   return {
-    placeReviews: state.reducer.placeReviews
+    placeReviews: REVIEW.placeReviews
   };
 };
 
