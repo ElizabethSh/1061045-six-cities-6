@@ -7,13 +7,8 @@ import PlacesList from '../places-list/places-list';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
 import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
-import {CardsListName, SortType} from '../../common/const';
-import {ActionCreator} from '../../store/action';
-import {
-  sortOffersByRating,
-  sortOffersHightToLowPrice,
-  sortOffersLowToHightPrice
-} from '../../common/sort';
+import {CardsListName} from '../../common/const';
+import {sortPlacesList} from '../../store/reducer/sort/sort-action';
 
 
 const PlacesContainer = (props) => {
@@ -21,12 +16,12 @@ const PlacesContainer = (props) => {
     activeCityPlaces,
     activeCity,
     sortType,
-    sortPlacesList,
+    getPlacesList,
     sortedPlaces
   } = props;
 
   useEffect(() => {
-    sortPlacesList(sortType, activeCityPlaces);
+    getPlacesList(activeCityPlaces, sortType);
   }, [sortType, activeCity]);
 
   return (
@@ -62,46 +57,24 @@ PlacesContainer.propTypes = {
       PropTypes.shape(placeProp)
   ).isRequired,
   sortType: sortTypeProp,
-  sortPlacesList: PropTypes.func,
+  getPlacesList: PropTypes.func,
   sortedPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({SORT, OFFER}) => {
   return {
-    activeCity: state.reducer.activeCity,
-    activeCityPlaces: state.reducer.activeCityPlaces,
-    sortType: state.reducer.sortType,
-    sortedPlaces: state.reducer.sortedPlaces,
+    activeCity: OFFER.activeCity,
+    activeCityPlaces: OFFER.activeCityPlaces,
+    sortType: SORT.sortType,
+    sortedPlaces: SORT.sortedPlaces,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    sortPlacesList: (sortType, activeCityPlaces) => {
-      let sortedList = activeCityPlaces.slice();
-
-      switch (sortType) {
-
-        case SortType.TOP_RATED:
-          sortOffersByRating(sortedList);
-          break;
-
-        case SortType.PRICE_HIGHT_TO_LOW:
-          sortOffersHightToLowPrice(sortedList);
-          break;
-
-        case SortType.PRICE_LOW_TO_HIGHT:
-          sortOffersLowToHightPrice(sortedList);
-          break;
-
-        default:
-          break;
-      }
-
-      return dispatch(ActionCreator.sortPlacesListAction(sortedList));
-    }
+    getPlacesList: (places, sortType) => dispatch(sortPlacesList(places, sortType))
   };
 };
 
