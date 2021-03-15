@@ -9,6 +9,11 @@ export const CardsListName = {
   CITIES_PLACES_LIST: `cities__places-list tabs__content`
 };
 
+export const ButtonName = {
+  PROPERTY: `property`,
+  PLACE_CARD: `place-card`
+};
+
 export const CITIES = [
   `Paris`,
   `Cologne`,
