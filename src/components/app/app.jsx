@@ -62,9 +62,9 @@ App.propTypes = {
   chechAuthorization: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({USER}) => {
   return {
-    isAuthChecked: state.reducer.isAuthChecked
+    isAuthChecked: USER.isAuthChecked
   };
 };
 
