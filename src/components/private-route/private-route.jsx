@@ -24,9 +24,9 @@ PrivateRoute.propTypes = {
   render: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({USER}) => {
   return {
-    isLoggedIn: state.reducer.isLoggedIn
+    isLoggedIn: USER.isLoggedIn
   };
 };
 
