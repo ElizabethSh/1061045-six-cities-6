@@ -1,18 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {applyMiddleware, combineReducers, createStore} from 'redux';
+import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import App from './components/app/app';
-import {reducer} from './store/reducer';
 import {createAPI} from './services/api';
-import {ActionCreator} from './store/action';
-
-const rootReducer = combineReducers({reducer});
+import {rootReducer} from './store/reducer/root-reducer';
+import {setAuthStatus} from './store/reducer/user/user-action';
 
 export const api = createAPI(
-    () => store.dispatch(ActionCreator.setAuthStatusAction(false))
+    () => store.dispatch(setAuthStatus(false))
 );
 
 const store = createStore(
