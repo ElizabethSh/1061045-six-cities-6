@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import PageHeader from '../page-header/page-header';
@@ -6,14 +6,25 @@ import PageFooter from '../page-footer/page-footer';
 import EmptyFavoritesContainer from '../empty-favorites-container/empty-favorites-container';
 import FavoritesContainer from '../favorites-container/favorites-container';
 import {placeProp} from '../../common/prop-types/place.prop';
+import Loader from '../loader/loader';
+import {fetchFavoritePlaces} from '../../store/api-actions';
 
-const Favorites = (props) => {
-  const {places} = props;
+const Favorites = () => {
+  const [favoritePlaces, setFavoritesPlaces] = useState([]);
+  const [isFavoritesLoading, setIsFavoretesLoading] = useState(true);
 
-  // сортировка только по флагу isFavorite
-  const favoritePlaces = places.filter(
-      (place) => place.isFavorite === true
-  );
+  useEffect(() => {
+    if (isFavoritesLoading) {
+      fetchFavoritePlaces()
+        .then((data) => setFavoritesPlaces(data))
+        .then(() => setIsFavoretesLoading(false))
+        .catch(() => setIsFavoretesLoading(false));
+    }
+  }, [isFavoritesLoading]);
+
+  if (isFavoritesLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="page">
@@ -41,9 +52,9 @@ Favorites.propTypes = {
   ).isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({OFFER}) => {
   return {
-    places: state.reducer.offers
+    places: OFFER.offers
   };
 };
 
