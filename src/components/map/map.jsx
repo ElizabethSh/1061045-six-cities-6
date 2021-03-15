@@ -88,9 +88,9 @@ Map.propTypes = {
   activeCardId: PropTypes.number
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({OFFER}) => {
   return {
-    activeCardId: state.reducer.activeCard, // значение равно offer.id
+    activeCardId: OFFER.activeCard, // значение равно offer.id
   };
 };
 
