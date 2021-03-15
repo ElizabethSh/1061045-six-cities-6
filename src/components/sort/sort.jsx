@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {SortType} from '../../common/const';
 import {capitalizeString} from '../../common/utils';
-import {ActionCreator} from '../../store/action';
 import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
+import {setSortType} from '../../store/reducer/sort/sort-action';
 
 const sortTypes = Object.values(SortType);
 
 const Sort = (props) => {
-  const {sortType, setSortType} = props;
+  const {sortType, changeSortType} = props;
   const [isSortOpen, setSortState] = useState(false); // стейт самого компонента
 
   return (
@@ -30,7 +30,7 @@ const Sort = (props) => {
           `places__options places__options--custom ${isSortOpen ? `places__options--opened` : `` }`
         }
         onClick={(evt) => {
-          setSortType(evt.target.type);
+          changeSortType(evt.target.type);
           setSortState(!isSortOpen);
         }}
       >
@@ -52,18 +52,18 @@ const Sort = (props) => {
 
 Sort.propTypes = {
   sortType: sortTypeProp,
-  setSortType: PropTypes.func,
+  changeSortType: PropTypes.func,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({SORT}) => {
   return {
-    sortType: state.reducer.sortType,
+    sortType: SORT.sortType,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSortType: (sortType) => dispatch(ActionCreator.setSortTypeAction(sortType))
+    changeSortType: (sortType) => dispatch(setSortType(sortType))
   };
 };
 
