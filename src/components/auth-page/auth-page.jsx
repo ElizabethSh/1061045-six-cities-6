@@ -10,7 +10,6 @@ const AuthPage = (props) => {
   const {onFormSubmit, isLoggedIn} = props;
   const history = useHistory();
 
-  // Temp?
   if (isLoggedIn) {
     history.push(AppRoute.ROOT);
   }
@@ -91,9 +90,9 @@ AuthPage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({USER}) => {
   return {
-    isLoggedIn: state.reducer.isLoggedIn
+    isLoggedIn: USER.isLoggedIn
   };
 };
 
