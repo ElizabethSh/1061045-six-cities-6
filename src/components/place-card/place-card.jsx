@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import FavoriteButton from '../favorite-button/favorite-button';
 import {formatString, convertRatingToPersent} from '../../common/utils';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {CardName} from '../../common/const';
@@ -98,15 +99,11 @@ const PlaceCard = (props) => {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button${isFavorite ? `--active` : ``} button`}
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <FavoriteButton
+            isFavorite={isFavorite}
+            buttonName='place-card'
+            placeId={place.id}
+          />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
