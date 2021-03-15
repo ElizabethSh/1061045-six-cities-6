@@ -57,10 +57,10 @@ PageHeader.propTypes = {
   usersEmail: PropTypes.string,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({USER}) => {
   return {
-    isLoggedIn: state.reducer.isLoggedIn,
-    usersEmail: state.reducer.usersEmail
+    isLoggedIn: USER.isLoggedIn,
+    usersEmail: USER.usersEmail
   };
 };
 
