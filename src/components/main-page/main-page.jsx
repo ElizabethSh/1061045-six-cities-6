@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {changeCity, changeCityPlacesList, resetCity} from '../../store/reducer/offers/offers-action';
 import PageHeader from '../page-header/page-header';
 import CityList from '../city-list/city-list';
 import PlacesContainer from '../places-container/places-container';
@@ -15,20 +15,20 @@ import {fetchOffersList} from '../../store/api-actions';
 const MainPage = (props) => {
   const {
     activeCityPlaces,
-    isDataLoaded,
+    isOffersLoaded,
     changeActiveCity,
     cityReset,
     cityPlacesListChange,
-    onDataLoad
+    onOffersLoad
   } = props;
 
   let {city} = useParams(); // определяем по адресной строке выбранный город
 
   useEffect(() => {
-    if (!isDataLoaded) {
-      onDataLoad();
+    if (!isOffersLoaded) {
+      onOffersLoad();
     }
-  }, [isDataLoaded]);
+  }, [isOffersLoaded]);
 
   useEffect(() => {
     if (!city) {
@@ -39,9 +39,9 @@ const MainPage = (props) => {
 
     changeActiveCity(city); // устанавливаем выбранный город
     cityPlacesListChange(); // обновляем список размещений
-  }, [isDataLoaded, city]);
+  }, [isOffersLoaded, city]);
 
-  if (!isDataLoaded) {
+  if (!isOffersLoaded) {
     return (
       <Loader />
     );
@@ -85,23 +85,23 @@ MainPage.propTypes = {
       PropTypes.shape(placeProp)
   ).isRequired,
   cityPlacesListChange: PropTypes.func.isRequired,
-  isDataLoaded: PropTypes.bool.isRequired,
-  onDataLoad: PropTypes.func.isRequired,
+  isOffersLoaded: PropTypes.bool.isRequired,
+  onOffersLoad: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({OFFER}) => {
   return {
-    activeCityPlaces: state.reducer.activeCityPlaces,
-    isDataLoaded: state.reducer.isDataLoaded,
+    activeCityPlaces: OFFER.activeCityPlaces,
+    isOffersLoaded: OFFER.isOffersLoaded,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeActiveCity: (city) => dispatch(ActionCreator.cityChangeAction(city)),
-    cityPlacesListChange: () => dispatch(ActionCreator.cityPlacesListChangeAction()),
-    cityReset: () => dispatch(ActionCreator.cityResetAction()),
-    onDataLoad: () => dispatch(fetchOffersList()),
+    changeActiveCity: (city) => dispatch(changeCity(city)),
+    cityPlacesListChange: () => dispatch(changeCityPlacesList()),
+    cityReset: () => dispatch(resetCity()),
+    onOffersLoad: () => dispatch(fetchOffersList()),
   };
 };
 
