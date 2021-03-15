@@ -5,6 +5,7 @@ import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import Loader from '../loader/loader';
 import PlaceReview from '../place-review/place-review';
+import FavoriteButton from '../favorite-button/favorite-button';
 import {convertRatingToPersent, formatString} from '../../common/utils';
 import {AppRoute, CardsListName} from '../../common/const';
 import {fetchNearPlaces, fetchPlace} from '../../store/api-actions';
@@ -58,7 +59,7 @@ const Place = () => {
     price,
     rating,
     title,
-    type,
+    type
   } = placeInfo;
 
   const renderPremiumMark = () => {
@@ -78,9 +79,9 @@ const Place = () => {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {
-                images.slice(0, MAX_IMAGES_AMOUNT).map((image, index) => {
+                images.slice(0, MAX_IMAGES_AMOUNT).map((image) => {
                   return (
-                    <div className="property__image-wrapper" key={`${image}-${index}`}>
+                    <div className="property__image-wrapper" key={image}>
                       <img className="property__image" src={image} alt={`Photo ${title}`} />
                     </div>
                   );
@@ -95,17 +96,11 @@ const Place = () => {
               }
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
-                <button
-                  className={
-                    `property__bookmark-button ${isFavorite ? `property__bookmark-button--active` : ``} button`
-                  }
-                  type="button"
-                >
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <FavoriteButton
+                  isFavorite={isFavorite}
+                  buttonName={`property`}
+                  placeId={placeInfo.id}
+                />
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
