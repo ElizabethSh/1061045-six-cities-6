@@ -5,8 +5,9 @@ import {connect} from 'react-redux';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
 import {getCityPlaces} from '../../common/utils';
-
 import 'leaflet/dist/leaflet.css';
+
+let layerGroup;
 
 const Map = (props) => {
   const {places, city, activeCardId, placeInfo} = props;
@@ -45,12 +46,15 @@ const Map = (props) => {
           contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
       }).addTo(mapRef.current);
 
+    layerGroup = Leaflet.layerGroup().addTo(mapRef.current);
+
     return () => {
       mapRef.current.remove();
     };
   }, [city]);
 
   useEffect(() => {
+    layerGroup.clearLayers();
     // настройка вида иконки
     const icon = Leaflet.icon({
       iconUrl: `img/pin.svg`,
@@ -71,7 +75,7 @@ const Map = (props) => {
           lat: place.location.latitude,
           lng: place.location.longitude
         }, {icon: pin})
-        .addTo(mapRef.current);
+        .addTo(layerGroup);
     });
 
     if (placeInfo) {
@@ -80,7 +84,7 @@ const Map = (props) => {
           lat: placeInfo.location.latitude,
           lng: placeInfo.location.longitude
         }, {icon: activeIcon})
-        .addTo(mapRef.current);
+        .addTo(layerGroup);
     }
   });
 
