@@ -9,7 +9,7 @@ import {getCityPlaces} from '../../common/utils';
 import 'leaflet/dist/leaflet.css';
 
 const Map = (props) => {
-  const {places, city, activeCardId} = props;
+  const {places, city, activeCardId, placeInfo} = props;
   const mapRef = useRef();
 
   // cортировка по городу НЕ УДАЛЯТЬ!
@@ -73,6 +73,15 @@ const Map = (props) => {
         }, {icon: pin})
         .addTo(mapRef.current);
     });
+
+    if (placeInfo) {
+      Leaflet
+        .marker({
+          lat: placeInfo.location.latitude,
+          lng: placeInfo.location.longitude
+        }, {icon: activeIcon})
+        .addTo(mapRef.current);
+    }
   });
 
   return (
@@ -85,7 +94,8 @@ Map.propTypes = {
       PropTypes.shape(placeProp)
   ).isRequired,
   city: cityProp,
-  activeCardId: PropTypes.number
+  activeCardId: PropTypes.number,
+  placeInfo: PropTypes.shape(placeProp),
 };
 
 const mapStateToProps = ({OFFER}) => {
