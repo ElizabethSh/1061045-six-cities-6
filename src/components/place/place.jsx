@@ -166,6 +166,7 @@ const Place = () => {
             <Map
               city={city}
               places={nearPlaces}
+              placeInfo={placeInfo}
             />
           </section>
         </section>
