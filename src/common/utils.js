@@ -8,13 +8,17 @@ export const formatString = (string) => {
 };
 
 export const convertRatingToPersent = (rating) => {
-  return `${rating / MAX_STARS_AMOUNT * 100}%`;
+  return `${Math.round(rating) / MAX_STARS_AMOUNT * 100}%`;
 };
 
 export const formatReviewDate = (date) => {
   const reviewDate = new Date(date);
 
   return reviewDate.toLocaleDateString(`en-US`, {year: `numeric`, month: `long`});
+};
+
+export const formatReviewDateTime = (date) => {
+  return new Date(date).toLocaleDateString(`fr-ca`);
 };
 
 export const getCityPlaces = (places, city) => {
