@@ -23,15 +23,17 @@ const ReviewForm = (props) => {
 
     setIsDisabled(true);
 
-    sendReview(placeId, commentForm);
-
-    setCommentForm({
-      ...commentForm,
-      rating: null,
-      comment: ``,
-    });
-
-    setIsDisabled(false);
+    sendReview(placeId, commentForm)
+      .then(() => {
+        setCommentForm({
+          ...commentForm,
+          rating: null,
+          comment: ``,
+        });
+      })
+      .then(() => {
+        setIsDisabled(false);
+      });
   };
 
   const handleInputChange = (evt) => {
