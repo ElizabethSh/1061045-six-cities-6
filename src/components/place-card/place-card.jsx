@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import FavoriteButton from '../favorite-button/favorite-button';
 import {formatString, convertRatingToPersent} from '../../common/utils';
 import {placeProp} from '../../common/prop-types/place.prop';
-import {CardName} from '../../common/const';
+import {ButtonName, CardName} from '../../common/const';
 
 const CardSettings = {
   [CardName.FAVORITES]: {
@@ -101,7 +101,7 @@ const PlaceCard = (props) => {
           </div>
           <FavoriteButton
             isFavorite={isFavorite}
-            buttonName='place-card'
+            buttonName={ButtonName.PLACE_CARD}
             placeId={place.id}
           />
         </div>
