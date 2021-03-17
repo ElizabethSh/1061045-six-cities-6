@@ -5,6 +5,7 @@ import {Link, useHistory} from 'react-router-dom';
 import {logIn} from '../../store/api-actions';
 import PageHeader from '../page-header/page-header';
 import {AppRoute} from '../../common/const';
+import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
 
 const AuthPage = (props) => {
   const {onFormSubmit, isLoggedIn} = props;
@@ -90,9 +91,9 @@ AuthPage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = ({USER}) => {
+const mapStateToProps = (state) => {
   return {
-    isLoggedIn: USER.isLoggedIn
+    isLoggedIn: getIsloggedInStatus(state),
   };
 };
 
