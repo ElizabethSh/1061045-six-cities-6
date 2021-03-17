@@ -11,6 +11,7 @@ import {AppRoute} from '../../common/const';
 import {connect} from 'react-redux';
 import {checkAuth} from '../../store/api-actions';
 import Loader from '../loader/loader';
+import {getIsAuthChecked} from '../../store/reducer/user/selectors';
 
 const App = (props) => {
   const {isAuthChecked, chechAuthorization} = props;
@@ -62,9 +63,9 @@ App.propTypes = {
   chechAuthorization: PropTypes.func.isRequired
 };
 
-const mapStateToProps = ({USER}) => {
+const mapStateToProps = (state) => {
   return {
-    isAuthChecked: USER.isAuthChecked
+    isAuthChecked: getIsAuthChecked(state)
   };
 };
 
