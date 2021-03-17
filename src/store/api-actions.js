@@ -3,7 +3,8 @@ import {adaptOffersData, adaptReviewsData} from "../services/adapter";
 import {loadReviews} from "./reducer/reviews/reviews-action";
 import {api as loadApi} from "../index";
 import {checkAuthAttempt, setAuthStatus, setUsersEmail} from "./reducer/user/user-action";
-import {changeFavoriteStatus, loadOffers} from "./reducer/offers/offers-action";
+import {loadOffers} from "./reducer/offers/offers-action";
+import {loadPlaceInfo} from "./reducer/place-info/place-info-action";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => {
   api.get(APIRoute.HOTELS)
@@ -34,19 +35,19 @@ export const logOut = () => (dispatch, _getState, api) => {
 };
 
 export const addToFavorite = (id, status) => (dispatch, _getState, api) => {
-  api.post(`/favorite/${id}/${status}`)
-    .then(({data}) => adaptOffersData(data))
-    .then((data) => dispatch(changeFavoriteStatus(data)));
+  return api.post(`/favorite/${id}/${status}`)
+    .then(({data}) => adaptOffersData(data));
 };
 
-export const fetchPlace = (id) => {
-  return loadApi.get(`hotels/${id}`)
-    .then(({data}) => adaptOffersData(data));
+export const fetchPlace = (id) => (dispatch, _getState, api) => {
+  return api.get(`hotels/${id}`)
+    .then(({data}) => adaptOffersData(data))
+    .then((data) => dispatch(loadPlaceInfo(data)));
 };
 
 export const fetchNearPlaces = (id) => {
   return loadApi.get(`/hotels/${id}/nearby`)
-  .then(({data}) => data.map((it) => adaptOffersData(it)));
+    .then(({data}) => data.map((it) => adaptOffersData(it)));
 };
 
 export const fetchFavoritePlaces = () => {
@@ -62,8 +63,8 @@ export const fetchPlaceReviews = (placeId) => (dispatch, _getState, api) => {
 };
 
 export const sendPlaceReview = (id, {rating, comment}) => (dispatch, _getState, api) => {
-  api.post(`comments/${id}`, {rating, comment})
-  .then(({data}) => data.map((it) => adaptReviewsData(it)))
-  .then((data) => dispatch(loadReviews(data)))
-  .catch(() => {});
+  return api.post(`comments/${id}`, {rating, comment})
+    .then(({data}) => data.map((it) => adaptReviewsData(it)))
+    .then((data) => dispatch(loadReviews(data)))
+    .catch(() => {});
 };
