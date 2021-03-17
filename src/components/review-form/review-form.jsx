@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {sendPlaceReview} from '../../store/api-actions';
 import {reviewProp} from '../../common/prop-types/review.prop';
+import {getPlaceReviews} from '../../store/reducer/reviews/selectors';
 
 const MAX_SIMBOL_AMOUNT = 300;
 const MIN_SIMBOL_AMOUNT = 50;
@@ -121,9 +122,9 @@ ReviewForm.propTypes = {
   ).isRequired,
 };
 
-const mapStateToProps = ({REVIEW}) => {
+const mapStateToProps = (state) => {
   return {
-    placeReviews: REVIEW.placeReviews
+    placeReviews: getPlaceReviews(state)
   };
 };
 
