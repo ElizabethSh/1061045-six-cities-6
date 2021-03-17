@@ -6,6 +6,7 @@ import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
 import {getCityPlaces} from '../../common/utils';
 import 'leaflet/dist/leaflet.css';
+import {getActiveCard} from '../../store/reducer/offers/selectors';
 
 let layerGroup;
 
@@ -102,9 +103,9 @@ Map.propTypes = {
   placeInfo: PropTypes.shape(placeProp),
 };
 
-const mapStateToProps = ({OFFER}) => {
+const mapStateToProps = (state) => {
   return {
-    activeCardId: OFFER.activeCard, // значение равно offer.id
+    activeCardId: getActiveCard(state), // значение равно offer.id
   };
 };
 
