@@ -3,7 +3,6 @@ import {ActionType} from "../../action-type";
 
 const initialState = {
   sortType: SortType.POPULAR,
-  sortedPlaces: [],
 };
 
 const sort = (state = initialState, action) => {
@@ -12,12 +11,6 @@ const sort = (state = initialState, action) => {
       return ({
         ...state,
         sortType: action.payload
-      });
-
-    case ActionType.SORT_PLACES_LIST:
-      return ({
-        ...state,
-        sortedPlaces: action.payload
       });
 
     default:
