@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {changeCity, changeCityPlacesList, resetCity} from '../../store/reducer/offers/offers-action';
+import {changeCity, resetCity} from '../../store/reducer/offers/offers-action';
 import PageHeader from '../page-header/page-header';
 import CityList from '../city-list/city-list';
 import PlacesContainer from '../places-container/places-container';
@@ -11,6 +11,7 @@ import Loader from '../loader/loader';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {CITIES} from '../../common/const';
 import {fetchOffersList} from '../../store/api-actions';
+import {getActiveCityPlaces, getIsOffersLoaded} from '../../store/reducer/offers/selectors';
 
 const MainPage = (props) => {
   const {
@@ -18,7 +19,6 @@ const MainPage = (props) => {
     isOffersLoaded,
     changeActiveCity,
     cityReset,
-    cityPlacesListChange,
     onOffersLoad
   } = props;
 
@@ -33,12 +33,10 @@ const MainPage = (props) => {
   useEffect(() => {
     if (!city) {
       cityReset(); // устанавливаем город по умолчанию
-      cityPlacesListChange(); // обновляем список размещений
       return;
     }
 
     changeActiveCity(city); // устанавливаем выбранный город
-    cityPlacesListChange(); // обновляем список размещений
   }, [isOffersLoaded, city]);
 
   if (!isOffersLoaded) {
@@ -84,22 +82,20 @@ MainPage.propTypes = {
   activeCityPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
-  cityPlacesListChange: PropTypes.func.isRequired,
   isOffersLoaded: PropTypes.bool.isRequired,
   onOffersLoad: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({OFFER}) => {
+const mapStateToProps = (state) => {
   return {
-    activeCityPlaces: OFFER.activeCityPlaces,
-    isOffersLoaded: OFFER.isOffersLoaded,
+    activeCityPlaces: getActiveCityPlaces(state),
+    isOffersLoaded: getIsOffersLoaded(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     changeActiveCity: (city) => dispatch(changeCity(city)),
-    cityPlacesListChange: () => dispatch(changeCityPlacesList()),
     cityReset: () => dispatch(resetCity()),
     onOffersLoad: () => dispatch(fetchOffersList()),
   };
