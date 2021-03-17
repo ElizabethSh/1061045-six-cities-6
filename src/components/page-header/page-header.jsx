@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../common/const';
 import {logOut} from '../../store/api-actions';
+import {getIsloggedInStatus, getUsersEmail} from '../../store/reducer/user/selectors';
 
 const PageHeader = (props) => {
   const {isLoggedIn, userLogout, usersEmail} = props;
@@ -57,12 +58,10 @@ PageHeader.propTypes = {
   usersEmail: PropTypes.string,
 };
 
-const mapStateToProps = ({USER}) => {
-  return {
-    isLoggedIn: USER.isLoggedIn,
-    usersEmail: USER.usersEmail
-  };
-};
+const mapStateToProps = (state) => ({
+  isLoggedIn: getIsloggedInStatus(state),
+  usersEmail: getUsersEmail(state)
+});
 
 const mapDispatchToProps = (dispatch) => {
   return {
