@@ -4,6 +4,9 @@ import {useHistory} from 'react-router';
 import {connect} from 'react-redux';
 import {addToFavorite} from '../../store/api-actions';
 import {AppRoute, ButtonName} from '../../common/const';
+import {changeFavoriteStatus} from '../../store/reducer/offers/offers-action';
+import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
+import {loadPlaceInfo} from '../../store/reducer/place-info/place-info-action';
 
 const ButtonSettings = {
   [ButtonName.PROPERTY]: {
@@ -26,10 +29,12 @@ const FavoriteButton = (props) => {
     buttonName,
     addToFavorites,
     placeId,
-    isUserLoggedIn
+    isUserLoggedIn,
+    updatePlaceInfo,
+    changeStatus
   } = props;
 
-  const [favorite, setFavorite] = useState(!isFavorite); // можно ли так делать?
+  const [favorite, setFavorite] = useState(!isFavorite);
   const history = useHistory();
 
   const favoriteStatus = Number(favorite);
@@ -40,7 +45,16 @@ const FavoriteButton = (props) => {
       return;
     }
 
-    addToFavorites(placeId, favoriteStatus);
+    if (buttonName === ButtonName.PROPERTY) {
+      addToFavorites(placeId, favoriteStatus)
+        .then((data) => updatePlaceInfo(data));
+    }
+
+    if (buttonName === ButtonName.PLACE_CARD) {
+      addToFavorites(placeId, favoriteStatus)
+      .then((data) => changeStatus(data));
+    }
+
     setFavorite(!favorite);
   };
 
@@ -52,7 +66,7 @@ const FavoriteButton = (props) => {
       : ``} button`
       }
       type="button"
-      onClick={handleFavoriteButtonClick} // temp
+      onClick={handleFavoriteButtonClick}
     >
       <svg
         className={`${buttonName}__bookmark-icon`}
@@ -72,17 +86,21 @@ FavoriteButton.propTypes = {
   addToFavorites: PropTypes.func.isRequired,
   placeId: PropTypes.number.isRequired,
   isUserLoggedIn: PropTypes.bool.isRequired,
+  updatePlaceInfo: PropTypes.func.isRequired,
+  changeStatus: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({USER}) => {
+const mapStateToProps = (state) => {
   return {
-    isUserLoggedIn: USER.isLoggedIn
+    isUserLoggedIn: getIsloggedInStatus(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToFavorites: (id, status) => dispatch(addToFavorite(id, status))
+    addToFavorites: (id, status) => dispatch(addToFavorite(id, status)),
+    updatePlaceInfo: (data) => dispatch(loadPlaceInfo(data)),
+    changeStatus: (data) => dispatch(changeFavoriteStatus(data))
   };
 };
 
