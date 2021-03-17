@@ -5,6 +5,7 @@ import {SortType} from '../../common/const';
 import {capitalizeString} from '../../common/utils';
 import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
 import {setSortType} from '../../store/reducer/sort/sort-action';
+import {getSortType} from '../../store/reducer/sort/selectors';
 
 const sortTypes = Object.values(SortType);
 
@@ -37,7 +38,9 @@ const Sort = (props) => {
         {
           sortTypes.map((type, index) => (
             <li key={`${type}-${index}`}
-              className={`places__option ${sortType === type ? `places__option--active` : ``}`}
+              className={
+                `places__option ${sortType === type ? `places__option--active` : ``}`
+              }
               tabIndex="0"
               type={type}
             >
@@ -55,9 +58,9 @@ Sort.propTypes = {
   changeSortType: PropTypes.func,
 };
 
-const mapStateToProps = ({SORT}) => {
+const mapStateToProps = (state) => {
   return {
-    sortType: SORT.sortType,
+    sortType: getSortType(state)
   };
 };
 
