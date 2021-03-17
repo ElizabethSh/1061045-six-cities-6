@@ -7,6 +7,8 @@ import Loader from '../loader/loader';
 import {fetchPlaceReviews} from '../../store/api-actions';
 import {reviewProp} from '../../common/prop-types/review.prop';
 import {resetReviews} from '../../store/reducer/reviews/reviews-action';
+import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
+import {getIsReviewsLoaded, getPlaceReviews} from '../../store/reducer/reviews/selectors';
 
 const PlaceReview = (props) => {
   const {
@@ -59,11 +61,11 @@ PlaceReview.propTypes = {
   resetPlaceReviews: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({USER, REVIEW}) => {
+const mapStateToProps = (state) => {
   return {
-    isLoggedIn: USER.isLoggedIn,
-    isReviewsLoaded: REVIEW.isReviewsLoaded,
-    placeReviews: REVIEW.placeReviews,
+    isLoggedIn: getIsloggedInStatus(state),
+    isReviewsLoaded: getIsReviewsLoaded(state),
+    placeReviews: getPlaceReviews(state),
   };
 };
 
