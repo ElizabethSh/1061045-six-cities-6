@@ -6,10 +6,6 @@ export const changeCity = (activeCity) => ({
   payload: activeCity,
 });
 
-export const changeCityPlacesList = () => ({
-  type: ActionType.CHANGE_PLACE_LIST,
-});
-
 export const resetCity = () => ({
   type: ActionType.CITY_RESET,
 });
