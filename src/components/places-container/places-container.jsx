@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Sort from '../sort/sort';
@@ -6,23 +6,17 @@ import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
-import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
 import {CardsListName} from '../../common/const';
-import {sortPlacesList} from '../../store/reducer/sort/sort-action';
+import {getSortedPlaces} from '../../store/reducer/sort/selectors';
+import {getActiveCity, getActiveCityPlaces} from '../../store/reducer/offers/selectors';
 
 
 const PlacesContainer = (props) => {
   const {
     activeCityPlaces,
     activeCity,
-    sortType,
-    getPlacesList,
     sortedPlaces
   } = props;
-
-  useEffect(() => {
-    getPlacesList(activeCityPlaces, sortType);
-  }, [sortType, activeCity]);
 
   return (
     <div className="cities__places-container container">
@@ -56,26 +50,17 @@ PlacesContainer.propTypes = {
   activeCityPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
-  sortType: sortTypeProp,
-  getPlacesList: PropTypes.func,
   sortedPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
 };
 
-const mapStateToProps = ({SORT, OFFER}) => {
+const mapStateToProps = (state) => {
   return {
-    activeCity: OFFER.activeCity,
-    activeCityPlaces: OFFER.activeCityPlaces,
-    sortType: SORT.sortType,
-    sortedPlaces: SORT.sortedPlaces,
+    activeCity: getActiveCity(state),
+    activeCityPlaces: getActiveCityPlaces(state),
+    sortedPlaces: getSortedPlaces(state),
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getPlacesList: (places, sortType) => dispatch(sortPlacesList(places, sortType))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlacesContainer);
+export default connect(mapStateToProps)(PlacesContainer);
