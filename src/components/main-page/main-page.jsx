@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {changeCity, resetCity} from '../../store/reducer/offers/offers-action';
+import {changeCity, resetCity, resetOffers} from '../../store/reducer/offers/offers-action';
 import PageHeader from '../page-header/page-header';
 import CityList from '../city-list/city-list';
 import PlacesContainer from '../places-container/places-container';
@@ -19,7 +19,8 @@ const MainPage = (props) => {
     isOffersLoaded,
     changeActiveCity,
     cityReset,
-    onOffersLoad
+    onOffersLoad,
+    resetIsOffersLoaded
   } = props;
 
   let {city} = useParams(); // определяем по адресной строке выбранный город
@@ -28,7 +29,9 @@ const MainPage = (props) => {
     if (!isOffersLoaded) {
       onOffersLoad();
     }
-  }, [isOffersLoaded]);
+
+    return () => resetIsOffersLoaded();
+  }, []);
 
   useEffect(() => {
     if (!city) {
@@ -84,6 +87,7 @@ MainPage.propTypes = {
   ).isRequired,
   isOffersLoaded: PropTypes.bool.isRequired,
   onOffersLoad: PropTypes.func.isRequired,
+  resetIsOffersLoaded: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -98,6 +102,7 @@ const mapDispatchToProps = (dispatch) => {
     changeActiveCity: (city) => dispatch(changeCity(city)),
     cityReset: () => dispatch(resetCity()),
     onOffersLoad: () => dispatch(fetchOffersList()),
+    resetIsOffersLoaded: () => dispatch(resetOffers())
   };
 };
 
