@@ -5,6 +5,7 @@ import {api as loadApi} from "../index";
 import {checkAuthAttempt, setAuthStatus, setUsersEmail} from "./reducer/user/user-action";
 import {loadOffers} from "./reducer/offers/offers-action";
 import {loadPlaceInfo} from "./reducer/place-info/place-info-action";
+import {loadFavorites} from "./reducer/favorites/favorites-action";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => {
   api.get(APIRoute.HOTELS)
@@ -34,7 +35,7 @@ export const logOut = () => (dispatch, _getState, api) => {
     .catch(() => {});
 };
 
-export const addToFavorite = (id, status) => (dispatch, _getState, api) => {
+export const addToFavorite = (id, status) => (_dispatch, _getState, api) => {
   return api.post(`/favorite/${id}/${status}`)
     .then(({data}) => adaptOffersData(data));
 };
@@ -50,9 +51,10 @@ export const fetchNearPlaces = (id) => {
     .then(({data}) => data.map((it) => adaptOffersData(it)));
 };
 
-export const fetchFavoritePlaces = () => {
-  return loadApi.get(`/favorite`)
-    .then(({data}) => data.map((it) => adaptOffersData(it)));
+export const fetchFavoritePlaces = () => (dispatch, _getState, api) => {
+  return api.get(`/favorite`)
+    .then(({data}) => data.map((it) => adaptOffersData(it)))
+    .then((data) => dispatch(loadFavorites(data)));
 };
 
 export const fetchPlaceReviews = (placeId) => (dispatch, _getState, api) => {
