@@ -17,6 +17,12 @@ export const offers = (state = initialState, action) => {
         isOffersLoaded: true
       });
 
+    case ActionType.RESET_OFFERS:
+      return ({
+        ...state,
+        isOffersLoaded: false
+      });
+
     case ActionType.CITY_CHANGE:
       return ({
         ...state,
