@@ -1,25 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import PropTypes from 'prop-types';
 import PageHeader from '../page-header/page-header';
 import PageFooter from '../page-footer/page-footer';
 import EmptyFavoritesContainer from '../empty-favorites-container/empty-favorites-container';
 import FavoritesContainer from '../favorites-container/favorites-container';
 import Loader from '../loader/loader';
 import {fetchFavoritePlaces} from '../../store/api-actions';
+import {connect} from 'react-redux';
+import {placeProp} from '../../common/prop-types/place.prop';
+import {resetFavorites} from '../../store/reducer/favorites/favorites-action';
+import {getFavoritePlaces, getIsFavoritesLoaded} from '../../store/reducer/favorites/selectors';
 
-const Favorites = () => {
-  const [favoritePlaces, setFavoritesPlaces] = useState([]);
-  const [isFavoritesLoading, setIsFavoretesLoading] = useState(true);
+const Favorites = (props) => {
+  const {
+    loadFavorites,
+    favoritePlaces,
+    isFavoritesLoaded,
+    resetIsFavoritesLoaded
+  } = props;
 
   useEffect(() => {
-    if (isFavoritesLoading) {
-      fetchFavoritePlaces()
-        .then((data) => setFavoritesPlaces(data))
-        .then(() => setIsFavoretesLoading(false))
-        .catch(() => setIsFavoretesLoading(false));
+    if (!isFavoritesLoaded) {
+      loadFavorites();
     }
-  }, [isFavoritesLoading]);
 
-  if (isFavoritesLoading) {
+    return () => resetIsFavoritesLoaded();
+  }, []);
+
+  if (!isFavoritesLoaded) {
     return <Loader />;
   }
 
@@ -43,4 +51,27 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+Favorites.propTypes = {
+  loadFavorites: PropTypes.func.isRequired,
+  isFavoritesLoaded: PropTypes.bool,
+  favoritePlaces: PropTypes.arrayOf(
+      PropTypes.shape(placeProp)
+  ),
+  resetIsFavoritesLoaded: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    favoritePlaces: getFavoritePlaces(state),
+    isFavoritesLoaded: getIsFavoritesLoaded(state)
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadFavorites: () => dispatch(fetchFavoritePlaces()),
+    resetIsFavoritesLoaded: () => dispatch(resetFavorites())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
