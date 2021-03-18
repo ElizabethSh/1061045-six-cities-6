@@ -26,6 +26,12 @@ export const loadOffers = (data) => {
   });
 };
 
+export const resetOffers = () => {
+  return {
+    type: ActionType.RESET_OFFERS
+  };
+};
+
 export const changeFavoriteStatus = (data) => {
   return {
     type: ActionType.CHANGE_FAVORITE_STATUS,
