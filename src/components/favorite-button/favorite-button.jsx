@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
 import {connect} from 'react-redux';
-import {addToFavorite} from '../../store/api-actions';
+import {addToFavorite, fetchFavoritePlaces} from '../../store/api-actions';
 import {AppRoute, ButtonName} from '../../common/const';
 import {changeFavoriteStatus} from '../../store/reducer/offers/offers-action';
 import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
@@ -13,13 +13,22 @@ const ButtonSettings = {
     iconSize: {
       width: 31,
       height: 33
-    }
+    },
+    className: ButtonName.PROPERTY
   },
   [ButtonName.PLACE_CARD]: {
     iconSize: {
       width: 18,
       height: 19
-    }
+    },
+    className: ButtonName.PLACE_CARD
+  },
+  [ButtonName.FAVORITE]: {
+    iconSize: {
+      width: 18,
+      height: 19
+    },
+    className: ButtonName.PLACE_CARD
   }
 };
 
@@ -31,8 +40,12 @@ const FavoriteButton = (props) => {
     placeId,
     isUserLoggedIn,
     updatePlaceInfo,
-    changeStatus
+    changeStatus,
+
+    updateFavoritesList
   } = props;
+
+  console.log(props);
 
   const [favorite, setFavorite] = useState(!isFavorite);
   const history = useHistory();
@@ -52,7 +65,12 @@ const FavoriteButton = (props) => {
 
     if (buttonName === ButtonName.PLACE_CARD) {
       addToFavorites(placeId, favoriteStatus)
-      .then((data) => changeStatus(data));
+        .then((data) => changeStatus(data));
+    }
+
+    if (buttonName === ButtonName.FAVORITE) {
+      addToFavorites(placeId, favoriteStatus)
+        .then(() => updateFavoritesList());
     }
 
     setFavorite(!favorite);
@@ -60,16 +78,16 @@ const FavoriteButton = (props) => {
 
   return (
     <button
-      className={`${buttonName}__bookmark-button
+      className={`${ButtonSettings[buttonName].className}__bookmark-button
       ${isFavorite
-      ? `${buttonName}__bookmark-button--active`
+      ? `${ButtonSettings[buttonName].className}__bookmark-button--active`
       : ``} button`
       }
       type="button"
       onClick={handleFavoriteButtonClick}
     >
       <svg
-        className={`${buttonName}__bookmark-icon`}
+        className={`${ButtonSettings[buttonName].className}__bookmark-icon`}
         width={ButtonSettings[buttonName].iconSize.width}
         height={ButtonSettings[buttonName].iconSize.height}
       >
@@ -88,6 +106,7 @@ FavoriteButton.propTypes = {
   isUserLoggedIn: PropTypes.bool.isRequired,
   updatePlaceInfo: PropTypes.func.isRequired,
   changeStatus: PropTypes.func.isRequired,
+  updateFavoritesList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -100,7 +119,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addToFavorites: (id, status) => dispatch(addToFavorite(id, status)),
     updatePlaceInfo: (data) => dispatch(loadPlaceInfo(data)),
-    changeStatus: (data) => dispatch(changeFavoriteStatus(data))
+    changeStatus: (data) => dispatch(changeFavoriteStatus(data)),
+    updateFavoritesList: () => dispatch(fetchFavoritePlaces())
   };
 };
 
