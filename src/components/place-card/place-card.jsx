@@ -13,7 +13,8 @@ const CardSettings = {
       width: 150,
       height: 110,
     },
-    cardInfoClass: `favorites__card-info`
+    cardInfoClass: `favorites__card-info`,
+    buttonName: ButtonName.FAVORITE
   },
   [CardName.CITIES]: {
     cardClass: `cities__place-card`,
@@ -22,6 +23,7 @@ const CardSettings = {
       height: 200,
     },
     cardInfoClass: ``,
+    buttonName: ButtonName.PLACE_CARD,
   },
   [CardName.NEAR_PLACES]: {
     cardClass: `near-places__card`,
@@ -30,6 +32,7 @@ const CardSettings = {
       height: 200,
     },
     cardInfoClass: ``,
+    buttonName: ButtonName.PLACE_CARD,
   }
 };
 
@@ -101,7 +104,7 @@ const PlaceCard = (props) => {
           </div>
           <FavoriteButton
             isFavorite={isFavorite}
-            buttonName={ButtonName.PLACE_CARD}
+            buttonName={CardSettings[cardName].buttonName}
             placeId={place.id}
           />
         </div>
