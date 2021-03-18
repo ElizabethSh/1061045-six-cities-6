@@ -11,7 +11,8 @@ export const CardsListName = {
 
 export const ButtonName = {
   PROPERTY: `property`,
-  PLACE_CARD: `place-card`
+  PLACE_CARD: `place-card`,
+  FAVORITE: `favorite`
 };
 
 export const CITIES = [
