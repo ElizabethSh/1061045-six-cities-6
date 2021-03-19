@@ -1,11 +1,11 @@
 import {APIRoute} from "../common/const";
 import {adaptOffersData, adaptReviewsData} from "../services/adapter";
 import {loadReviews} from "./reducer/reviews/reviews-action";
-import {api as loadApi} from "../index";
 import {checkAuthAttempt, setAuthStatus, setUsersEmail} from "./reducer/user/user-action";
 import {loadOffers} from "./reducer/offers/offers-action";
 import {loadPlaceInfo} from "./reducer/place-info/place-info-action";
 import {loadFavorites} from "./reducer/favorites/favorites-action";
+import {loadNearPlaces} from "./reducer/near-places/near-places-action";
 
 export const fetchOffersList = () => (dispatch, _getState, api) => {
   api.get(APIRoute.HOTELS)
@@ -46,9 +46,10 @@ export const fetchPlace = (id) => (dispatch, _getState, api) => {
     .then((data) => dispatch(loadPlaceInfo(data)));
 };
 
-export const fetchNearPlaces = (id) => {
-  return loadApi.get(`/hotels/${id}/nearby`)
-    .then(({data}) => data.map((it) => adaptOffersData(it)));
+export const fetchNearPlaces = (id) => (dispatch, _getState, api) => {
+  return api.get(`/hotels/${id}/nearby`)
+    .then(({data}) => data.map((it) => adaptOffersData(it)))
+    .then((data) => dispatch(loadNearPlaces(data)));
 };
 
 export const fetchFavoritePlaces = () => (dispatch, _getState, api) => {
