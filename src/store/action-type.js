@@ -1,6 +1,6 @@
 export const ActionType = {
   LOAD_OFFERS: `offers/loadOffers`,
-  RESET_OFFERS: `offers/resetOffers`, // !
+  RESET_OFFERS: `offers/resetOffers`,
   CITY_CHANGE: `offers/changeCity`,
   CITY_RESET: `offers/resetCity`,
   CARD_HOVER: `offers/cardHover`,
@@ -21,4 +21,7 @@ export const ActionType = {
 
   LOAD_FAVORITES: `favorites/loadFavorites`,
   RESET_FAVORITES: `favorites/resetFavorites`,
+
+  LOAD_NEAR_PLACES: `place/loadNearPlaces`,
+  RESET_NEAR_PLACES: `place/resetNearPlaces`,
 };
