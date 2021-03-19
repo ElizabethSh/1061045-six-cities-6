@@ -14,6 +14,8 @@ import {connect} from 'react-redux';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {getIsPlaceInfoLoaded, getPlaceInfo} from '../../store/reducer/place-info/selectors';
 import {getIsNearPlacesLoaded, getNearPlaces} from '../../store/reducer/near-places/selectors';
+import {resetPlaceInfo} from '../../store/reducer/place-info/place-info-action';
+import {resetNearPlaces} from '../../store/reducer/near-places/near-places-action';
 
 const MAX_IMAGES_AMOUNT = 6;
 
@@ -27,6 +29,8 @@ const Place = (props) => {
     loadNearPlaces,
     isNearPlacesLoaded,
     nearPlaces,
+    resetPlace,
+    resetNearPlaceList
   } = props;
 
   useEffect(() => {
@@ -34,12 +38,16 @@ const Place = (props) => {
       fetchPlaceInfo(id)
         .catch(() => history.push(AppRoute.ERROR));
     }
+
+    return () => resetPlace();
   }, [id]);
 
   useEffect(() => {
     if (!isNearPlacesLoaded) {
       loadNearPlaces(id);
     }
+
+    return () => resetNearPlaceList();
   }, [id]);
 
   if (!(isPlaceInfoLoaded && isNearPlacesLoaded)) {
@@ -199,6 +207,8 @@ Place.propTypes = {
   isNearPlacesLoaded: PropTypes.bool.isRequired,
   loadNearPlaces: PropTypes.func.isRequired,
   fetchPlaceInfo: PropTypes.func.isRequired,
+  resetPlace: PropTypes.func.isRequired,
+  resetNearPlaceList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -214,6 +224,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchPlaceInfo: (id) => dispatch(fetchPlace(id)),
     loadNearPlaces: (id) => dispatch(fetchNearPlaces(id)),
+
+    resetPlace: () => dispatch(resetPlaceInfo()),
+    resetNearPlaceList: () => dispatch(resetNearPlaces()),
   };
 };
 
