@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import PropTypes from 'prop-types';
 import {useHistory, useParams} from 'react-router-dom';
 import PageHeader from '../page-header/page-header';
 import Map from '../map/map';
@@ -7,35 +8,39 @@ import Loader from '../loader/loader';
 import PlaceReview from '../place-review/place-review';
 import FavoriteButton from '../favorite-button/favorite-button';
 import {convertRatingToPersent, formatString} from '../../common/utils';
-import {AppRoute, CardsListName} from '../../common/const';
+import {AppRoute, ButtonName, CardsListName} from '../../common/const';
 import {fetchNearPlaces, fetchPlace} from '../../store/api-actions';
+import {connect} from 'react-redux';
+import {placeProp} from '../../common/prop-types/place.prop';
+import {getIsPlaceInfoLoaded, getPlaceInfo} from '../../store/reducer/place-info/selectors';
+import {getIsNearPlacesLoaded, getNearPlaces} from '../../store/reducer/near-places/selectors';
 
 const MAX_IMAGES_AMOUNT = 6;
 
-const Place = () => {
-  const [isPlaceInfoLoaded, setPlaceInfoLoaded] = useState(false);
-  const [placeInfo, setPlaceInfo] = useState([]);
-  const [nearPlaces, setNearPlaces] = useState([]);
-  const [isNearPlacesLoaded, setNearPlacesLoaded] = useState(false);
+const Place = (props) => {
   const history = useHistory();
   let {id} = useParams();
+  const {
+    placeInfo,
+    isPlaceInfoLoaded,
+    fetchPlaceInfo,
+    loadNearPlaces,
+    isNearPlacesLoaded,
+    nearPlaces,
+  } = props;
 
   useEffect(() => {
     if (!isPlaceInfoLoaded) {
-      fetchPlace(id)
-        .then((data) => setPlaceInfo(data))
-        .then(() => setPlaceInfoLoaded(true))
+      fetchPlaceInfo(id)
         .catch(() => history.push(AppRoute.ERROR));
     }
-  }, [isPlaceInfoLoaded]);
+  }, [id]);
 
   useEffect(() => {
     if (!isNearPlacesLoaded) {
-      fetchNearPlaces(id)
-        .then((data) => setNearPlaces(data))
-        .then(() => setNearPlacesLoaded(true));
+      loadNearPlaces(id);
     }
-  }, [isNearPlacesLoaded]);
+  }, [id]);
 
   if (!(isPlaceInfoLoaded && isNearPlacesLoaded)) {
     return (
@@ -70,6 +75,7 @@ const Place = () => {
     );
   };
 
+
   return (
     <div className="page">
       <PageHeader />
@@ -98,7 +104,7 @@ const Place = () => {
                 <h1 className="property__name">{title}</h1>
                 <FavoriteButton
                   isFavorite={isFavorite}
-                  buttonName={`property`}
+                  buttonName={ButtonName.PROPERTY}
                   placeId={placeInfo.id}
                 />
               </div>
@@ -184,4 +190,31 @@ const Place = () => {
   );
 };
 
-export default Place;
+Place.propTypes = {
+  placeInfo: PropTypes.shape(placeProp),
+  nearPlaces: PropTypes.arrayOf(
+      PropTypes.shape(placeProp)
+  ).isRequired,
+  isPlaceInfoLoaded: PropTypes.bool.isRequired,
+  isNearPlacesLoaded: PropTypes.bool.isRequired,
+  loadNearPlaces: PropTypes.func.isRequired,
+  fetchPlaceInfo: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    placeInfo: getPlaceInfo(state),
+    isPlaceInfoLoaded: getIsPlaceInfoLoaded(state),
+    nearPlaces: getNearPlaces(state),
+    isNearPlacesLoaded: getIsNearPlacesLoaded(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchPlaceInfo: (id) => dispatch(fetchPlace(id)),
+    loadNearPlaces: (id) => dispatch(fetchNearPlaces(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Place);
