@@ -17,7 +17,6 @@ export const placeInfo = (state = initialState, action) => {
     case ActionType.RESET_PLACE_INFO:
       return ({
         ...state,
-        placeInfo: null,
         isPlaceInfoLoaded: false
       });
 
