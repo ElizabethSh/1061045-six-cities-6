@@ -27,7 +27,9 @@ const PlacesList = (props) => {
   };
 
   const handleCardMouseLeave = () => {
-    resetActiveCard();
+    if (cardName === CardName.CITIES) {
+      resetActiveCard();
+    }
   };
 
   return (
