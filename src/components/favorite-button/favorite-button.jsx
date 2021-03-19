@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
 import {connect} from 'react-redux';
-import {addToFavorite, fetchFavoritePlaces} from '../../store/api-actions';
+import {addToFavorite, fetchFavoritePlaces, fetchNearPlaces} from '../../store/api-actions';
 import {AppRoute, ButtonName} from '../../common/const';
 import {changeFavoriteStatus} from '../../store/reducer/offers/offers-action';
 import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
@@ -29,6 +29,13 @@ const ButtonSettings = {
       height: 19
     },
     className: ButtonName.PLACE_CARD
+  },
+  [ButtonName.NEAR_PLACE]: {
+    iconSize: {
+      width: 18,
+      height: 19
+    },
+    className: ButtonName.PLACE_CARD
   }
 };
 
@@ -41,11 +48,9 @@ const FavoriteButton = (props) => {
     isUserLoggedIn,
     updatePlaceInfo,
     changeStatus,
-
-    updateFavoritesList
+    updateFavoritesList,
+    updateNearPlaceList
   } = props;
-
-  console.log(props);
 
   const [favorite, setFavorite] = useState(!isFavorite);
   const history = useHistory();
@@ -71,6 +76,11 @@ const FavoriteButton = (props) => {
     if (buttonName === ButtonName.FAVORITE) {
       addToFavorites(placeId, favoriteStatus)
         .then(() => updateFavoritesList());
+    }
+
+    if (buttonName === ButtonName.NEAR_PLACE) {
+      addToFavorites(placeId, favoriteStatus)
+        .then(() => updateNearPlaceList(placeId));
     }
 
     setFavorite(!favorite);
@@ -101,12 +111,13 @@ const FavoriteButton = (props) => {
 FavoriteButton.propTypes = {
   isFavorite: PropTypes.bool.isRequired,
   buttonName: PropTypes.string.isRequired,
-  addToFavorites: PropTypes.func.isRequired,
   placeId: PropTypes.number.isRequired,
   isUserLoggedIn: PropTypes.bool.isRequired,
+  addToFavorites: PropTypes.func.isRequired,
   updatePlaceInfo: PropTypes.func.isRequired,
   changeStatus: PropTypes.func.isRequired,
   updateFavoritesList: PropTypes.func.isRequired,
+  updateNearPlaceList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
@@ -120,7 +131,8 @@ const mapDispatchToProps = (dispatch) => {
     addToFavorites: (id, status) => dispatch(addToFavorite(id, status)),
     updatePlaceInfo: (data) => dispatch(loadPlaceInfo(data)),
     changeStatus: (data) => dispatch(changeFavoriteStatus(data)),
-    updateFavoritesList: () => dispatch(fetchFavoritePlaces())
+    updateFavoritesList: () => dispatch(fetchFavoritePlaces()),
+    updateNearPlaceList: (id) => dispatch(fetchNearPlaces(id))
   };
 };
 
