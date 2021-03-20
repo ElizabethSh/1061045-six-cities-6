@@ -7,6 +7,8 @@ import {AppRoute, ButtonName} from '../../common/const';
 import {changeFavoriteStatus} from '../../store/reducer/offers/offers-action';
 import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
 import {loadPlaceInfo} from '../../store/reducer/place-info/place-info-action';
+import {getPlaceInfo} from '../../store/reducer/place-info/selectors';
+import {placeProp} from '../../common/prop-types/place.prop';
 
 const ButtonSettings = {
   [ButtonName.PROPERTY]: {
@@ -49,7 +51,8 @@ const FavoriteButton = (props) => {
     updatePlaceInfo,
     changeStatus,
     updateFavoritesList,
-    updateNearPlaceList
+    updateNearPlaceList,
+    placeInfo
   } = props;
 
   const [favorite, setFavorite] = useState(!isFavorite);
@@ -80,7 +83,7 @@ const FavoriteButton = (props) => {
 
     if (buttonName === ButtonName.NEAR_PLACE) {
       addToFavorites(placeId, favoriteStatus)
-        .then(() => updateNearPlaceList(placeId));
+        .then(() => updateNearPlaceList(placeInfo.id));
     }
 
     setFavorite(!favorite);
@@ -118,11 +121,13 @@ FavoriteButton.propTypes = {
   changeStatus: PropTypes.func.isRequired,
   updateFavoritesList: PropTypes.func.isRequired,
   updateNearPlaceList: PropTypes.func.isRequired,
+  placeInfo: PropTypes.shape(placeProp),
 };
 
 const mapStateToProps = (state) => {
   return {
-    isUserLoggedIn: getIsloggedInStatus(state)
+    isUserLoggedIn: getIsloggedInStatus(state),
+    placeInfo: getPlaceInfo(state)
   };
 };
 
