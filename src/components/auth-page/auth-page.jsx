@@ -50,7 +50,7 @@ const AuthPage = (props) => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  required=""
+                  required
                   ref={emailRef}
                 />
               </div>
@@ -61,7 +61,7 @@ const AuthPage = (props) => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  required=""
+                  required
                   ref={passwordRef}
                 />
               </div>
