@@ -7,6 +7,7 @@ export const getActiveCity = (state) => state[NameSpace.OFFER].activeCity;
 
 export const getIsOffersLoaded = (state) => state[NameSpace.OFFER].isOffersLoaded;
 export const getActiveCard = (state) => state[NameSpace.OFFER].activeCard;
+export const getIsErrorStatus = (state) => state[NameSpace.OFFER].isError;
 
 export const getActiveCityPlaces = createSelector(
     [getOffers, getActiveCity],
