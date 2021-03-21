@@ -38,3 +38,10 @@ export const changeFavoriteStatus = (data) => {
     payload: data
   };
 };
+
+export const changeErrorStatus = (status) => {
+  return {
+    type: ActionType.CHANGE_ERROR_STATUS,
+    payload: status
+  };
+};
