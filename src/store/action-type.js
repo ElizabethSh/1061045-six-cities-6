@@ -24,4 +24,6 @@ export const ActionType = {
 
   LOAD_NEAR_PLACES: `place/loadNearPlaces`,
   RESET_NEAR_PLACES: `place/resetNearPlaces`,
+
+  CHANGE_ERROR_STATUS: `error/changeErrorStatus`,
 };
