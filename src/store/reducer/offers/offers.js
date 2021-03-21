@@ -6,6 +6,8 @@ const initialState = {
   offers: [],
   isOffersLoaded: false,
   activeCard: 0,
+
+  isError: false
 };
 
 export const offers = (state = initialState, action) => {
@@ -51,6 +53,12 @@ export const offers = (state = initialState, action) => {
       return ({
         ...state,
         offers: updateOffers(state.offers, action.payload),
+      });
+
+    case ActionType.CHANGE_ERROR_STATUS:
+      return ({
+        ...state,
+        isError: action.payload
       });
 
     default:
