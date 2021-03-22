@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import PlaceCard from '../place-card/place-card';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {CardName, CardsListName} from '../../common/const';
-import {ActionCreator} from '../../store/action';
+import {setCardHover, resetCardHover} from '../../store/reducer/offers/offers-action';
 
 const PlacesList = (props) => {
   const {
@@ -27,7 +27,9 @@ const PlacesList = (props) => {
   };
 
   const handleCardMouseLeave = () => {
-    resetActiveCard();
+    if (cardName === CardName.CITIES) {
+      resetActiveCard();
+    }
   };
 
   return (
@@ -60,8 +62,8 @@ PlacesList.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setActiveCard: (cardId) => dispatch(ActionCreator.cardHoverAction(cardId)),
-    resetActiveCard: () => dispatch(ActionCreator.resetCardHoverAction()),
+    setActiveCard: (cardId) => dispatch(setCardHover(cardId)),
+    resetActiveCard: () => dispatch(resetCardHover()),
   };
 };
 

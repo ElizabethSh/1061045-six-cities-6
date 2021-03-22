@@ -19,7 +19,8 @@ const FavoriteLocations = (props) => {
         {
           places.map((place) => {
             return (
-              <PlaceCard key={place.id}
+              <PlaceCard
+                key={place.id}
                 place={place}
                 cardName={CardName.FAVORITES}
               />

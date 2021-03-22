@@ -6,6 +6,9 @@ import ReviewList from '../review-list/review-list';
 import Loader from '../loader/loader';
 import {fetchPlaceReviews} from '../../store/api-actions';
 import {reviewProp} from '../../common/prop-types/review.prop';
+import {resetReviews} from '../../store/reducer/reviews/reviews-action';
+import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
+import {getIsReviewsLoaded, getPlaceReviews} from '../../store/reducer/reviews/selectors';
 
 const PlaceReview = (props) => {
   const {
@@ -13,13 +16,16 @@ const PlaceReview = (props) => {
     placeId,
     loadReviews,
     isReviewsLoaded,
-    placeReviews
+    placeReviews,
+    resetPlaceReviews
   } = props;
 
   useEffect(() => {
     if (!isReviewsLoaded) {
       loadReviews(placeId);
     }
+
+    return () => resetPlaceReviews();
   }, [placeId]);
 
   if (!isReviewsLoaded) {
@@ -52,19 +58,21 @@ PlaceReview.propTypes = {
   placeReviews: PropTypes.arrayOf(
       PropTypes.shape(reviewProp)
   ).isRequired,
+  resetPlaceReviews: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: state.reducer.isLoggedIn,
-    isReviewsLoaded: state.reducer.isReviewsLoaded,
-    placeReviews: state.reducer.placeReviews
+    isLoggedIn: getIsloggedInStatus(state),
+    isReviewsLoaded: getIsReviewsLoaded(state),
+    placeReviews: getPlaceReviews(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadReviews: (id) => dispatch(fetchPlaceReviews(id))
+    loadReviews: (id) => dispatch(fetchPlaceReviews(id)),
+    resetPlaceReviews: () => dispatch(resetReviews())
   };
 };
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {cityProp} from '../../common/prop-types/city.prop';
+import {getActiveCity} from '../../store/reducer/offers/selectors';
 
 const CityList = (props) => {
   const {cities, activeCity} = props;
@@ -10,11 +11,11 @@ const CityList = (props) => {
   return (
     <ul className="locations__list tabs__list">
       {
-        cities.map((city, index) => {
+        cities.map((city) => {
           return (
             <li
               className="locations__item"
-              key={city + index}>
+              key={city}>
               <Link
                 to={`/city/${city}`}
                 className={
@@ -39,7 +40,7 @@ CityList.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    activeCity: state.reducer.activeCity
+    activeCity: getActiveCity(state)
   };
 };
 

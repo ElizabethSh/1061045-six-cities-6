@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {ActionCreator} from '../../store/action';
+import {changeCity, resetCity, resetOffers} from '../../store/reducer/offers/offers-action';
 import PageHeader from '../page-header/page-header';
 import CityList from '../city-list/city-list';
 import PlacesContainer from '../places-container/places-container';
@@ -11,37 +11,38 @@ import Loader from '../loader/loader';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {CITIES} from '../../common/const';
 import {fetchOffersList} from '../../store/api-actions';
+import {getActiveCityPlaces, getIsOffersLoaded} from '../../store/reducer/offers/selectors';
 
 const MainPage = (props) => {
   const {
     activeCityPlaces,
-    isDataLoaded,
+    isOffersLoaded,
     changeActiveCity,
     cityReset,
-    cityPlacesListChange,
-    onDataLoad
+    onOffersLoad,
+    resetIsOffersLoaded
   } = props;
 
   let {city} = useParams(); // определяем по адресной строке выбранный город
 
   useEffect(() => {
-    if (!isDataLoaded) {
-      onDataLoad();
+    if (!isOffersLoaded) {
+      onOffersLoad();
     }
-  }, [isDataLoaded]);
+
+    return () => resetIsOffersLoaded();
+  }, []);
 
   useEffect(() => {
     if (!city) {
       cityReset(); // устанавливаем город по умолчанию
-      cityPlacesListChange(); // обновляем список размещений
       return;
     }
 
     changeActiveCity(city); // устанавливаем выбранный город
-    cityPlacesListChange(); // обновляем список размещений
-  }, [isDataLoaded, city]);
+  }, [isOffersLoaded, city]);
 
-  if (!isDataLoaded) {
+  if (!isOffersLoaded) {
     return (
       <Loader />
     );
@@ -84,24 +85,24 @@ MainPage.propTypes = {
   activeCityPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
-  cityPlacesListChange: PropTypes.func.isRequired,
-  isDataLoaded: PropTypes.bool.isRequired,
-  onDataLoad: PropTypes.func.isRequired,
+  isOffersLoaded: PropTypes.bool.isRequired,
+  onOffersLoad: PropTypes.func.isRequired,
+  resetIsOffersLoaded: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    activeCityPlaces: state.reducer.activeCityPlaces,
-    isDataLoaded: state.reducer.isDataLoaded,
+    activeCityPlaces: getActiveCityPlaces(state),
+    isOffersLoaded: getIsOffersLoaded(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeActiveCity: (city) => dispatch(ActionCreator.cityChangeAction(city)),
-    cityPlacesListChange: () => dispatch(ActionCreator.cityPlacesListChangeAction()),
-    cityReset: () => dispatch(ActionCreator.cityResetAction()),
-    onDataLoad: () => dispatch(fetchOffersList()),
+    changeActiveCity: (city) => dispatch(changeCity(city)),
+    cityReset: () => dispatch(resetCity()),
+    onOffersLoad: () => dispatch(fetchOffersList()),
+    resetIsOffersLoaded: () => dispatch(resetOffers())
   };
 };
 

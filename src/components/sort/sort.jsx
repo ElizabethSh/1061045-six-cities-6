@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {SortType} from '../../common/const';
 import {capitalizeString} from '../../common/utils';
-import {ActionCreator} from '../../store/action';
 import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
+import {setSortType} from '../../store/reducer/sort/sort-action';
+import {getSortType} from '../../store/reducer/sort/selectors';
 
 const sortTypes = Object.values(SortType);
 
 const Sort = (props) => {
-  const {sortType, setSortType} = props;
+  const {sortType, changeSortType} = props;
   const [isSortOpen, setSortState] = useState(false); // стейт самого компонента
 
   return (
@@ -30,14 +31,16 @@ const Sort = (props) => {
           `places__options places__options--custom ${isSortOpen ? `places__options--opened` : `` }`
         }
         onClick={(evt) => {
-          setSortType(evt.target.type);
+          changeSortType(evt.target.type);
           setSortState(!isSortOpen);
         }}
       >
         {
           sortTypes.map((type, index) => (
             <li key={`${type}-${index}`}
-              className={`places__option ${sortType === type ? `places__option--active` : ``}`}
+              className={
+                `places__option ${sortType === type ? `places__option--active` : ``}`
+              }
               tabIndex="0"
               type={type}
             >
@@ -52,18 +55,18 @@ const Sort = (props) => {
 
 Sort.propTypes = {
   sortType: sortTypeProp,
-  setSortType: PropTypes.func,
+  changeSortType: PropTypes.func,
 };
 
 const mapStateToProps = (state) => {
   return {
-    sortType: state.reducer.sortType,
+    sortType: getSortType(state)
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setSortType: (sortType) => dispatch(ActionCreator.setSortTypeAction(sortType))
+    changeSortType: (sortType) => dispatch(setSortType(sortType))
   };
 };
 

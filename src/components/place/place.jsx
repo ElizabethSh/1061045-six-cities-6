@@ -1,40 +1,54 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
+import PropTypes from 'prop-types';
 import {useHistory, useParams} from 'react-router-dom';
 import PageHeader from '../page-header/page-header';
 import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import Loader from '../loader/loader';
 import PlaceReview from '../place-review/place-review';
+import FavoriteButton from '../favorite-button/favorite-button';
 import {convertRatingToPersent, formatString} from '../../common/utils';
-import {AppRoute, CardsListName} from '../../common/const';
+import {AppRoute, ButtonName, CardsListName} from '../../common/const';
 import {fetchNearPlaces, fetchPlace} from '../../store/api-actions';
+import {connect} from 'react-redux';
+import {placeProp} from '../../common/prop-types/place.prop';
+import {getIsPlaceInfoLoaded, getPlaceInfo} from '../../store/reducer/place-info/selectors';
+import {getIsNearPlacesLoaded, getNearPlaces} from '../../store/reducer/near-places/selectors';
+import {resetPlaceInfo} from '../../store/reducer/place-info/place-info-action';
+import {resetNearPlaces} from '../../store/reducer/near-places/near-places-action';
 
 const MAX_IMAGES_AMOUNT = 6;
 
-const Place = () => {
-  const [isPlaceInfoLoaded, setPlaceInfoLoaded] = useState(false);
-  const [placeInfo, setPlaceInfo] = useState([]);
-  const [nearPlaces, setNearPlaces] = useState([]);
-  const [isNearPlacesLoaded, setNearPlacesLoaded] = useState(false);
+const Place = (props) => {
   const history = useHistory();
   let {id} = useParams();
+  const {
+    placeInfo,
+    isPlaceInfoLoaded,
+    fetchPlaceInfo,
+    loadNearPlaces,
+    isNearPlacesLoaded,
+    nearPlaces,
+    resetPlace,
+    resetNearPlaceList
+  } = props;
 
   useEffect(() => {
     if (!isPlaceInfoLoaded) {
-      fetchPlace(id)
-        .then((data) => setPlaceInfo(data))
-        .then(() => setPlaceInfoLoaded(true))
+      fetchPlaceInfo(id)
         .catch(() => history.push(AppRoute.ERROR));
     }
-  }, [isPlaceInfoLoaded]);
+
+    return () => resetPlace();
+  }, [id]);
 
   useEffect(() => {
     if (!isNearPlacesLoaded) {
-      fetchNearPlaces(id)
-        .then((data) => setNearPlaces(data))
-        .then(() => setNearPlacesLoaded(true));
+      loadNearPlaces(id);
     }
-  }, [isNearPlacesLoaded]);
+
+    return () => resetNearPlaceList();
+  }, [id]);
 
   if (!(isPlaceInfoLoaded && isNearPlacesLoaded)) {
     return (
@@ -58,7 +72,7 @@ const Place = () => {
     price,
     rating,
     title,
-    type,
+    type
   } = placeInfo;
 
   const renderPremiumMark = () => {
@@ -69,6 +83,7 @@ const Place = () => {
     );
   };
 
+
   return (
     <div className="page">
       <PageHeader />
@@ -78,9 +93,9 @@ const Place = () => {
           <div className="property__gallery-container container">
             <div className="property__gallery">
               {
-                images.slice(0, MAX_IMAGES_AMOUNT).map((image, index) => {
+                images.slice(0, MAX_IMAGES_AMOUNT).map((image) => {
                   return (
-                    <div className="property__image-wrapper" key={`${image}-${index}`}>
+                    <div className="property__image-wrapper" key={image}>
                       <img className="property__image" src={image} alt={`Photo ${title}`} />
                     </div>
                   );
@@ -95,17 +110,11 @@ const Place = () => {
               }
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
-                <button
-                  className={
-                    `property__bookmark-button ${isFavorite ? `property__bookmark-button--active` : ``} button`
-                  }
-                  type="button"
-                >
-                  <svg className="property__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <FavoriteButton
+                  isFavorite={isFavorite}
+                  buttonName={ButtonName.PROPERTY}
+                  placeId={placeInfo.id}
+                />
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
@@ -171,6 +180,7 @@ const Place = () => {
             <Map
               city={city}
               places={nearPlaces}
+              placeInfo={placeInfo}
             />
           </section>
         </section>
@@ -188,4 +198,36 @@ const Place = () => {
   );
 };
 
-export default Place;
+Place.propTypes = {
+  placeInfo: PropTypes.shape(placeProp),
+  nearPlaces: PropTypes.arrayOf(
+      PropTypes.shape(placeProp)
+  ).isRequired,
+  isPlaceInfoLoaded: PropTypes.bool.isRequired,
+  isNearPlacesLoaded: PropTypes.bool.isRequired,
+  loadNearPlaces: PropTypes.func.isRequired,
+  fetchPlaceInfo: PropTypes.func.isRequired,
+  resetPlace: PropTypes.func.isRequired,
+  resetNearPlaceList: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    placeInfo: getPlaceInfo(state),
+    isPlaceInfoLoaded: getIsPlaceInfoLoaded(state),
+    nearPlaces: getNearPlaces(state),
+    isNearPlacesLoaded: getIsNearPlacesLoaded(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchPlaceInfo: (id) => dispatch(fetchPlace(id)),
+    loadNearPlaces: (id) => dispatch(fetchNearPlaces(id)),
+
+    resetPlace: () => dispatch(resetPlaceInfo()),
+    resetNearPlaceList: () => dispatch(resetNearPlaces()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Place);

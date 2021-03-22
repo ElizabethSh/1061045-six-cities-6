@@ -5,11 +5,13 @@ import {connect} from 'react-redux';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
 import {getCityPlaces} from '../../common/utils';
-
 import 'leaflet/dist/leaflet.css';
+import {getActiveCard} from '../../store/reducer/offers/selectors';
+
+let layerGroup;
 
 const Map = (props) => {
-  const {places, city, activeCardId} = props;
+  const {places, city, activeCardId, placeInfo} = props;
   const mapRef = useRef();
 
   // cортировка по городу НЕ УДАЛЯТЬ!
@@ -45,12 +47,15 @@ const Map = (props) => {
           contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
       }).addTo(mapRef.current);
 
+    layerGroup = Leaflet.layerGroup().addTo(mapRef.current);
+
     return () => {
       mapRef.current.remove();
     };
   }, [city]);
 
   useEffect(() => {
+    layerGroup.clearLayers();
     // настройка вида иконки
     const icon = Leaflet.icon({
       iconUrl: `img/pin.svg`,
@@ -71,8 +76,17 @@ const Map = (props) => {
           lat: place.location.latitude,
           lng: place.location.longitude
         }, {icon: pin})
-        .addTo(mapRef.current);
+        .addTo(layerGroup);
     });
+
+    if (placeInfo) {
+      Leaflet
+        .marker({
+          lat: placeInfo.location.latitude,
+          lng: placeInfo.location.longitude
+        }, {icon: activeIcon})
+        .addTo(layerGroup);
+    }
   });
 
   return (
@@ -85,12 +99,13 @@ Map.propTypes = {
       PropTypes.shape(placeProp)
   ).isRequired,
   city: cityProp,
-  activeCardId: PropTypes.number
+  activeCardId: PropTypes.number,
+  placeInfo: PropTypes.shape(placeProp),
 };
 
 const mapStateToProps = (state) => {
   return {
-    activeCardId: state.reducer.activeCard, // значение равно offer.id
+    activeCardId: getActiveCard(state), // значение равно offer.id
   };
 };
 

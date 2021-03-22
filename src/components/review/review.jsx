@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {reviewProp} from '../../common/prop-types/review.prop';
-import {convertRatingToPersent, formatReviewDate} from '../../common/utils';
+import {convertRatingToPersent, formatReviewDate, formatReviewDateTime} from '../../common/utils';
 
 const Review = (props) => {
   const {review} = props;
@@ -41,7 +41,7 @@ const Review = (props) => {
         <p className="reviews__text">{comment}</p>
         <time
           className="reviews__time"
-          dateTime="2019-04-24"
+          dateTime={formatReviewDateTime(date)}
         >{formatReviewDate(date)}</time>
       </div>
     </li>

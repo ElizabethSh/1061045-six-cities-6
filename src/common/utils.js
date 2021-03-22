@@ -8,7 +8,7 @@ export const formatString = (string) => {
 };
 
 export const convertRatingToPersent = (rating) => {
-  return `${rating / MAX_STARS_AMOUNT * 100}%`;
+  return `${Math.round(rating) / MAX_STARS_AMOUNT * 100}%`;
 };
 
 export const formatReviewDate = (date) => {
@@ -17,6 +17,30 @@ export const formatReviewDate = (date) => {
   return reviewDate.toLocaleDateString(`en-US`, {year: `numeric`, month: `long`});
 };
 
+export const formatReviewDateTime = (date) => {
+  return new Date(date).toLocaleDateString(`fr-ca`);
+};
+
 export const getCityPlaces = (places, city) => {
   return places.filter((place) => place.city.name === city);
+};
+
+export const sortReviewsByDate = (reviews) => {
+  reviews.sort((review1, review2) => {
+    return new Date(review2.date) - new Date(review1.date);
+  });
+};
+
+export const updateOffers = (offers, offerItem) => {
+  const index = offers.findIndex((offer) => offer.id === offerItem.id);
+
+  if (index === -1) {
+    return offers;
+  }
+
+  return [
+    ...offers.slice(0, index),
+    offerItem,
+    ...offers.slice(index + 1)
+  ];
 };

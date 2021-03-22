@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Sort from '../sort/sort';
@@ -6,28 +6,17 @@ import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
-import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
-import {CardsListName, SortType} from '../../common/const';
-import {ActionCreator} from '../../store/action';
-import {
-  sortOffersByRating,
-  sortOffersHightToLowPrice,
-  sortOffersLowToHightPrice
-} from '../../common/sort';
+import {CardsListName} from '../../common/const';
+import {getSortedPlaces} from '../../store/reducer/sort/selectors';
+import {getActiveCity, getActiveCityPlaces} from '../../store/reducer/offers/selectors';
 
 
 const PlacesContainer = (props) => {
   const {
     activeCityPlaces,
     activeCity,
-    sortType,
-    sortPlacesList,
     sortedPlaces
   } = props;
-
-  useEffect(() => {
-    sortPlacesList(sortType, activeCityPlaces);
-  }, [sortType, activeCity]);
 
   return (
     <div className="cities__places-container container">
@@ -61,8 +50,6 @@ PlacesContainer.propTypes = {
   activeCityPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
-  sortType: sortTypeProp,
-  sortPlacesList: PropTypes.func,
   sortedPlaces: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
@@ -70,39 +57,10 @@ PlacesContainer.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    activeCity: state.reducer.activeCity,
-    activeCityPlaces: state.reducer.activeCityPlaces,
-    sortType: state.reducer.sortType,
-    sortedPlaces: state.reducer.sortedPlaces,
+    activeCity: getActiveCity(state),
+    activeCityPlaces: getActiveCityPlaces(state),
+    sortedPlaces: getSortedPlaces(state),
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    sortPlacesList: (sortType, activeCityPlaces) => {
-      let sortedList = activeCityPlaces.slice();
-
-      switch (sortType) {
-
-        case SortType.TOP_RATED:
-          sortOffersByRating(sortedList);
-          break;
-
-        case SortType.PRICE_HIGHT_TO_LOW:
-          sortOffersHightToLowPrice(sortedList);
-          break;
-
-        case SortType.PRICE_LOW_TO_HIGHT:
-          sortOffersLowToHightPrice(sortedList);
-          break;
-
-        default:
-          break;
-      }
-
-      return dispatch(ActionCreator.sortPlacesListAction(sortedList));
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlacesContainer);
+export default connect(mapStateToProps)(PlacesContainer);

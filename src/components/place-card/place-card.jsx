@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import FavoriteButton from '../favorite-button/favorite-button';
 import {formatString, convertRatingToPersent} from '../../common/utils';
 import {placeProp} from '../../common/prop-types/place.prop';
-import {CardName} from '../../common/const';
+import {ButtonName, CardName} from '../../common/const';
+import {connect} from 'react-redux';
+import {resetPlaceInfo} from '../../store/reducer/place-info/place-info-action';
+import {resetNearPlaces} from '../../store/reducer/near-places/near-places-action';
 
 const CardSettings = {
   [CardName.FAVORITES]: {
@@ -12,7 +16,8 @@ const CardSettings = {
       width: 150,
       height: 110,
     },
-    cardInfoClass: `favorites__card-info`
+    cardInfoClass: `favorites__card-info`,
+    buttonName: ButtonName.FAVORITE
   },
   [CardName.CITIES]: {
     cardClass: `cities__place-card`,
@@ -21,6 +26,7 @@ const CardSettings = {
       height: 200,
     },
     cardInfoClass: ``,
+    buttonName: ButtonName.PLACE_CARD,
   },
   [CardName.NEAR_PLACES]: {
     cardClass: `near-places__card`,
@@ -29,11 +35,20 @@ const CardSettings = {
       height: 200,
     },
     cardInfoClass: ``,
+    buttonName: ButtonName.NEAR_PLACE,
   }
 };
 
 const PlaceCard = (props) => {
-  const {place, cardName, onMouseEnter, onMouseLeave} = props;
+  const {
+    place,
+    cardName,
+    onMouseEnter,
+    onMouseLeave,
+    resetPlace,
+    resetNearPlaceList
+  } = props;
+
   const {
     title,
     price,
@@ -50,6 +65,13 @@ const PlaceCard = (props) => {
         <span>Premium</span>
       </div>
     );
+  };
+
+  const handleTitleClick = () => {
+    if (cardName === CardName.NEAR_PLACES) {
+      resetPlace();
+      resetNearPlaceList();
+    }
   };
 
   return (
@@ -98,15 +120,11 @@ const PlaceCard = (props) => {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button${isFavorite ? `--active` : ``} button`}
-            type="button"
-          >
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">To bookmarks</span>
-          </button>
+          <FavoriteButton
+            isFavorite={isFavorite}
+            buttonName={CardSettings[cardName].buttonName}
+            placeId={place.id}
+          />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
@@ -114,7 +132,7 @@ const PlaceCard = (props) => {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
+        <h2 className="place-card__name" onClick={handleTitleClick}>
           <Link to={`/offer/${place.id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{formatString(type)}</p>
@@ -130,6 +148,15 @@ PlaceCard.propTypes = {
   ).isRequired,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
+  resetPlace: PropTypes.func,
+  resetNearPlaceList: PropTypes.func,
 };
 
-export default PlaceCard;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    resetPlace: () => dispatch(resetPlaceInfo()),
+    resetNearPlaceList: () => dispatch(resetNearPlaces())
+  };
+};
+
+export default connect(null, mapDispatchToProps)(PlaceCard);

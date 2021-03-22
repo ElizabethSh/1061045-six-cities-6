@@ -5,12 +5,12 @@ import {Link, useHistory} from 'react-router-dom';
 import {logIn} from '../../store/api-actions';
 import PageHeader from '../page-header/page-header';
 import {AppRoute} from '../../common/const';
+import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
 
 const AuthPage = (props) => {
   const {onFormSubmit, isLoggedIn} = props;
   const history = useHistory();
 
-  // Temp?
   if (isLoggedIn) {
     history.push(AppRoute.ROOT);
   }
@@ -50,7 +50,7 @@ const AuthPage = (props) => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  required=""
+                  required
                   ref={emailRef}
                 />
               </div>
@@ -61,7 +61,7 @@ const AuthPage = (props) => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  required=""
+                  required
                   ref={passwordRef}
                 />
               </div>
@@ -93,7 +93,7 @@ AuthPage.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: state.reducer.isLoggedIn
+    isLoggedIn: getIsloggedInStatus(state),
   };
 };
 
