@@ -5,9 +5,9 @@ import FavoriteButton from '../favorite-button/favorite-button';
 import {formatString, convertRatingToPersent} from '../../common/utils';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {ButtonName, CardName} from '../../common/const';
-import {connect} from 'react-redux';
-import {resetPlaceInfo} from '../../store/reducer/place-info/place-info-action';
-import {resetNearPlaces} from '../../store/reducer/near-places/near-places-action';
+import {useDispatch} from 'react-redux';
+import {resetPlaceInfo} from '../../store/reducer/place-info/action';
+import {resetNearPlaces} from '../../store/reducer/near-places/action';
 
 const CardSettings = {
   [CardName.FAVORITES]: {
@@ -40,13 +40,12 @@ const CardSettings = {
 };
 
 const PlaceCard = (props) => {
+  const dispatch = useDispatch();
   const {
     place,
     cardName,
     onMouseEnter,
     onMouseLeave,
-    resetPlace,
-    resetNearPlaceList
   } = props;
 
   const {
@@ -69,8 +68,8 @@ const PlaceCard = (props) => {
 
   const handleTitleClick = () => {
     if (cardName === CardName.NEAR_PLACES) {
-      resetPlace();
-      resetNearPlaceList();
+      dispatch(resetPlaceInfo());
+      dispatch(resetNearPlaces());
     }
   };
 
@@ -148,15 +147,6 @@ PlaceCard.propTypes = {
   ).isRequired,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
-  resetPlace: PropTypes.func,
-  resetNearPlaceList: PropTypes.func,
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    resetPlace: () => dispatch(resetPlaceInfo()),
-    resetNearPlaceList: () => dispatch(resetNearPlaces())
-  };
-};
-
-export default connect(null, mapDispatchToProps)(PlaceCard);
+export default PlaceCard;
