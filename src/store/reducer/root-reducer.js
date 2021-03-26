@@ -6,6 +6,7 @@ import {sort} from "./sort/sort";
 import {placeInfo} from "./place-info/place-info";
 import {favorites} from "./favorites/favorites";
 import {nearPlaces} from "./near-places/near-places";
+import {card} from "./card/card";
 
 export const NameSpace = {
   USER: `USER`,
@@ -14,7 +15,8 @@ export const NameSpace = {
   OFFER: `OFFER`,
   PLACE_INFO: `PLACE_INFO`,
   FAVORITE: `FAVORITE`,
-  NEAR_PLACE: `NEAR_PLACE`
+  NEAR_PLACE: `NEAR_PLACE`,
+  CARD: `CARD`,
 };
 
 export const rootReducer = combineReducers({
@@ -24,5 +26,6 @@ export const rootReducer = combineReducers({
   [NameSpace.OFFER]: offers,
   [NameSpace.PLACE_INFO]: placeInfo,
   [NameSpace.FAVORITE]: favorites,
-  [NameSpace.NEAR_PLACE]: nearPlaces
+  [NameSpace.NEAR_PLACE]: nearPlaces,
+  [NameSpace.CARD]: card,
 });
