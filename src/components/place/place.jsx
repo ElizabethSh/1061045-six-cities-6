@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
 import {useHistory, useParams} from 'react-router-dom';
 import PageHeader from '../page-header/page-header';
 import Map from '../map/map';
@@ -10,44 +9,34 @@ import FavoriteButton from '../favorite-button/favorite-button';
 import {convertRatingToPersent, formatString} from '../../common/utils';
 import {AppRoute, ButtonName, CardsListName} from '../../common/const';
 import {fetchNearPlaces, fetchPlace} from '../../store/api-actions';
-import {connect} from 'react-redux';
-import {placeProp} from '../../common/prop-types/place.prop';
-import {getIsPlaceInfoLoaded, getPlaceInfo} from '../../store/reducer/place-info/selectors';
-import {getIsNearPlacesLoaded, getNearPlaces} from '../../store/reducer/near-places/selectors';
-import {resetPlaceInfo} from '../../store/reducer/place-info/place-info-action';
-import {resetNearPlaces} from '../../store/reducer/near-places/near-places-action';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetPlaceInfo} from '../../store/reducer/place-info/action';
+import {resetNearPlaces} from '../../store/reducer/near-places/action';
 
 const MAX_IMAGES_AMOUNT = 6;
 
-const Place = (props) => {
+const Place = () => {
+  const {placeInfo, isPlaceInfoLoaded} = useSelector((state) => state.PLACE_INFO);
+  const {nearPlaces, isNearPlacesLoaded} = useSelector((state) => state.NEAR_PLACE);
+  const dispatch = useDispatch();
   const history = useHistory();
   let {id} = useParams();
-  const {
-    placeInfo,
-    isPlaceInfoLoaded,
-    fetchPlaceInfo,
-    loadNearPlaces,
-    isNearPlacesLoaded,
-    nearPlaces,
-    resetPlace,
-    resetNearPlaceList
-  } = props;
 
   useEffect(() => {
     if (!isPlaceInfoLoaded) {
-      fetchPlaceInfo(id)
+      dispatch(fetchPlace(id))
         .catch(() => history.push(AppRoute.ERROR));
     }
 
-    return () => resetPlace();
+    return () => dispatch(resetPlaceInfo());
   }, [id]);
 
   useEffect(() => {
     if (!isNearPlacesLoaded) {
-      loadNearPlaces(id);
+      dispatch(fetchNearPlaces(id));
     }
 
-    return () => resetNearPlaceList();
+    return () => dispatch(resetNearPlaces());
   }, [id]);
 
   if (!(isPlaceInfoLoaded && isNearPlacesLoaded)) {
@@ -198,36 +187,4 @@ const Place = (props) => {
   );
 };
 
-Place.propTypes = {
-  placeInfo: PropTypes.shape(placeProp),
-  nearPlaces: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
-  isPlaceInfoLoaded: PropTypes.bool.isRequired,
-  isNearPlacesLoaded: PropTypes.bool.isRequired,
-  loadNearPlaces: PropTypes.func.isRequired,
-  fetchPlaceInfo: PropTypes.func.isRequired,
-  resetPlace: PropTypes.func.isRequired,
-  resetNearPlaceList: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    placeInfo: getPlaceInfo(state),
-    isPlaceInfoLoaded: getIsPlaceInfoLoaded(state),
-    nearPlaces: getNearPlaces(state),
-    isNearPlacesLoaded: getIsNearPlacesLoaded(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchPlaceInfo: (id) => dispatch(fetchPlace(id)),
-    loadNearPlaces: (id) => dispatch(fetchNearPlaces(id)),
-
-    resetPlace: () => dispatch(resetPlaceInfo()),
-    resetNearPlaceList: () => dispatch(resetNearPlaces()),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Place);
+export default Place;
