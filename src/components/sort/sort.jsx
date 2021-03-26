@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {SortType} from '../../common/const';
 import {capitalizeString} from '../../common/utils';
 import {sortTypeProp} from '../../common/prop-types/sort-type.prop';
-import {setSortType} from '../../store/reducer/sort/sort-action';
+import {setSortType} from '../../store/reducer/sort/action';
 import {getSortType} from '../../store/reducer/sort/selectors';
 
 const sortTypes = Object.values(SortType);
