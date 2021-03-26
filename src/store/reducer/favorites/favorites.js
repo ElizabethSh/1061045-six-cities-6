@@ -17,6 +17,7 @@ export const favorites = (state = initialState, action) => {
     case ActionType.RESET_FAVORITES:
       return ({
         ...state,
+        favorites: [],
         isFavoritesLoaded: false
       });
 
