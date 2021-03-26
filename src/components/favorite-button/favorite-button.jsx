@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {useHistory} from 'react-router';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {addToFavorite, fetchFavoritePlaces, fetchNearPlaces} from '../../store/api-actions';
 import {AppRoute, ButtonName} from '../../common/const';
-import {changeFavoriteStatus} from '../../store/reducer/offers/offers-action';
-import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
-import {loadPlaceInfo} from '../../store/reducer/place-info/place-info-action';
-import {getPlaceInfo} from '../../store/reducer/place-info/selectors';
-import {placeProp} from '../../common/prop-types/place.prop';
+import {changeFavoriteStatus} from '../../store/reducer/offers/action';
+import {loadPlaceInfo} from '../../store/reducer/place-info/action';
+
 
 const ButtonSettings = {
   [ButtonName.PROPERTY]: {
@@ -45,45 +43,41 @@ const FavoriteButton = (props) => {
   const {
     isFavorite,
     buttonName,
-    addToFavorites,
     placeId,
-    isUserLoggedIn,
-    updatePlaceInfo,
-    changeStatus,
-    updateFavoritesList,
-    updateNearPlaceList,
-    placeInfo
   } = props;
 
+  const {placeInfo} = useSelector((state) => state.PLACE_INFO);
+  const {isLoggedIn} = useSelector((state) => state.USER);
   const [favorite, setFavorite] = useState(!isFavorite);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const favoriteStatus = Number(favorite);
 
   const handleFavoriteButtonClick = () => {
-    if (!isUserLoggedIn) {
+    if (!isLoggedIn) {
       history.push(AppRoute.LOGIN);
       return;
     }
 
     if (buttonName === ButtonName.PROPERTY) {
-      addToFavorites(placeId, favoriteStatus)
-        .then((data) => updatePlaceInfo(data));
+      dispatch(addToFavorite(placeId, favoriteStatus))
+        .then((data) => dispatch(loadPlaceInfo(data)));
     }
 
     if (buttonName === ButtonName.PLACE_CARD) {
-      addToFavorites(placeId, favoriteStatus)
-        .then((data) => changeStatus(data));
+      dispatch(addToFavorite(placeId, favoriteStatus))
+        .then((data) => dispatch(changeFavoriteStatus(data)));
     }
 
     if (buttonName === ButtonName.FAVORITE) {
-      addToFavorites(placeId, favoriteStatus)
-        .then(() => updateFavoritesList());
+      dispatch(addToFavorite(placeId, favoriteStatus))
+        .then(() => dispatch(fetchFavoritePlaces()));
     }
 
     if (buttonName === ButtonName.NEAR_PLACE) {
-      addToFavorites(placeId, favoriteStatus)
-        .then(() => updateNearPlaceList(placeInfo.id));
+      dispatch(addToFavorite(placeId, favoriteStatus))
+        .then(() => dispatch(fetchNearPlaces(placeInfo.id)));
     }
 
     setFavorite(!favorite);
@@ -115,30 +109,6 @@ FavoriteButton.propTypes = {
   isFavorite: PropTypes.bool.isRequired,
   buttonName: PropTypes.string.isRequired,
   placeId: PropTypes.number.isRequired,
-  isUserLoggedIn: PropTypes.bool.isRequired,
-  addToFavorites: PropTypes.func.isRequired,
-  updatePlaceInfo: PropTypes.func.isRequired,
-  changeStatus: PropTypes.func.isRequired,
-  updateFavoritesList: PropTypes.func.isRequired,
-  updateNearPlaceList: PropTypes.func.isRequired,
-  placeInfo: PropTypes.shape(placeProp),
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isUserLoggedIn: getIsloggedInStatus(state),
-    placeInfo: getPlaceInfo(state)
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addToFavorites: (id, status) => dispatch(addToFavorite(id, status)),
-    updatePlaceInfo: (data) => dispatch(loadPlaceInfo(data)),
-    changeStatus: (data) => dispatch(changeFavoriteStatus(data)),
-    updateFavoritesList: () => dispatch(fetchFavoritePlaces()),
-    updateNearPlaceList: (id) => dispatch(fetchNearPlaces(id))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FavoriteButton);
+export default FavoriteButton;
