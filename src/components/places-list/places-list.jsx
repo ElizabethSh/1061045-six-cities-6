@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import PlaceCard from '../place-card/place-card';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {CardName, CardsListName} from '../../common/const';
-import {setCardHover, resetCardHover} from '../../store/reducer/offers/offers-action';
+import {resetCardHover, setCardHover} from '../../store/reducer/card/action';
 
 const PlacesList = (props) => {
   const {
     places, // приходит либо nearPlaces, либо activeCityPlaces
     placesListName,
-    setActiveCard,
-    resetActiveCard,
   } = props;
+  const dispatch = useDispatch();
 
   // определение типа карточки
   let cardName = CardName.CITIES;
@@ -22,13 +21,13 @@ const PlacesList = (props) => {
 
   const handleCardMouseEnter = (place) => {
     if (cardName === CardName.CITIES) {
-      setActiveCard(place.id);
+      dispatch(setCardHover(place.id));
     }
   };
 
   const handleCardMouseLeave = () => {
     if (cardName === CardName.CITIES) {
-      resetActiveCard();
+      dispatch(resetCardHover());
     }
   };
 
@@ -56,15 +55,6 @@ PlacesList.propTypes = {
       PropTypes.shape(placeProp)
   ).isRequired,
   placesListName: PropTypes.string.isRequired,
-  setActiveCard: PropTypes.func,
-  resetActiveCard: PropTypes.func,
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setActiveCard: (cardId) => dispatch(setCardHover(cardId)),
-    resetActiveCard: () => dispatch(resetCardHover()),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(PlacesList);
+export default PlacesList;
