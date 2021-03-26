@@ -3,9 +3,10 @@ export const ActionType = {
   RESET_OFFERS: `offers/resetOffers`,
   CITY_CHANGE: `offers/changeCity`,
   CITY_RESET: `offers/resetCity`,
-  CARD_HOVER: `offers/cardHover`,
-  RESET_CARD_HOVER: `offers/resetCardHover`,
   CHANGE_FAVORITE_STATUS: `offers/changeFavoriteStatus`,
+
+  CARD_HOVER: `card/cardHover`,
+  RESET_CARD_HOVER: `card/resetCardHover`,
 
   CHANGE_SORT_TYPE: `sort/changeSortType`,
 
