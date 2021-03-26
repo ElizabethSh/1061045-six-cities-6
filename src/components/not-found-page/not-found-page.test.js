@@ -29,6 +29,7 @@ describe(`Test NotFoundPage`, () => {
     expect(container).toMatchSnapshot();
   });
 
+
   it(`NotFoundPage should render correctly, when user is not logged in`, () => {
     const store = mockStore({
       USER: {isLoggedIn: false, usersEmail: null}
