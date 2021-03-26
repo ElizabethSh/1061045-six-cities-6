@@ -44,5 +44,7 @@ export const AppRoute = {
 export const APIRoute = {
   HOTELS: `/hotels`,
   LOGIN: `/login`,
-  LOGOUT: `/logout`
+  LOGOUT: `/logout`,
+  COMMENTS: `/comments`,
+  FAVORITE: `/favorite`,
 };
