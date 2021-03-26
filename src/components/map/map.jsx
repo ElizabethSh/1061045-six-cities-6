@@ -1,17 +1,17 @@
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Leaflet from 'leaflet';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {cityProp} from '../../common/prop-types/city.prop';
 import {getCityPlaces} from '../../common/utils';
 import 'leaflet/dist/leaflet.css';
-import {getActiveCard} from '../../store/reducer/offers/selectors';
 
 let layerGroup;
 
 const Map = (props) => {
-  const {places, city, activeCardId, placeInfo} = props;
+  const {places, city, placeInfo} = props;
+  const {activeCard} = useSelector((state) => state.CARD);
   const mapRef = useRef();
 
   // cортировка по городу НЕ УДАЛЯТЬ!
@@ -70,7 +70,7 @@ const Map = (props) => {
 
     // отрисовка всех меток на карте
     places.map((place) => {
-      const pin = (place.id === activeCardId) ? activeIcon : icon;
+      const pin = (place.id === activeCard) ? activeIcon : icon;
       Leaflet
         .marker({
           lat: place.location.latitude,
@@ -99,14 +99,7 @@ Map.propTypes = {
       PropTypes.shape(placeProp)
   ).isRequired,
   city: cityProp,
-  activeCardId: PropTypes.number,
   placeInfo: PropTypes.shape(placeProp),
 };
 
-const mapStateToProps = (state) => {
-  return {
-    activeCardId: getActiveCard(state), // значение равно offer.id
-  };
-};
-
-export default connect(mapStateToProps)(Map);
+export default Map;
