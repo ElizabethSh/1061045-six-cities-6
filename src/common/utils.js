@@ -1,5 +1,11 @@
 const MAX_STARS_AMOUNT = 5;
 
+export const getCitiesList = (offers) => {
+  const cities = [];
+  offers.forEach((place) => cities.push(place.city.name));
+  return Array.from(new Set(cities));
+};
+
 export const capitalizeString = (string) => string[0].toUpperCase() + string.slice(1);
 
 export const formatString = (string) => {
