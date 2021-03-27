@@ -1,15 +1,14 @@
 import React, {useRef} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
 import {logIn} from '../../store/api-actions';
 import PageHeader from '../page-header/page-header';
 import {AppRoute} from '../../common/const';
-import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
 
-const AuthPage = (props) => {
-  const {onFormSubmit, isLoggedIn} = props;
+const AuthPage = () => {
   const history = useHistory();
+  const {isLoggedIn} = useSelector((state) => state.USER);
+  const dispatch = useDispatch();
 
   if (isLoggedIn) {
     history.push(AppRoute.ROOT);
@@ -21,10 +20,10 @@ const AuthPage = (props) => {
   const handleFormSubmit = (evt) => {
     evt.preventDefault();
 
-    onFormSubmit({
+    dispatch(logIn({
       email: emailRef.current.value,
       password: passwordRef.current.value
-    });
+    }));
 
     history.push(AppRoute.ROOT);
   };
@@ -86,21 +85,4 @@ const AuthPage = (props) => {
   );
 };
 
-AuthPage.propTypes = {
-  onFormSubmit: PropTypes.func.isRequired,
-  isLoggedIn: PropTypes.bool.isRequired
-};
-
-const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: getIsloggedInStatus(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onFormSubmit: (formData) => dispatch(logIn(formData))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);
+export default AuthPage;
