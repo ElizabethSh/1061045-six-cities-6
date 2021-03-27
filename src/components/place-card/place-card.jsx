@@ -5,9 +5,6 @@ import FavoriteButton from '../favorite-button/favorite-button';
 import {formatString, convertRatingToPersent} from '../../common/utils';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {ButtonName, CardName} from '../../common/const';
-import {useDispatch} from 'react-redux';
-import {resetPlaceInfo} from '../../store/reducer/place-info/action';
-import {resetNearPlaces} from '../../store/reducer/near-places/action';
 
 const CardSettings = {
   [CardName.FAVORITES]: {
@@ -40,7 +37,6 @@ const CardSettings = {
 };
 
 const PlaceCard = (props) => {
-  const dispatch = useDispatch();
   const {
     place,
     cardName,
@@ -64,13 +60,6 @@ const PlaceCard = (props) => {
         <span>Premium</span>
       </div>
     );
-  };
-
-  const handleTitleClick = () => {
-    if (cardName === CardName.NEAR_PLACES) {
-      dispatch(resetPlaceInfo());
-      dispatch(resetNearPlaces());
-    }
   };
 
   return (
@@ -131,7 +120,7 @@ const PlaceCard = (props) => {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name" onClick={handleTitleClick}>
+        <h2 className="place-card__name">
           <Link to={`/offer/${place.id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{formatString(type)}</p>
