@@ -23,7 +23,7 @@ const Place = () => {
   let {id} = useParams();
 
   useEffect(() => {
-    if (!isPlaceInfoLoaded) {
+    if (!isPlaceInfoLoaded || placeInfo.id !== Number(id)) {
       dispatch(fetchPlace(id))
         .catch(() => history.push(AppRoute.ERROR));
     }
@@ -32,7 +32,7 @@ const Place = () => {
   }, [id]);
 
   useEffect(() => {
-    if (!isNearPlacesLoaded) {
+    if (!isNearPlacesLoaded || placeInfo.id !== Number(id)) {
       dispatch(fetchNearPlaces(id));
     }
 
