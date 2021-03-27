@@ -1,22 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Sort from '../sort/sort';
 import Map from '../map/map';
 import PlacesList from '../places-list/places-list';
-import {placeProp} from '../../common/prop-types/place.prop';
-import {cityProp} from '../../common/prop-types/city.prop';
 import {CardsListName} from '../../common/const';
 import {getSortedPlaces} from '../../store/reducer/sort/selectors';
-import {getActiveCity, getActiveCityPlaces} from '../../store/reducer/offers/selectors';
+import {getActiveCityPlaces} from '../../store/reducer/offers/selectors';
 
 
-const PlacesContainer = (props) => {
-  const {
-    activeCityPlaces,
-    activeCity,
-    sortedPlaces
-  } = props;
+const PlacesContainer = () => {
+  const sortedPlaces = useSelector((state) => getSortedPlaces(state));
+  const activeCityPlaces = useSelector((state) => getActiveCityPlaces(state));
+  const {activeCity} = useSelector((state) => state.OFFER);
 
   return (
     <div className="cities__places-container container">
@@ -24,7 +19,9 @@ const PlacesContainer = (props) => {
         <h2 className="visually-hidden">Places</h2>
         <b className="places__found">
           {
-            `${activeCityPlaces.length} ${(activeCityPlaces.length > 1) ? `places` : `place`} to stay in ${activeCity}`
+            `${activeCityPlaces.length}
+              ${(activeCityPlaces.length > 1) ? `places` : `place`}
+            to stay in ${activeCity}`
           }
         </b>
         <Sort />
@@ -45,22 +42,4 @@ const PlacesContainer = (props) => {
   );
 };
 
-PlacesContainer.propTypes = {
-  activeCity: cityProp,
-  activeCityPlaces: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
-  sortedPlaces: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    activeCity: getActiveCity(state),
-    activeCityPlaces: getActiveCityPlaces(state),
-    sortedPlaces: getSortedPlaces(state),
-  };
-};
-
-export default connect(mapStateToProps)(PlacesContainer);
+export default PlacesContainer;
