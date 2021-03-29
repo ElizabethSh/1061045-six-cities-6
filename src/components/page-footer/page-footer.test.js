@@ -6,15 +6,11 @@ import {Router} from 'react-router';
 
 it(`PageFooter should render correctly`, () => {
   const history = createMemoryHistory();
-  const {getByAltText, getByRole} = render(
+  const {container} = render(
       <Router history={history}>
         <PageFooter />
       </Router>
   );
 
-  const linkElement = getByRole(`link`);
-  const imageElement = getByAltText(`6 cities logo`);
-
-  expect(linkElement).toBeInTheDocument();
-  expect(imageElement).toBeInTheDocument();
+  expect(container).toMatchSnapshot();
 });
