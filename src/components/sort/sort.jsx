@@ -26,7 +26,8 @@ const Sort = () => {
       </span>
       <ul
         className={
-          `places__options places__options--custom ${isSortOpen ? `places__options--opened` : `` }`
+          `places__options places__options--custom
+          ${isSortOpen ? `places__options--opened` : `` }`
         }
         onClick={(evt) => {
           dispatch(setSortType(evt.target.type));
@@ -34,8 +35,8 @@ const Sort = () => {
         }}
       >
         {
-          sortTypes.map((type, index) => (
-            <li key={`${type}-${index}`}
+          sortTypes.map((type) => (
+            <li key={`${type}`}
               className={
                 `places__option ${sortType === type ? `places__option--active` : ``}`
               }
