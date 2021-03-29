@@ -3,10 +3,9 @@ import {render} from '@testing-library/react';
 import Loader from './loader';
 
 it(`Loader should render correctly`, () => {
-  const {getByText} = render(
+  const {container} = render(
       <Loader />
   );
-  const paragraphElement = getByText(`Loading...`);
 
-  expect(paragraphElement).toBeInTheDocument();
+  expect(container).toMatchSnapshot();
 });
