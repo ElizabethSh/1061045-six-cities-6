@@ -23,8 +23,8 @@ export const ActionType = {
   LOAD_FAVORITES: `favorites/loadFavorites`,
   RESET_FAVORITES: `favorites/resetFavorites`,
 
-  LOAD_NEAR_PLACES: `place/loadNearPlaces`,
-  RESET_NEAR_PLACES: `place/resetNearPlaces`,
+  LOAD_NEAR_PLACES: `places/loadNearPlaces`,
+  RESET_NEAR_PLACES: `places/resetNearPlaces`,
 
   CHANGE_ERROR_STATUS: `error/changeErrorStatus`,
 };
