@@ -13,18 +13,11 @@ const Map = (props) => {
   const {places, city, placeInfo} = props;
   const {activeCard} = useSelector((state) => state.CARD);
   const mapRef = useRef();
-
-  // cортировка по городу НЕ УДАЛЯТЬ!
-  // брать сортировку из стора не годится для favorites -
-  // будет ошибка в карте при открытии карточки
   const cityPlaces = getCityPlaces(places, city);
 
-  // определение координат города
   const mapCitySettings = cityPlaces[0].city.location;
 
   useEffect(() => {
-
-    // инициализация карты
     mapRef.current = Leaflet.map(`map`, {
       center: {
         lat: mapCitySettings.latitude,
@@ -40,7 +33,7 @@ const Map = (props) => {
       lng: mapCitySettings.longitude
     }, mapCitySettings.zoom);
 
-    // подключение слоя карты
+
     Leaflet
       .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
         attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
@@ -56,19 +49,19 @@ const Map = (props) => {
 
   useEffect(() => {
     layerGroup.clearLayers();
-    // настройка вида иконки
+
     const icon = Leaflet.icon({
       iconUrl: `img/pin.svg`,
       iconSize: [30, 30]
     });
 
-    // настройка вида активной иконки
+
     const activeIcon = Leaflet.icon({
       iconUrl: `img/pin-active.svg`,
       iconSize: [30, 30]
     });
 
-    // отрисовка всех меток на карте
+
     places.map((place) => {
       const pin = (place.id === activeCard) ? activeIcon : icon;
       Leaflet
