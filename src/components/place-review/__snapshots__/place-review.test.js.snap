@@ -85,7 +85,7 @@ exports[`Test 'PlaceReview' PlaceReview should render correctly 1`] = `
           />
           <time
             class="reviews__time"
-            datetime="2020-4-23"
+            datetime="4/23/2020"
           >
             April 2020
           </time>
