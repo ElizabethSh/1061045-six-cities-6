@@ -12,14 +12,18 @@ const ReviewList = ({reviews}) => {
 
   return (
     <ul className="reviews__list">
-      {reviewsCopy.slice(0, MAX_REVIEWS_AMOUNT).map((review) => {
-        return (
-          <Review
-            key={review.id}
-            review={review}
-          />
-        );
-      })}
+      {
+        reviewsCopy
+          .slice(0, MAX_REVIEWS_AMOUNT)
+          .map((review) => {
+            return (
+              <Review
+                key={review.id}
+                review={review}
+              />
+            );
+          })
+      }
     </ul>
   );
 };

@@ -5,8 +5,6 @@ const initialState = {
   activeCity: `Paris`,
   offers: [],
   isOffersLoaded: false,
-  activeCard: 0,
-
   isError: false
 };
 
@@ -35,18 +33,6 @@ export const offers = (state = initialState, action) => {
       return ({
         ...state,
         activeCity: initialState.activeCity
-      });
-
-    case ActionType.CARD_HOVER:
-      return ({
-        ...state,
-        activeCard: action.payload
-      });
-
-    case ActionType.RESET_CARD_HOVER:
-      return ({
-        ...state,
-        activeCard: 0,
       });
 
     case ActionType.CHANGE_FAVORITE_STATUS:

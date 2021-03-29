@@ -1,31 +1,27 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ReviewForm from '../review-form/review-form';
 import ReviewList from '../review-list/review-list';
 import Loader from '../loader/loader';
 import {fetchPlaceReviews} from '../../store/api-actions';
-import {reviewProp} from '../../common/prop-types/review.prop';
-import {resetReviews} from '../../store/reducer/reviews/reviews-action';
-import {getIsloggedInStatus} from '../../store/reducer/user/selectors';
-import {getIsReviewsLoaded, getPlaceReviews} from '../../store/reducer/reviews/selectors';
+import {resetReviews} from '../../store/reducer/reviews/action';
 
 const PlaceReview = (props) => {
-  const {
-    isLoggedIn,
-    placeId,
-    loadReviews,
-    isReviewsLoaded,
-    placeReviews,
-    resetPlaceReviews
-  } = props;
+  const {placeId} = props;
+
+  const dispatch = useDispatch();
+  const {isLoggedIn} = useSelector((state) => state.USER);
+  const {placeReviews, isReviewsLoaded} = useSelector(
+      (state) => state.REVIEW
+  );
 
   useEffect(() => {
     if (!isReviewsLoaded) {
-      loadReviews(placeId);
+      dispatch(fetchPlaceReviews(placeId));
     }
 
-    return () => resetPlaceReviews();
+    return () => dispatch(resetReviews());
   }, [placeId]);
 
   if (!isReviewsLoaded) {
@@ -51,29 +47,7 @@ const PlaceReview = (props) => {
 };
 
 PlaceReview.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
   placeId: PropTypes.string.isRequired,
-  isReviewsLoaded: PropTypes.bool.isRequired,
-  loadReviews: PropTypes.func.isRequired,
-  placeReviews: PropTypes.arrayOf(
-      PropTypes.shape(reviewProp)
-  ).isRequired,
-  resetPlaceReviews: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: getIsloggedInStatus(state),
-    isReviewsLoaded: getIsReviewsLoaded(state),
-    placeReviews: getPlaceReviews(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadReviews: (id) => dispatch(fetchPlaceReviews(id)),
-    resetPlaceReviews: () => dispatch(resetReviews())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PlaceReview);
+export default PlaceReview;

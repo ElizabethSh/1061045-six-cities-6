@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {cityProp} from '../../common/prop-types/city.prop';
-import {getActiveCity} from '../../store/reducer/offers/selectors';
+import {useSelector} from 'react-redux';
 
 const CityList = (props) => {
-  const {cities, activeCity} = props;
+  const {cities} = props;
+  const {activeCity} = useSelector((state) => state.OFFER);
 
   return (
     <ul className="locations__list tabs__list">
@@ -35,13 +34,6 @@ const CityList = (props) => {
 
 CityList.propTypes = {
   cities: PropTypes.array.isRequired,
-  activeCity: cityProp
 };
 
-const mapStateToProps = (state) => {
-  return {
-    activeCity: getActiveCity(state)
-  };
-};
-
-export default connect(mapStateToProps)(CityList);
+export default CityList;

@@ -1,30 +1,30 @@
 import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {sendPlaceReview} from '../../store/api-actions';
-import {reviewProp} from '../../common/prop-types/review.prop';
-import {getPlaceReviews} from '../../store/reducer/reviews/selectors';
 
 const MAX_SIMBOL_AMOUNT = 300;
 const MIN_SIMBOL_AMOUNT = 50;
 
-const estimations = [`perfect`, `good`, `not-bad`, `badly`, `terribly`];
+const ESTIMATIONS = [`perfect`, `good`, `not-bad`, `badly`, `terribly`];
 
 
 const ReviewForm = (props) => {
-  const {sendReview, placeId, placeReviews} = props;
+  const {placeId} = props;
   const [commentForm, setCommentForm] = useState({
     rating: null,
     comment: ``
   });
   const [isDisabled, setIsDisabled] = useState(false);
+  const {placeReviews} = useSelector((state) => state.REVIEW);
+  const dispatch = useDispatch();
 
   const handleFormSubmit = (evt) => {
     evt.preventDefault();
 
     setIsDisabled(true);
 
-    sendReview(placeId, commentForm)
+    dispatch(sendPlaceReview(placeId, commentForm))
       .then(() => {
         setCommentForm({
           ...commentForm,
@@ -57,8 +57,8 @@ const ReviewForm = (props) => {
         key={placeReviews.length}
       >
         {
-          estimations.map((estimation, index) => {
-            const starsCount = estimations.length - index;
+          ESTIMATIONS.map((estimation, index) => {
+            const starsCount = ESTIMATIONS.length - index;
             return (
               <Fragment key={`${estimation} - ${isDisabled}`}>
                 <input
@@ -115,23 +115,7 @@ const ReviewForm = (props) => {
 };
 
 ReviewForm.propTypes = {
-  sendReview: PropTypes.func.isRequired,
   placeId: PropTypes.string.isRequired,
-  placeReviews: PropTypes.arrayOf(
-      PropTypes.shape(reviewProp)
-  ).isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    placeReviews: getPlaceReviews(state)
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    sendReview: (id, formData) => dispatch(sendPlaceReview(id, formData))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewForm);
+export default ReviewForm;

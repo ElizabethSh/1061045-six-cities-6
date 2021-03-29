@@ -17,6 +17,7 @@ export const nearPlaces = (state = initialState, action) => {
     case ActionType.RESET_NEAR_PLACES:
       return ({
         ...state,
+        nearPlaces: [],
         isNearPlacesLoaded: false
       });
 

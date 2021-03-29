@@ -1,29 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import FavoriteLocations from '../favorites-locations/favorites-locations';
-import {getCityPlaces} from '../../common/utils';
-import {placeProp} from '../../common/prop-types/place.prop';
+import FavoritesLocations from '../favorites-locations/favorites-locations';
+import {getCitiesList, getCityPlaces} from '../../common/utils';
+import {useSelector} from 'react-redux';
 
-const FavoritesContainer = (props) => {
-  const {favoritePlaces} = props;
-
-  // определение списка городов по которым нужно вывести избранные предложения
-  const cities = [];
-  favoritePlaces.forEach((place) => cities.push(place.city.name));
-  const favoriteCities = Array.from(new Set(cities));
+const FavoritesContainer = () => {
+  const {favorites} = useSelector((state) => state.FAVORITE);
+  const favoriteCities = getCitiesList(favorites);
 
   return (
     <section className="favorites">
       <h1 className="favorites__title">Saved listing</h1>
       <ul className="favorites__list">
         {
-          favoriteCities.map((city, index) => {
-            // фильтрация избранных размещений по городу
-            const favoriteCityPlaces = getCityPlaces(favoritePlaces, city);
+          favoriteCities.map((city) => {
+            const favoriteCityPlaces = getCityPlaces(favorites, city);
 
             return (
-              <FavoriteLocations
-                key={city + index}
+              <FavoritesLocations
+                key={city}
                 places={favoriteCityPlaces}
                 city={city}
               />
@@ -33,12 +27,6 @@ const FavoritesContainer = (props) => {
       </ul>
     </section>
   );
-};
-
-FavoritesContainer.propTypes = {
-  favoritePlaces: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
 };
 
 export default FavoritesContainer;

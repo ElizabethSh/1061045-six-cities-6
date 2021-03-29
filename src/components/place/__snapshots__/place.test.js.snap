@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test 'Place' Place should render Loader if data is loading 1`] = `
+<div>
+  <div
+    class="loader"
+  >
+    <div
+      class="loader__dual-ring"
+    />
+    <p>
+      Loading...
+    </p>
+  </div>
+</div>
+`;

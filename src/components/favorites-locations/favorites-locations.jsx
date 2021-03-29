@@ -4,8 +4,9 @@ import {CardName} from '../../common/const';
 import PlaceCard from '../place-card/place-card';
 import {placeProp} from '../../common/prop-types/place.prop';
 
-const FavoriteLocations = (props) => {
+const FavoritesLocations = (props) => {
   const {places, city} = props;
+
   return (
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
@@ -32,11 +33,11 @@ const FavoriteLocations = (props) => {
   );
 };
 
-FavoriteLocations.propTypes = {
+FavoritesLocations.propTypes = {
   places: PropTypes.arrayOf(
       PropTypes.shape(placeProp)
   ).isRequired,
   city: PropTypes.string.isRequired,
 };
 
-export default FavoriteLocations;
+export default FavoritesLocations;

@@ -5,9 +5,6 @@ import FavoriteButton from '../favorite-button/favorite-button';
 import {formatString, convertRatingToPersent} from '../../common/utils';
 import {placeProp} from '../../common/prop-types/place.prop';
 import {ButtonName, CardName} from '../../common/const';
-import {connect} from 'react-redux';
-import {resetPlaceInfo} from '../../store/reducer/place-info/place-info-action';
-import {resetNearPlaces} from '../../store/reducer/near-places/near-places-action';
 
 const CardSettings = {
   [CardName.FAVORITES]: {
@@ -45,8 +42,6 @@ const PlaceCard = (props) => {
     cardName,
     onMouseEnter,
     onMouseLeave,
-    resetPlace,
-    resetNearPlaceList
   } = props;
 
   const {
@@ -67,26 +62,15 @@ const PlaceCard = (props) => {
     );
   };
 
-  const handleTitleClick = () => {
-    if (cardName === CardName.NEAR_PLACES) {
-      resetPlace();
-      resetNearPlaceList();
-    }
-  };
-
   return (
     <article
       onMouseEnter={() => {
-        // если обработчик передан, то вызвать его при наведении
-        // на карточку
         if (onMouseEnter) {
           onMouseEnter(place);
         }
       }}
 
       onMouseLeave={() => {
-        // если обработчик передан, то вызвать его при перемещении
-        // курсора с карточки
         if (onMouseLeave) {
           onMouseLeave();
         }
@@ -132,7 +116,7 @@ const PlaceCard = (props) => {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name" onClick={handleTitleClick}>
+        <h2 className="place-card__name">
           <Link to={`/offer/${place.id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{formatString(type)}</p>
@@ -148,15 +132,6 @@ PlaceCard.propTypes = {
   ).isRequired,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
-  resetPlace: PropTypes.func,
-  resetNearPlaceList: PropTypes.func,
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    resetPlace: () => dispatch(resetPlaceInfo()),
-    resetNearPlaceList: () => dispatch(resetNearPlaces())
-  };
-};
-
-export default connect(null, mapDispatchToProps)(PlaceCard);
+export default PlaceCard;

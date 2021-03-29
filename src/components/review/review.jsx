@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {reviewProp} from '../../common/prop-types/review.prop';
-import {convertRatingToPersent, formatReviewDate, formatReviewDateTime} from '../../common/utils';
+import {
+  convertRatingToPersent,
+  formatReviewDate,
+  formatReviewDateTime
+} from '../../common/utils';
+
 
 const Review = (props) => {
   const {review} = props;
-  const {
-    comment,
-    rating,
-    date,
-    user,
-  } = review;
+  const {comment, rating, date, user} = review;
 
   return (
     <li className="reviews__item">

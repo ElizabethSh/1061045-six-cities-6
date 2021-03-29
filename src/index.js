@@ -7,7 +7,8 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import App from './components/app/app';
 import {createAPI} from './services/api';
 import {rootReducer} from './store/reducer/root-reducer';
-import {setAuthStatus} from './store/reducer/user/user-action';
+import {setAuthStatus} from './store/reducer/user/action';
+import {BrowserRouter} from 'react-router-dom';
 
 export const api = createAPI(
     () => store.dispatch(setAuthStatus(false))
@@ -22,7 +23,9 @@ const store = createStore(
 
 ReactDOM.render(
     <Provider store={store}>
-      <App/>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
     </Provider>,
     document.getElementById(`root`)
 );

@@ -1,18 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {changeErrorStatus} from '../../store/reducer/offers/offers-action';
+import {useDispatch} from 'react-redux';
+import {changeErrorStatus} from '../../store/reducer/offers/action';
 import "./popup.css";
 
-const Popup = (props) => {
-  const {setErrorStatus} = props;
+const Popup = () => {
+  const dispatch = useDispatch();
 
   const handleBackClick = () => {
-    setErrorStatus(false);
+    dispatch(changeErrorStatus(status));
   };
 
   const handleButtonClick = () => {
-    setErrorStatus(false);
+    dispatch(changeErrorStatus(status));
   };
 
   return (
@@ -28,14 +27,4 @@ const Popup = (props) => {
   );
 };
 
-Popup.propTypes = {
-  setErrorStatus: PropTypes.func.isRequired
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setErrorStatus: (status) => dispatch(changeErrorStatus(status))
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Popup);
+export default Popup;

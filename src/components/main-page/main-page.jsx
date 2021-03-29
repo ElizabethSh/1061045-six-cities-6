@@ -1,45 +1,40 @@
 import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
 import {useParams} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {changeCity, resetCity, resetOffers} from '../../store/reducer/offers/offers-action';
+import {useDispatch, useSelector} from 'react-redux';
+import {changeCity, resetCity, resetOffers} from '../../store/reducer/offers/action';
 import PageHeader from '../page-header/page-header';
 import CityList from '../city-list/city-list';
 import PlacesContainer from '../places-container/places-container';
 import EmptyPlacesContainer from '../empty-places-container/empty-places-container';
 import Loader from '../loader/loader';
-import {placeProp} from '../../common/prop-types/place.prop';
 import {CITIES} from '../../common/const';
 import {fetchOffersList} from '../../store/api-actions';
-import {getActiveCityPlaces, getIsOffersLoaded} from '../../store/reducer/offers/selectors';
+import {getActiveCityPlaces} from '../../store/reducer/offers/selectors';
 
-const MainPage = (props) => {
-  const {
-    activeCityPlaces,
-    isOffersLoaded,
-    changeActiveCity,
-    cityReset,
-    onOffersLoad,
-    resetIsOffersLoaded
-  } = props;
+const MainPage = () => {
+  const activeCityPlaces = useSelector(
+      (state) => getActiveCityPlaces(state)
+  );
+  const {isOffersLoaded} = useSelector((state) => state.OFFER);
+  const dispatch = useDispatch();
 
-  let {city} = useParams(); // определяем по адресной строке выбранный город
+  let {city} = useParams();
 
   useEffect(() => {
     if (!isOffersLoaded) {
-      onOffersLoad();
+      dispatch(fetchOffersList());
     }
 
-    return () => resetIsOffersLoaded();
+    return () => dispatch(resetOffers());
   }, []);
 
   useEffect(() => {
     if (!city) {
-      cityReset(); // устанавливаем город по умолчанию
+      dispatch(resetCity());
       return;
     }
 
-    changeActiveCity(city); // устанавливаем выбранный город
+    dispatch(changeCity(city));
   }, [isOffersLoaded, city]);
 
   if (!isOffersLoaded) {
@@ -61,9 +56,7 @@ const MainPage = (props) => {
         <div className="tabs">
           <section className="locations container">
 
-            <CityList
-              cities={CITIES}
-            />
+            <CityList cities={CITIES}/>
 
           </section>
         </div>
@@ -79,31 +72,4 @@ const MainPage = (props) => {
   );
 };
 
-MainPage.propTypes = {
-  changeActiveCity: PropTypes.func.isRequired,
-  cityReset: PropTypes.func.isRequired,
-  activeCityPlaces: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
-  isOffersLoaded: PropTypes.bool.isRequired,
-  onOffersLoad: PropTypes.func.isRequired,
-  resetIsOffersLoaded: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    activeCityPlaces: getActiveCityPlaces(state),
-    isOffersLoaded: getIsOffersLoaded(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    changeActiveCity: (city) => dispatch(changeCity(city)),
-    cityReset: () => dispatch(resetCity()),
-    onOffersLoad: () => dispatch(fetchOffersList()),
-    resetIsOffersLoaded: () => dispatch(resetOffers())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default MainPage;

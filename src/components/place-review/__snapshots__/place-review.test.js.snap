@@ -1,0 +1,438 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test 'PlaceReview' PlaceReview should render 'Loader' if data is loading 1`] = `
+<div>
+  <div
+    class="loader"
+  >
+    <div
+      class="loader__dual-ring"
+    />
+    <p>
+      Loading...
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Test 'PlaceReview' PlaceReview should render correctly 1`] = `
+<div>
+  <section
+    class="property__reviews reviews"
+  >
+    <h2
+      class="reviews__title"
+    >
+      Reviews ·
+      <span
+        class="reviews__amount"
+      >
+        1
+      </span>
+    </h2>
+    <ul
+      class="reviews__list"
+    >
+      <li
+        class="reviews__item"
+      >
+        <div
+          class="reviews__user user"
+        >
+          <div
+            class="reviews__avatar-wrapper user__avatar-wrapper"
+          >
+            <img
+              alt="Reviews avatar"
+              class="reviews__avatar user__avatar"
+              height="54"
+              src=""
+              width="54"
+            />
+          </div>
+          <span
+            class="reviews__user-name"
+          >
+            Aretha
+          </span>
+          <span
+            class="property__user-status"
+          >
+            Pro
+          </span>
+        </div>
+        <div
+          class="reviews__info"
+        >
+          <div
+            class="reviews__rating rating"
+          >
+            <div
+              class="reviews__stars rating__stars"
+            >
+              <span
+                style="width: 80%;"
+              />
+              <span
+                class="visually-hidden"
+              >
+                Rating
+              </span>
+            </div>
+          </div>
+          <p
+            class="reviews__text"
+          />
+          <time
+            class="reviews__time"
+            datetime="4/23/2020"
+          >
+            April 2020
+          </time>
+        </div>
+      </li>
+    </ul>
+    <form
+      action="#"
+      class="reviews__form form"
+      method="post"
+    >
+      <label
+        class="reviews__label form__label"
+        for="review"
+      >
+        Your review
+      </label>
+      <div
+        class="reviews__rating-form form__rating"
+      >
+        <input
+          class="form__rating-input visually-hidden"
+          id="5-stars"
+          name="rating"
+          type="radio"
+          value="5"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="5-stars"
+          title="perfect"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="4-stars"
+          name="rating"
+          type="radio"
+          value="4"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="4-stars"
+          title="good"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="3-stars"
+          name="rating"
+          type="radio"
+          value="3"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="3-stars"
+          title="not-bad"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="2-stars"
+          name="rating"
+          type="radio"
+          value="2"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="2-stars"
+          title="badly"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="1-stars"
+          name="rating"
+          type="radio"
+          value="1"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="1-stars"
+          title="terribly"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+      </div>
+      <textarea
+        class="reviews__textarea form__textarea"
+        id="comment"
+        maxlength="300"
+        name="comment"
+        placeholder="Tell how was your stay, what you like and what can be improved"
+      />
+      <div
+        class="reviews__button-wrapper"
+      >
+        <p
+          class="reviews__help"
+        >
+          To submit review please make sure to set
+          <span
+            class="reviews__star"
+          >
+            rating
+          </span>
+          and describe your stay with at least
+          <b
+            class="reviews__text-amount"
+          >
+            50 characters
+          </b>
+          .
+        </p>
+        <button
+          class="reviews__submit form__submit button"
+          disabled=""
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+`;
+
+exports[`Test 'PlaceReview' PlaceReview should render empty review list if reviews are missing 1`] = `
+<div>
+  <section
+    class="property__reviews reviews"
+  >
+    <h2
+      class="reviews__title"
+    >
+      Reviews ·
+      <span
+        class="reviews__amount"
+      >
+        0
+      </span>
+    </h2>
+    <form
+      action="#"
+      class="reviews__form form"
+      method="post"
+    >
+      <label
+        class="reviews__label form__label"
+        for="review"
+      >
+        Your review
+      </label>
+      <div
+        class="reviews__rating-form form__rating"
+      >
+        <input
+          class="form__rating-input visually-hidden"
+          id="5-stars"
+          name="rating"
+          type="radio"
+          value="5"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="5-stars"
+          title="perfect"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="4-stars"
+          name="rating"
+          type="radio"
+          value="4"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="4-stars"
+          title="good"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="3-stars"
+          name="rating"
+          type="radio"
+          value="3"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="3-stars"
+          title="not-bad"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="2-stars"
+          name="rating"
+          type="radio"
+          value="2"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="2-stars"
+          title="badly"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+        <input
+          class="form__rating-input visually-hidden"
+          id="1-stars"
+          name="rating"
+          type="radio"
+          value="1"
+        />
+        <label
+          class="reviews__rating-label form__rating-label"
+          for="1-stars"
+          title="terribly"
+        >
+          <svg
+            class="form__star-image"
+            height="33"
+            width="37"
+          >
+            <use
+              xlink:href="#icon-star"
+            />
+          </svg>
+        </label>
+      </div>
+      <textarea
+        class="reviews__textarea form__textarea"
+        id="comment"
+        maxlength="300"
+        name="comment"
+        placeholder="Tell how was your stay, what you like and what can be improved"
+      />
+      <div
+        class="reviews__button-wrapper"
+      >
+        <p
+          class="reviews__help"
+        >
+          To submit review please make sure to set
+          <span
+            class="reviews__star"
+          >
+            rating
+          </span>
+          and describe your stay with at least
+          <b
+            class="reviews__text-amount"
+          >
+            50 characters
+          </b>
+          .
+        </p>
+        <button
+          class="reviews__submit form__submit button"
+          disabled=""
+          type="submit"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+`;

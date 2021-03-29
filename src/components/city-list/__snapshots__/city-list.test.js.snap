@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CityList should render correctly 1`] = `
+<div>
+  <ul
+    class="locations__list tabs__list"
+  >
+    <li
+      class="locations__item"
+    >
+      <a
+        class="locations__item-link tabs__item
+                  "
+        href="/city/London"
+      >
+        <span>
+          London
+        </span>
+      </a>
+    </li>
+    <li
+      class="locations__item"
+    >
+      <a
+        class="locations__item-link tabs__item
+                  "
+        href="/city/Paris"
+      >
+        <span>
+          Paris
+        </span>
+      </a>
+    </li>
+    <li
+      class="locations__item"
+    >
+      <a
+        class="locations__item-link tabs__item
+                  "
+        href="/city/Berlin"
+      >
+        <span>
+          Berlin
+        </span>
+      </a>
+    </li>
+    <li
+      class="locations__item"
+    >
+      <a
+        class="locations__item-link tabs__item
+                  "
+        href="/city/Odence"
+      >
+        <span>
+          Odence
+        </span>
+      </a>
+    </li>
+    <li
+      class="locations__item"
+    >
+      <a
+        class="locations__item-link tabs__item
+                  "
+        href="/city/Venice"
+      >
+        <span>
+          Venice
+        </span>
+      </a>
+    </li>
+    <li
+      class="locations__item"
+    >
+      <a
+        class="locations__item-link tabs__item
+                  tabs__item--active"
+        href="/city/Copenhagen"
+      >
+        <span>
+          Copenhagen
+        </span>
+      </a>
+    </li>
+  </ul>
+</div>
+`;

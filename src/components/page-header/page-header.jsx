@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../../common/const';
 import {logOut} from '../../store/api-actions';
-import {getIsloggedInStatus, getUsersEmail} from '../../store/reducer/user/selectors';
 
-const PageHeader = (props) => {
-  const {isLoggedIn, userLogout, usersEmail} = props;
+const PageHeader = () => {
+  const {isLoggedIn, usersEmail} = useSelector((state) => state.USER);
+  const dispatch = useDispatch();
 
   return (
     <header className="header">
@@ -31,10 +30,9 @@ const PageHeader = (props) => {
                         </Link>
                         <button
                           style={{marginLeft: `10px`}}
-                          onClick={userLogout}
-                        >
-                          Log Out
-                        </button>
+                          onClick={
+                            () => dispatch(logOut())
+                          }>Log Out</button>
                       </>
                     ) : (
                       <Link to={AppRoute.LOGIN} className="header__nav-link header__nav-link--profile">
@@ -52,21 +50,4 @@ const PageHeader = (props) => {
   );
 };
 
-PageHeader.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  userLogout: PropTypes.func.isRequired,
-  usersEmail: PropTypes.string,
-};
-
-const mapStateToProps = (state) => ({
-  isLoggedIn: getIsloggedInStatus(state),
-  usersEmail: getUsersEmail(state)
-});
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    userLogout: () => dispatch(logOut())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PageHeader);
+export default PageHeader;
