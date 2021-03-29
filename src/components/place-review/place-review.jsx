@@ -12,7 +12,9 @@ const PlaceReview = (props) => {
 
   const dispatch = useDispatch();
   const {isLoggedIn} = useSelector((state) => state.USER);
-  const {placeReviews, isReviewsLoaded} = useSelector((state) => state.REVIEW);
+  const {placeReviews, isReviewsLoaded} = useSelector(
+      (state) => state.REVIEW
+  );
 
   useEffect(() => {
     if (!isReviewsLoaded) {
