@@ -51,6 +51,7 @@ const AuthPage = () => {
                   placeholder="Email"
                   required
                   ref={emailRef}
+                  data-testid="email"
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -62,6 +63,7 @@ const AuthPage = () => {
                   placeholder="Password"
                   required
                   ref={passwordRef}
+                  data-testid="password"
                 />
               </div>
               <button
