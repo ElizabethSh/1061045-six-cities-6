@@ -1,5 +1,5 @@
 import React from 'react';
-import FavoriteLocations from '../favorites-locations/favorites-locations';
+import FavoritesLocations from '../favorites-locations/favorites-locations';
 import {getCitiesList, getCityPlaces} from '../../common/utils';
 import {useSelector} from 'react-redux';
 
@@ -13,11 +13,10 @@ const FavoritesContainer = () => {
       <ul className="favorites__list">
         {
           favoriteCities.map((city) => {
-            // фильтрация избранных размещений по городу
             const favoriteCityPlaces = getCityPlaces(favorites, city);
 
             return (
-              <FavoriteLocations
+              <FavoritesLocations
                 key={city}
                 places={favoriteCityPlaces}
                 city={city}
