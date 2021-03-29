@@ -1,3 +1,12 @@
+export const CITIES = [
+  `Paris`,
+  `Cologne`,
+  `Brussels`,
+  `Amsterdam`,
+  `Hamburg`,
+  `Dusseldorf`
+];
+
 export const CardName = {
   CITIES: `cities`,
   FAVORITES: `favorites`,
@@ -15,15 +24,6 @@ export const ButtonName = {
   FAVORITE: `favorite`,
   NEAR_PLACE: `near-place`
 };
-
-export const CITIES = [
-  `Paris`,
-  `Cologne`,
-  `Brussels`,
-  `Amsterdam`,
-  `Hamburg`,
-  `Dusseldorf`
-];
 
 export const SortType = {
   POPULAR: `popular`,
