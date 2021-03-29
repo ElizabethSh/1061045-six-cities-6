@@ -12,7 +12,9 @@ import {fetchOffersList} from '../../store/api-actions';
 import {getActiveCityPlaces} from '../../store/reducer/offers/selectors';
 
 const MainPage = () => {
-  const activeCityPlaces = useSelector((state) => getActiveCityPlaces(state));
+  const activeCityPlaces = useSelector(
+      (state) => getActiveCityPlaces(state)
+  );
   const {isOffersLoaded} = useSelector((state) => state.OFFER);
   const dispatch = useDispatch();
 
@@ -54,9 +56,7 @@ const MainPage = () => {
         <div className="tabs">
           <section className="locations container">
 
-            <CityList
-              cities={CITIES}
-            />
+            <CityList cities={CITIES}/>
 
           </section>
         </div>
