@@ -6,7 +6,7 @@ import {sendPlaceReview} from '../../store/api-actions';
 const MAX_SIMBOL_AMOUNT = 300;
 const MIN_SIMBOL_AMOUNT = 50;
 
-const estimations = [`perfect`, `good`, `not-bad`, `badly`, `terribly`];
+const ESTIMATIONS = [`perfect`, `good`, `not-bad`, `badly`, `terribly`];
 
 
 const ReviewForm = (props) => {
@@ -57,8 +57,8 @@ const ReviewForm = (props) => {
         key={placeReviews.length}
       >
         {
-          estimations.map((estimation, index) => {
-            const starsCount = estimations.length - index;
+          ESTIMATIONS.map((estimation, index) => {
+            const starsCount = ESTIMATIONS.length - index;
             return (
               <Fragment key={`${estimation} - ${isDisabled}`}>
                 <input
