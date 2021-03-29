@@ -16,8 +16,12 @@ import {resetNearPlaces} from '../../store/reducer/near-places/action';
 const MAX_IMAGES_AMOUNT = 6;
 
 const Place = () => {
-  const {placeInfo, isPlaceInfoLoaded} = useSelector((state) => state.PLACE_INFO);
-  const {nearPlaces, isNearPlacesLoaded} = useSelector((state) => state.NEAR_PLACE);
+  const {placeInfo, isPlaceInfoLoaded} = useSelector(
+      (state) => state.PLACE_INFO
+  );
+  const {nearPlaces, isNearPlacesLoaded} = useSelector(
+      (state) => state.NEAR_PLACE
+  );
   const dispatch = useDispatch();
   const history = useHistory();
   let {id} = useParams();
@@ -45,8 +49,6 @@ const Place = () => {
     );
   }
 
-  // определяем город открытого (выбранного) объекта размещения,
-  // для которого нужно отобразить карту с объектами неподалеку
   const city = placeInfo.city.name;
 
   const {
@@ -131,9 +133,9 @@ const Place = () => {
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
                   {
-                    goods.map((good, index) => {
+                    goods.map((good) => {
                       return (
-                        <li key={`${good}-${index}`}
+                        <li key={`${good}`}
                           className="property__inside-item"
                         >
                           {good}
