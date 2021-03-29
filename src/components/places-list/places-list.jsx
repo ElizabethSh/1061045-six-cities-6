@@ -7,13 +7,10 @@ import {CardName, CardsListName} from '../../common/const';
 import {resetCardHover, setCardHover} from '../../store/reducer/card/action';
 
 const PlacesList = (props) => {
-  const {
-    places, // приходит либо nearPlaces, либо activeCityPlaces
-    placesListName,
-  } = props;
+  const {places, placesListName} = props;
+
   const dispatch = useDispatch();
 
-  // определение типа карточки
   let cardName = CardName.CITIES;
   if (placesListName === CardsListName.NEAR_PLACES_LIST) {
     cardName = CardName.NEAR_PLACES;
