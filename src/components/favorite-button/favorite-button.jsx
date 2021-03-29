@@ -40,11 +40,7 @@ const ButtonSettings = {
 };
 
 const FavoriteButton = (props) => {
-  const {
-    isFavorite,
-    buttonName,
-    placeId,
-  } = props;
+  const {isFavorite, buttonName, placeId} = props;
 
   const {placeInfo} = useSelector((state) => state.PLACE_INFO);
   const {isLoggedIn} = useSelector((state) => state.USER);
