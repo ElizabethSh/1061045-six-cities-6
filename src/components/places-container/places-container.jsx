@@ -9,8 +9,12 @@ import {getActiveCityPlaces} from '../../store/reducer/offers/selectors';
 
 
 const PlacesContainer = () => {
-  const sortedPlaces = useSelector((state) => getSortedPlaces(state));
-  const activeCityPlaces = useSelector((state) => getActiveCityPlaces(state));
+  const sortedPlaces = useSelector(
+      (state) => getSortedPlaces(state)
+  );
+  const activeCityPlaces = useSelector(
+      (state) => getActiveCityPlaces(state)
+  );
   const {activeCity} = useSelector((state) => state.OFFER);
 
   return (
