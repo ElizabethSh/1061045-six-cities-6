@@ -65,16 +65,12 @@ const PlaceCard = (props) => {
   return (
     <article
       onMouseEnter={() => {
-        // если обработчик передан, то вызвать его при наведении
-        // на карточку
         if (onMouseEnter) {
           onMouseEnter(place);
         }
       }}
 
       onMouseLeave={() => {
-        // если обработчик передан, то вызвать его при перемещении
-        // курсора с карточки
         if (onMouseLeave) {
           onMouseLeave();
         }
