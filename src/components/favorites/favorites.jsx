@@ -9,7 +9,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {resetFavorites} from '../../store/reducer/favorites/action';
 
 const Favorites = () => {
-  const {favorites, isFavoritesLoaded} = useSelector((state) => state.FAVORITE);
+  const {favorites, isFavoritesLoaded} = useSelector(
+      (state) => state.FAVORITE
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
