@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom';
 import MainPage from '../main-page/main-page';
 import AuthPage from '../auth-page/auth-page';
