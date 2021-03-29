@@ -24,7 +24,7 @@ export const formatReviewDate = (date) => {
 };
 
 export const formatReviewDateTime = (date) => {
-  return new Date(date).toLocaleDateString(`fr-ca`);
+  return new Date(date).toLocaleDateString(`en-US`);
 };
 
 export const getCityPlaces = (places, city) => {
