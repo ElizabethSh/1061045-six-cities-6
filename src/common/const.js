@@ -48,3 +48,8 @@ export const APIRoute = {
   COMMENTS: `/comments`,
   FAVORITE: `/favorite`,
 };
+
+export const statusCode = {
+  BAD_REQUEST: 400,
+  UNAUTORIZED: 401,
+};
