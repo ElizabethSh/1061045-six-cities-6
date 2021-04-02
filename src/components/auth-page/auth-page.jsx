@@ -1,11 +1,13 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
 import {logIn} from '../../store/api-actions';
 import PageHeader from '../page-header/page-header';
 import {AppRoute} from '../../common/const';
+import {validateEmail} from '../../common/utils';
 
 const AuthPage = () => {
+  const [isValid, setIsValid] = useState(true);
   const history = useHistory();
   const {isLoggedIn} = useSelector((state) => state.USER);
   const dispatch = useDispatch();
@@ -20,12 +22,15 @@ const AuthPage = () => {
   const handleFormSubmit = (evt) => {
     evt.preventDefault();
 
-    dispatch(logIn({
-      email: emailRef.current.value,
-      password: passwordRef.current.value
-    }));
+    if (isValid) {
+      dispatch(logIn({
+        email: emailRef.current.value,
+        password: passwordRef.current.value
+      }));
 
-    history.push(AppRoute.ROOT);
+      history.push(AppRoute.ROOT);
+    }
+
   };
 
   return (
@@ -52,6 +57,9 @@ const AuthPage = () => {
                   required
                   ref={emailRef}
                   data-testid="email"
+                  onChange={(evt) => {
+                    setIsValid(validateEmail(evt.target.value));
+                  }}
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -66,6 +74,10 @@ const AuthPage = () => {
                   data-testid="password"
                 />
               </div>
+              {
+                (!isValid) &&
+                <div style={{color: `red`, marginBottom: 20}}>Write the correct e-mail</div>
+              }
               <button
                 className="login__submit form__submit button"
                 type="submit"
