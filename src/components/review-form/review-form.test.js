@@ -1,8 +1,9 @@
 import React from 'react';
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import configureStore from 'redux-mock-store';
 import {Provider} from 'react-redux';
 import ReviewForm from './review-form';
+import userEvent from '@testing-library/user-event';
 
 const mockStore = configureStore({});
 
@@ -21,5 +22,8 @@ describe(`Test 'ReviewForm'`, () => {
     );
 
     expect(container).toMatchSnapshot();
+
+    userEvent.type(screen.getByRole(`textbox`), `The good place`);
+    expect(screen.getByDisplayValue(/the good place/i)).toBeInTheDocument();
   });
 });
