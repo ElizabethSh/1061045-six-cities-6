@@ -7,6 +7,7 @@ import MainPage from './main-page';
 import {Router} from 'react-router';
 import thunk from 'redux-thunk';
 import {createAPI} from '../../services/api';
+import TestWrapper from '../../services/test-wrapper/test-wrapper';
 
 const api = createAPI(() => {});
 const mockStore = configureStore([thunk.withExtraArgument(api)]);
@@ -16,6 +17,7 @@ describe(`Test 'MainPage'`, () => {
   beforeEach(() => {
     history = createMemoryHistory();
   });
+
   it(`MainPage should render 'Loader' when data is loading`, () => {
     const store = mockStore({
       OFFER: {isOffersLoaded: false, offers: []}
@@ -44,6 +46,16 @@ describe(`Test 'MainPage'`, () => {
             <MainPage/>
           </Router>
         </Provider>
+    );
+
+    expect(container).toMatchSnapshot();
+  });
+
+  it(`MainPage should render correctly`, () => {
+    const {container} = render(
+        <TestWrapper>
+          <MainPage/>
+        </TestWrapper>
     );
 
     expect(container).toMatchSnapshot();
