@@ -1,12 +1,23 @@
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {statusCode} from '../../common/const';
 import {changeErrorStatus} from '../../store/reducer/offers/action';
 import "./popup.css";
 
 const Popup = () => {
   const dispatch = useDispatch();
+  const {errorCode} = useSelector((state) => state.OFFER);
 
-  const handleBackClick = () => {
+  let message = `Data loading error`;
+
+  if (errorCode === statusCode.BAD_REQUEST) {
+    message = `Wrong email or password`;
+  }
+
+  const handleBackClick = (evt) => {
+    if (evt.target.tagName !== `SECTION`) {
+      return;
+    }
     dispatch(changeErrorStatus(status));
   };
 
@@ -15,9 +26,9 @@ const Popup = () => {
   };
 
   return (
-    <section className="error" onClick={handleBackClick}>
+    <section className="error" onClick={(evt) => handleBackClick(evt)}>
       <div className="error__inner">
-        <h1 className="error__title">Data loading error</h1>
+        <h1 className="error__title">{message}</h1>
         <button
           className="error__button button"
           onClick={handleButtonClick}
