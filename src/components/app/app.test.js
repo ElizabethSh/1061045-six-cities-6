@@ -2,12 +2,13 @@ import React from 'react';
 import {createMemoryHistory} from 'history';
 import {render, screen} from '@testing-library/react';
 import configureStore from 'redux-mock-store';
-import {Router} from 'react-router';
+import {Route, Router} from 'react-router';
 import {AppRoute} from '../../common/const';
 import App from './app';
 import * as redux from 'react-redux';
 import thunk from 'redux-thunk';
 import {createAPI} from '../../services/api';
+import TestWrapper from '../../services/test-wrapper/test-wrapper';
 
 const api = createAPI(() => {});
 const mockStore = configureStore([thunk.withExtraArgument(api)]);
@@ -17,6 +18,7 @@ describe(`Test routing`, () => {
   beforeEach(() => {
     history = createMemoryHistory();
   });
+
   it(`Render 'Loader' during auth checking`, () => {
     const store = mockStore({
       OFFER: {isError: false},
@@ -53,6 +55,30 @@ describe(`Test routing`, () => {
     );
 
     expect(screen.getByText(`Data loading error`)).toBeInTheDocument();
+  });
+
+  it(`Render 'MainPage' when user navigate to '/' URL`, () => {
+    const {container} = render(
+        <TestWrapper url={AppRoute.ROOT}>
+          <App/>
+        </TestWrapper>
+    );
+
+    expect(container).toMatchSnapshot();
+  });
+
+  it(`Render 'Place' when user navigate to '/offer/:id' URL`, () => {
+    render(
+        <TestWrapper url={`/offer/11`}>
+          <Route path={`/offer/:id`} exact render={() => <App/>}/>
+        </TestWrapper>
+    );
+
+    expect(screen.getByAltText(`6 cities logo`)).toBeInTheDocument();
+    expect(screen.getByText(/What's inside/i)).toBeInTheDocument();
+    expect(screen.getByText(/Meet the host/i)).toBeInTheDocument();
+    expect(screen.getByText(/Reviews /i)).toBeInTheDocument();
+    expect(screen.getByText(/Other places in the neighbourhood/i)).toBeInTheDocument();
   });
 
   it(`Render 'AuthPage' when user navigate to '/login' url`, () => {
