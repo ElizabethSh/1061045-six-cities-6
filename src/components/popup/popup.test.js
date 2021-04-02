@@ -6,12 +6,34 @@ import Popup from './popup';
 
 const mockStore = configureStore({});
 
-it(`Popup should render correctly`, () => {
-  const {container} = render(
-      <Provider store={mockStore({})}>
-        <Popup />
-      </Provider>
-  );
+describe(`Popup should render correctly`, () => {
+  it(`Popup should show 'Data loading error' message`, () => {
+    const store = mockStore({
+      OFFER: {errorCode: null}
+    });
 
-  expect(container).toMatchSnapshot();
+    const {container} = render(
+        <Provider store={store}>
+          <Popup />
+        </Provider>
+    );
+
+    expect(container).toMatchSnapshot();
+  });
+
+  it(`Popup should show 'Wrong email or password' message`, () => {
+    const store = mockStore({
+      OFFER: {errorCode: 400}
+    });
+
+    const {container} = render(
+        <Provider store={store}>
+          <Popup />
+        </Provider>
+    );
+
+    expect(container).toMatchSnapshot();
+  });
 });
+
+

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Popup should render correctly 1`] = `
+exports[`Popup should render correctly Popup should show 'Data loading error' message 1`] = `
 <div>
   <section
     class="error"
@@ -12,6 +12,29 @@ exports[`Popup should render correctly 1`] = `
         class="error__title"
       >
         Data loading error
+      </h1>
+      <button
+        class="error__button button"
+      >
+        Close
+      </button>
+    </div>
+  </section>
+</div>
+`;
+
+exports[`Popup should render correctly Popup should show 'Wrong email or password' message 1`] = `
+<div>
+  <section
+    class="error"
+  >
+    <div
+      class="error__inner"
+    >
+      <h1
+        class="error__title"
+      >
+        Wrong email or password
       </h1>
       <button
         class="error__button button"
