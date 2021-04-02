@@ -13,7 +13,8 @@ describe(`Reducer 'offers' works correctly`, () => {
       activeCity: `Paris`,
       offers: [],
       isOffersLoaded: false,
-      isError: false
+      isError: false,
+      errorCode: null
     };
 
     expect(offers(undefined, {}))
@@ -25,7 +26,8 @@ describe(`Reducer 'offers' works correctly`, () => {
       activeCity: `Paris`,
       offers: [],
       isOffersLoaded: false,
-      isError: false
+      isError: false,
+      errorCode: null
     };
 
     const loadOffersAction = {
@@ -34,7 +36,9 @@ describe(`Reducer 'offers' works correctly`, () => {
     };
 
     expect(offers(state, loadOffersAction))
-      .toEqual({offers: [{}, {}], isOffersLoaded: true, activeCity: `Paris`, isError: false});
+      .toEqual({
+        offers: [{}, {}], isOffersLoaded: true, activeCity: `Paris`, isError: false, errorCode: null
+      });
 
     const notChangedOffersAction = {
       type: ActionType.LOAD_OFFERS,
@@ -42,7 +46,9 @@ describe(`Reducer 'offers' works correctly`, () => {
     };
 
     expect(offers(state, notChangedOffersAction))
-      .toEqual({offers: [], isOffersLoaded: true, activeCity: `Paris`, isError: false});
+      .toEqual({
+        offers: [], isOffersLoaded: true, activeCity: `Paris`, isError: false, errorCode: null
+      });
   });
 
   it(`Reducer should return default if action type is RESET_OFFERS`, () => {
@@ -50,18 +56,21 @@ describe(`Reducer 'offers' works correctly`, () => {
       activeCity: `Paris`,
       offers: [],
       isOffersLoaded: false,
-      isError: false
+      isError: false,
+      errorCode: null
     };
     const resetOffersAction = {
       type: ActionType.RESET_OFFERS,
       payload: null
     };
 
-    expect(offers({offers: [], isOffersLoaded: true, activeCity: `Paris`, isError: false}, resetOffersAction))
-      .toEqual(state);
+    expect(offers({
+      offers: [], isOffersLoaded: true, activeCity: `Paris`, isError: false, errorCode: null
+    }, resetOffersAction)).toEqual(state);
 
-    expect(offers({offers: [], isOffersLoaded: false, activeCity: `Paris`, isError: false}, resetOffersAction))
-      .toEqual(state);
+    expect(offers({
+      offers: [], isOffersLoaded: false, activeCity: `Paris`, isError: false, errorCode: null
+    }, resetOffersAction)).toEqual(state);
   });
 
   it(`Reducer should set active city to given value`, () => {
@@ -69,7 +78,8 @@ describe(`Reducer 'offers' works correctly`, () => {
       activeCity: `Paris`,
       offers: [],
       isOffersLoaded: false,
-      isError: false
+      isError: false,
+      errorCode: null
     };
 
     const changeCityAction = {
@@ -77,8 +87,9 @@ describe(`Reducer 'offers' works correctly`, () => {
       payload: `Åarhus`
     };
 
-    expect(offers(state, changeCityAction))
-      .toEqual({activeCity: `Åarhus`, offers: [], isOffersLoaded: false, isError: false});
+    expect(offers(state, changeCityAction)).toEqual({
+      activeCity: `Åarhus`, offers: [], isOffersLoaded: false, isError: false, errorCode: null
+    });
   });
 
   it(`Reducer should return default if action type is CITY_RESET`, () => {
@@ -86,21 +97,25 @@ describe(`Reducer 'offers' works correctly`, () => {
       activeCity: `Paris`,
       offers: [],
       isOffersLoaded: false,
-      isError: false
+      isError: false,
+      errorCode: null
     };
     const resetCityAction = {
       type: ActionType.CITY_RESET,
       payload: null
     };
 
-    expect(offers({offers: [], isOffersLoaded: false, activeCity: `Berlin`, isError: false}, resetCityAction))
-      .toEqual(state);
+    expect(offers({
+      offers: [], isOffersLoaded: false, activeCity: `Berlin`, isError: false, errorCode: null
+    }, resetCityAction)).toEqual(state);
 
-    expect(offers({offers: [], isOffersLoaded: false, activeCity: `Paris`, isError: false}, resetCityAction))
-      .toEqual(state);
+    expect(offers({
+      offers: [], isOffersLoaded: false, activeCity: `Paris`, isError: false, errorCode: null
+    }, resetCityAction)).toEqual(state);
 
-    expect(offers({offers: [], isOffersLoaded: false, activeCity: ``, isError: false}, resetCityAction))
-      .toEqual(state);
+    expect(offers({
+      offers: [], isOffersLoaded: false, activeCity: ``, isError: false, errorCode: null
+    }, resetCityAction)).toEqual(state);
   });
 
   it(`Reducer should set error status to given value`, () => {
@@ -128,7 +143,8 @@ describe(`Reducer 'offers' works correctly`, () => {
       activeCity: `Paris`,
       offers: offersList,
       isOffersLoaded: false,
-      isError: false
+      isError: false,
+      errorCode: null
     };
 
     const changeFavoriteStatusAction = {
@@ -154,7 +170,8 @@ describe(`Reducer 'offers' works correctly`, () => {
         ],
         activeCity: `Paris`,
         isOffersLoaded: false,
-        isError: false
+        isError: false,
+        errorCode: null
       });
   });
 
@@ -163,16 +180,23 @@ describe(`Reducer 'offers' works correctly`, () => {
       activeCity: `Paris`,
       offers: [],
       isOffersLoaded: false,
-      isError: false
+      isError: false,
+      errorCode: null
     };
 
     const changeErrorStatusAction = {
       type: ActionType.CHANGE_ERROR_STATUS,
-      payload: true
+      payload: {isError: true, code: 444}
     };
 
     expect(offers(state, changeErrorStatusAction))
-      .toEqual({activeCity: `Paris`, offers: [], isOffersLoaded: false, isError: true});
+      .toEqual({
+        activeCity: `Paris`,
+        offers: [],
+        isOffersLoaded: false,
+        isError: true,
+        errorCode: 444
+      });
   });
 });
 
