@@ -5,7 +5,8 @@ const initialState = {
   activeCity: `Paris`,
   offers: [],
   isOffersLoaded: false,
-  isError: false
+  isError: false,
+  errorCode: null
 };
 
 export const offers = (state = initialState, action) => {
@@ -44,7 +45,8 @@ export const offers = (state = initialState, action) => {
     case ActionType.CHANGE_ERROR_STATUS:
       return ({
         ...state,
-        isError: action.payload
+        isError: action.payload.isError,
+        errorCode: action.payload.code,
       });
 
     default:
