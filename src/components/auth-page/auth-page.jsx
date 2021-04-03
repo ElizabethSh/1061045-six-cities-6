@@ -81,6 +81,7 @@ const AuthPage = () => {
               <button
                 className="login__submit form__submit button"
                 type="submit"
+                disabled={!isValid}
               >
                 Sign in
               </button>
