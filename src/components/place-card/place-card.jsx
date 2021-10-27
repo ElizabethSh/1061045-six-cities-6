@@ -86,7 +86,7 @@ const PlaceCard = (props) => {
       <div className={
         `${cardName}__image-wrapper place-card__image-wrapper`
       }>
-        <a href="#">
+        <Link to={`/offer/${place.id}`}>
           <img
             className="place-card__image"
             src={previewImage}
@@ -94,7 +94,7 @@ const PlaceCard = (props) => {
             height={CardSettings[cardName].imgSize.height}
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className={
         `${CardSettings[cardName].cardInfoClass} place-card__info`
