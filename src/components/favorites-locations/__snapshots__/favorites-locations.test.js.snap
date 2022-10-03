@@ -38,7 +38,7 @@ exports[`Test 'FavoritesLocations' FavoritesLocations should render correctly 1`
           class="favorites__image-wrapper place-card__image-wrapper"
         >
           <a
-            href="#"
+            href="/offer/15"
           >
             <img
               alt="Place image"

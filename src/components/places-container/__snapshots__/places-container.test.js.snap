@@ -96,7 +96,7 @@ exports[`Test 'PlacesContainer' PlacesContainer should render correctly 1`] = `
             class="cities__image-wrapper place-card__image-wrapper"
           >
             <a
-              href="#"
+              href="/offer/15"
             >
               <img
                 alt="Place image"
@@ -188,7 +188,7 @@ exports[`Test 'PlacesContainer' PlacesContainer should render correctly 1`] = `
             class="cities__image-wrapper place-card__image-wrapper"
           >
             <a
-              href="#"
+              href="/offer/19"
             >
               <img
                 alt="Place image"

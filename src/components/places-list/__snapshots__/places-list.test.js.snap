@@ -12,7 +12,7 @@ exports[`Test 'PlacesList' PlacesList should render correctly 1`] = `
         class="near-places__image-wrapper place-card__image-wrapper"
       >
         <a
-          href="#"
+          href="/offer/17"
         >
           <img
             alt="Place image"

@@ -569,7 +569,7 @@ exports[`Test 'Place' Place should render correctly 1`] = `
                 class="near-places__image-wrapper place-card__image-wrapper"
               >
                 <a
-                  href="#"
+                  href="/offer/19"
                 >
                   <img
                     alt="Place image"
