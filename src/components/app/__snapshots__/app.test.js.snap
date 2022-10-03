@@ -260,7 +260,7 @@ exports[`Test routing Render 'MainPage' when user navigate to '/' URL 1`] = `
                   class="cities__image-wrapper place-card__image-wrapper"
                 >
                   <a
-                    href="#"
+                    href="/offer/11"
                   >
                     <img
                       alt="Place image"

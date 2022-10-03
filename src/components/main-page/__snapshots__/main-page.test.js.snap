@@ -275,7 +275,7 @@ exports[`Test 'MainPage' MainPage should render correctly 1`] = `
                   class="cities__image-wrapper place-card__image-wrapper"
                 >
                   <a
-                    href="#"
+                    href="/offer/11"
                   >
                     <img
                       alt="Place image"
