@@ -2,7 +2,7 @@ import axios from 'axios';
 import {statusCode} from '../common/const';
 
 const TIMEOUT = 5000;
-const BASE_URL = `https://6.react.pages.academy/six-cities`;
+const BASE_URL = `https://6.react.htmlacademy.pro./six-cities`;
 
 export const createAPI = (unAuthorized) => {
   const api = axios.create({
