@@ -1,16 +1,24 @@
-import React from 'react';
-import {render} from '@testing-library/react';
-import {createMemoryHistory} from 'history';
-import PageFooter from './page-footer';
-import {Router} from 'react-router';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import PageFooter from "./page-footer";
 
-it(`PageFooter should render correctly`, () => {
-  const history = createMemoryHistory();
-  const {container} = render(
-      <Router history={history}>
+describe("PageFooter", () => {
+  it("should render logo image", () => {
+    render(
+      <MemoryRouter>
         <PageFooter />
-      </Router>
-  );
+      </MemoryRouter>
+    );
+    expect(screen.getByAltText(/6 cities logo/i)).toBeVisible();
+  });
 
-  expect(container).toMatchSnapshot();
+  it("should have a link to the main page", () => {
+    render(
+      <MemoryRouter>
+        <PageFooter />
+      </MemoryRouter>
+    );
+    expect(screen.getByRole("link", { name: /6 cities logo/i })).toBeVisible();
+  });
 });
