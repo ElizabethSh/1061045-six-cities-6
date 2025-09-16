@@ -10,6 +10,9 @@
     "test": "npm run eslint && npm run test.jest",
     "test.jest": "jest"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
