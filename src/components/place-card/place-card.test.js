@@ -1,52 +1,70 @@
-import React from 'react';
-import {render} from '@testing-library/react';
-import {createMemoryHistory} from 'history';
-import configureStore from 'redux-mock-store';
-import {Router} from 'react-router';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import configureStore from "redux-mock-store";
+import { MemoryRouter } from "react-router";
 import PlaceCard from "./place-card";
-import {CardName} from '../../common/const';
-import {Provider} from 'react-redux';
+import { CardName } from "../../common/const";
+import { Provider } from "react-redux";
 
 const mockStore = configureStore({});
 
 describe(`Test 'PlaceCard'`, () => {
-  it(`PlaceCard should render correctly`, () => {
-    const history = createMemoryHistory();
+  it(`should render all main info`, () => {
     const place = {
       title: `The house among olive`,
       price: 169,
-      previewImage: ``,
+      previewImage: `img/apartment-01.jpg`,
       type: `hotel`,
       isFavorite: true,
       isPremium: true,
       rating: 5,
       id: 15,
       bedrooms: 2,
-      description: ``,
+      description: `Nice place`,
       maxAdults: 2,
-      location: {},
-      images: [``],
-      host: {id: 25, name: `Maria`, isPro: true, avatarUrl: `img/avatar-angelina.jpg`},
+      location: {
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
+        zoom: 8,
+      },
+      images: [`img/apartment-01.jpg`],
+      host: {
+        id: 25,
+        name: `Maria`,
+        isPro: true,
+        avatarUrl: `img/avatar-angelina.jpg`,
+      },
       goods: [`Breakfast`],
-      city: {name: `Berlin`, location: {}},
+      city: {
+        name: `Berlin`,
+        location: {
+          latitude: 52.3909553943508,
+          longitude: 4.85309666406198,
+          zoom: 8,
+        },
+      },
     };
 
     const store = mockStore({
-      PLACE_INFO: {placeInfo: place},
-      USER: {isLoggedIn: true}
+      PLACE_INFO: { placeInfo: place },
+      USER: { isLoggedIn: true },
     });
 
-    const {container} = render(
-        <Provider store={store}>
-          <Router history={history}>
-            <PlaceCard
-              place={place}
-              cardName={CardName.CITIES}
-            />
-          </Router>
-        </Provider>
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <PlaceCard place={place} cardName={CardName.CITIES} />
+        </MemoryRouter>
+      </Provider>
     );
 
-    expect(container).toMatchSnapshot();
+    expect(screen.getByText("The house among olive")).toBeInTheDocument();
+    expect(screen.getByText("Hotel")).toBeInTheDocument();
+    expect(screen.getByText(/€169/i)).toBeInTheDocument();
+    expect(screen.getByText(/Premium/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /to bookmarks/i })
+    ).toBeInTheDocument();
+    expect(screen.getByAltText("Place image")).toBeInTheDocument();
   });
 });
