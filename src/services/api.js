@@ -1,8 +1,8 @@
-import axios from 'axios';
-import {statusCode} from '../common/const';
+import axios from "axios";
+import { statusCode } from "../common/const";
 
 const TIMEOUT = 5000;
-const BASE_URL = `https://6.react.htmlacademy.pro./six-cities`;
+const BASE_URL = `https://6.react.htmlacademy.pro/six-cities`;
 
 export const createAPI = (unAuthorized) => {
   const api = axios.create({
@@ -14,7 +14,7 @@ export const createAPI = (unAuthorized) => {
   const onSuccess = (response) => response;
 
   const onError = (error) => {
-    const {response} = error;
+    const { response } = error;
 
     if (response.status === statusCode.UNAUTORIZED) {
       unAuthorized();
@@ -27,4 +27,3 @@ export const createAPI = (unAuthorized) => {
 
   return api;
 };
-

@@ -1,52 +1,47 @@
-import React from 'react';
-import {render} from '@testing-library/react';
-import configureStore from 'redux-mock-store';
-import {createMemoryHistory} from "history";
-import {Provider} from 'react-redux';
-import {createAPI} from '../../services/api';
-import thunk from 'redux-thunk';
-import Place from './place';
-import {Route, Router} from 'react-router';
-import TestWrapper from '../../services/test-wrapper/test-wrapper';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+import configureStore from "redux-mock-store";
+import { createAPI } from "../../services/api";
+import Place from "./place";
+import TestWrapper from "../../services/test-wrapper/test-wrapper";
 
 const api = createAPI(() => {});
 const mockStore = configureStore([thunk.withExtraArgument(api)]);
-let history;
 
 describe(`Test 'Place'`, () => {
-  beforeEach(() => {
-    history = createMemoryHistory();
-  });
-
   it(`Place should render Loader if data is loading`, () => {
     const store = mockStore({
-      PLACE_INFO: {isPlaceInfoLoaded: false},
-      NEAR_PLACE: {isNearPlacesLoaded: false}
+      PLACE_INFO: { isPlaceInfoLoaded: false },
+      NEAR_PLACE: { isNearPlacesLoaded: false },
     });
 
-    const {container} = render(
-        <Provider store={store}>
-          <Router history={history}>
-            <Place/>
-          </Router>
-        </Provider>
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/offer/11"]}>
+          <Place />
+        </MemoryRouter>
+      </Provider>
     );
 
-    expect(container).toMatchSnapshot();
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 
   it(`Place should render correctly`, () => {
-
-    const {container} = render(
-        <TestWrapper url={`/offer/11`}>
-          <Route
-            path={`/offer/:id`}
-            exact
-            render={() => <Place/>}
-          />
-        </TestWrapper>
+    render(
+      <TestWrapper url="/offer/11">
+        <Place />
+      </TestWrapper>
     );
 
-    expect(container).toMatchSnapshot();
+    expect(screen.getByAltText(/6 cities logo/i)).toBeInTheDocument();
+    expect(screen.getByText(/What's inside/i)).toBeInTheDocument();
+    expect(screen.getByText(/Meet the host/i)).toBeInTheDocument();
+    expect(screen.getByText(/Reviews /i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Other places in the neighbourhood/i)
+    ).toBeInTheDocument();
   });
 });

@@ -1,7 +1,8 @@
 const MAX_STARS_AMOUNT = 5;
 
 export const validateEmail = (email) => {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
 };
 
@@ -11,7 +12,8 @@ export const getCitiesList = (offers) => {
   return Array.from(new Set(cities));
 };
 
-export const capitalizeString = (string) => string[0].toUpperCase() + string.slice(1);
+export const capitalizeString = (string) =>
+  string[0].toUpperCase() + string.slice(1);
 
 export const formatString = (string) => {
   const strings = string.split(` `);
@@ -19,13 +21,16 @@ export const formatString = (string) => {
 };
 
 export const convertRatingToPersent = (rating) => {
-  return `${Math.round(rating) / MAX_STARS_AMOUNT * 100}%`;
+  return `${(Math.round(rating) / MAX_STARS_AMOUNT) * 100}%`;
 };
 
 export const formatReviewDate = (date) => {
   const reviewDate = new Date(date);
 
-  return reviewDate.toLocaleDateString(`en-US`, {year: `numeric`, month: `long`});
+  return reviewDate.toLocaleDateString(`en-US`, {
+    year: `numeric`,
+    month: `long`,
+  });
 };
 
 export const formatReviewDateTime = (date) => {
@@ -49,9 +54,5 @@ export const updateOffers = (offers, offerItem) => {
     return offers;
   }
 
-  return [
-    ...offers.slice(0, index),
-    offerItem,
-    ...offers.slice(index + 1)
-  ];
+  return [...offers.slice(0, index), offerItem, ...offers.slice(index + 1)];
 };

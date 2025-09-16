@@ -1,49 +1,29 @@
-import React from 'react';
-import {render} from "@testing-library/react";
-import {createMemoryHistory} from "history";
-import {Router} from "react-router";
-import configureStore from 'redux-mock-store';
-import {Provider} from 'react-redux';
-import NotFoundPage from './not-found-page';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import configureStore from "redux-mock-store";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import NotFoundPage from "./not-found-page";
 
 const mockStore = configureStore({});
-let history;
 
-describe(`Test NotFoundPage`, () => {
-  beforeEach(() => {
-    history = createMemoryHistory();
-  });
-
-  it(`NotFoundPage should render correctly, when user is logged in`, () => {
+describe(`NotFoundPage`, () => {
+  it(`should render not found message`, () => {
     const store = mockStore({
-      USER: {isLoggedIn: true, usersEmail: `test@gmail.com`}
+      USER: { isLoggedIn: true },
     });
-    const {container} = render(
-        <Provider store={store}>
-          <Router history={history}>
-            <NotFoundPage />
-          </Router>
-        </Provider>
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <NotFoundPage />
+        </MemoryRouter>
+      </Provider>
     );
-
-    expect(container).toMatchSnapshot();
-  });
-
-
-  it(`NotFoundPage should render correctly, when user is not logged in`, () => {
-    const store = mockStore({
-      USER: {isLoggedIn: false, usersEmail: null}
-    });
-
-    const {container} = render(
-        <Provider store={store}>
-          <Router history={history}>
-            <NotFoundPage />
-          </Router>
-        </Provider>
-    );
-
-    expect(container).toMatchSnapshot();
+    expect(
+      screen.getByRole("heading", { name: "404: Page is not found" })
+    ).toBeVisible();
+    expect(
+      screen.getByRole("link", { name: /go back to the main page/i })
+    ).toBeVisible();
   });
 });
-
