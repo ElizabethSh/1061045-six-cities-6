@@ -1,63 +1,64 @@
-import React from 'react';
-import {render} from '@testing-library/react';
-import configureStore from 'redux-mock-store';
-import {createMemoryHistory} from "history";
-import {Provider} from 'react-redux';
-import MainPage from './main-page';
-import {Router} from 'react-router';
-import thunk from 'redux-thunk';
-import {createAPI} from '../../services/api';
-import TestWrapper from '../../services/test-wrapper/test-wrapper';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import configureStore from "redux-mock-store";
+import { Provider } from "react-redux";
+import MainPage from "./main-page";
+import thunk from "redux-thunk";
+import { createAPI } from "../../services/api";
+import TestWrapper from "../../services/test-wrapper/test-wrapper";
+import { MemoryRouter } from "react-router";
 
 const api = createAPI(() => {});
 const mockStore = configureStore([thunk.withExtraArgument(api)]);
-let history;
 
 describe(`Test 'MainPage'`, () => {
-  beforeEach(() => {
-    history = createMemoryHistory();
-  });
-
   it(`MainPage should render 'Loader' when data is loading`, () => {
     const store = mockStore({
-      OFFER: {isOffersLoaded: false, offers: []}
+      OFFER: { isOffersLoaded: false, offers: [] },
     });
 
-    const {container} = render(
-        <Provider store={store}>
-          <Router history={history}>
-            <MainPage/>
-          </Router>
-        </Provider>
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <MainPage />
+        </MemoryRouter>
+      </Provider>
     );
 
-    expect(container).toMatchSnapshot();
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
 
   it(`MainPage should render empty page if there are no offers`, () => {
     const store = mockStore({
-      OFFER: {isOffersLoaded: true, offers: []},
-      USER: {isLoggedIn: false},
+      OFFER: { isOffersLoaded: true, offers: [] },
+      USER: { isLoggedIn: false },
     });
 
-    const {container} = render(
-        <Provider store={store}>
-          <Router history={history}>
-            <MainPage/>
-          </Router>
-        </Provider>
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <MainPage />
+        </MemoryRouter>
+      </Provider>
     );
 
-    expect(container).toMatchSnapshot();
+    expect(
+      screen.getByText(/No places to stay available/i)
+    ).toBeInTheDocument();
   });
 
-  it(`MainPage should render correctly`, () => {
-    const {container} = render(
-        <TestWrapper>
-          <MainPage/>
-        </TestWrapper>
+  it(`MainPage should render correctly with offers`, () => {
+    render(
+      <TestWrapper>
+        <MainPage />
+      </TestWrapper>
     );
 
-    expect(container).toMatchSnapshot();
+    expect(screen.getByAltText(/6 cities logo/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /Cities/i })
+    ).toBeInTheDocument();
+    expect(screen.getByText("1 place to stay in Paris")).toBeInTheDocument();
+    expect(screen.getAllByRole("article").length).toBe(1);
   });
 });
