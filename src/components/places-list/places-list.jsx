@@ -1,14 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {useDispatch} from 'react-redux';
-import PlaceCard from '../place-card/place-card';
-import {placeProp} from '../../common/prop-types/place.prop';
-import {CardName, CardsListName} from '../../common/const';
-import {resetCardHover, setCardHover} from '../../store/reducer/card/action';
+import React from "react";
+import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import PlaceCard from "../place-card/place-card";
+import { placePropShortened } from "../../common/prop-types/place.prop";
+import { CardName, CardsListName } from "../../common/const";
+import { resetCardHover, setCardHover } from "../../store/reducer/card/action";
 
-const PlacesList = (props) => {
-  const {places, placesListName} = props;
-
+const PlacesList = ({ places, placesListName }) => {
   const dispatch = useDispatch();
 
   let cardName = CardName.CITIES;
@@ -30,27 +28,23 @@ const PlacesList = (props) => {
 
   return (
     <div className={`${placesListName} places__list`}>
-      {
-        places.map((place) => {
-          return (
-            <PlaceCard
-              key={place.id}
-              place={place}
-              cardName={cardName}
-              onMouseEnter={handleCardMouseEnter}
-              onMouseLeave={handleCardMouseLeave}
-            />
-          );
-        })
-      }
+      {places.map((place) => {
+        return (
+          <PlaceCard
+            key={place.id}
+            place={place}
+            cardName={cardName}
+            onMouseEnter={handleCardMouseEnter}
+            onMouseLeave={handleCardMouseLeave}
+          />
+        );
+      })}
     </div>
   );
 };
 
 PlacesList.propTypes = {
-  places: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
+  places: PropTypes.arrayOf(PropTypes.shape(placePropShortened)).isRequired,
   placesListName: PropTypes.string.isRequired,
 };
 
