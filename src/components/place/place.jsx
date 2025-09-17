@@ -8,27 +8,35 @@ import PlaceReview from "../place-review/place-review";
 import FavoriteButton from "../favorite-button/favorite-button";
 import { convertRatingToPersent, formatString } from "../../common/utils";
 import { AppRoute, ButtonName, CardsListName } from "../../common/const";
-import { fetchNearPlaces, fetchPlace } from "../../store/api-actions";
+import {
+  fetchNearPlacesAction,
+  fetchPlaceAction,
+} from "../../store/api-actions";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPlaceInfo } from "../../store/reducer/place-info/action";
 import { resetNearPlaces } from "../../store/reducer/near-places/action";
+import {
+  getIsNearPlacesLoaded,
+  getNearPlaces,
+} from "../../store/reducer/near-places/near-places";
 
 const MAX_IMAGES_AMOUNT = 6;
 
 const Place = () => {
-  const { placeInfo, isPlaceInfoLoaded } = useSelector(
-    (state) => state.PLACE_INFO
+  const isPlaceInfoLoaded = useSelector(
+    (state) => state.PLACE_INFO.isPlaceInfoLoaded
   );
-  const { nearPlaces, isNearPlacesLoaded } = useSelector(
-    (state) => state.NEAR_PLACE
-  );
+  const placeInfo = useSelector((state) => state.PLACE_INFO.placeInfo);
+  const isNearPlacesLoaded = useSelector(getIsNearPlacesLoaded);
+  const nearPlaces = useSelector(getNearPlaces);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let { id } = useParams();
 
   useEffect(() => {
     if (!isPlaceInfoLoaded || placeInfo.id !== Number(id)) {
-      dispatch(fetchPlace(id)).catch(() => navigate(AppRoute.ERROR));
+      dispatch(fetchPlaceAction(id)).catch(() => navigate(AppRoute.ERROR));
     }
 
     return () => dispatch(resetPlaceInfo());
@@ -36,7 +44,7 @@ const Place = () => {
 
   useEffect(() => {
     if (!isNearPlacesLoaded || placeInfo.id !== Number(id)) {
-      dispatch(fetchNearPlaces(id));
+      dispatch(fetchNearPlacesAction(id));
     }
 
     return () => dispatch(resetNearPlaces());
@@ -167,7 +175,11 @@ const Place = () => {
             </div>
           </div>
           <section className="property__map map">
-            <Map city={city} places={nearPlaces} placeInfo={placeInfo} />
+            <Map
+              city={city}
+              places={nearPlaces}
+              placeInfo={{ ...placeInfo, previewImage: placeInfo.images[0] }}
+            />
           </section>
         </section>
         <div className="container">

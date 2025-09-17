@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppRoute } from "../../common/const";
-import { logOut } from "../../store/api-actions";
+import { logOutAction } from "../../store/api-actions";
 
 const PageHeader = () => {
   const { isLoggedIn, usersEmail } = useSelector((state) => state.USER);
@@ -44,7 +44,7 @@ const PageHeader = () => {
                     <button
                       type="button"
                       style={{ marginLeft: `10px` }}
-                      onClick={() => dispatch(logOut())}
+                      onClick={() => dispatch(logOutAction())}
                     >
                       Log Out
                     </button>

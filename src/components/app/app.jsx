@@ -10,7 +10,7 @@ import Loader from "../loader/loader";
 import Popup from "../popup/popup";
 import { AppRoute } from "../../common/const";
 import { useDispatch, useSelector } from "react-redux";
-import { checkAuth } from "../../store/api-actions";
+import { checkAuthAction } from "../../store/api-actions";
 
 const App = () => {
   const { isError } = useSelector((state) => state.OFFER);
@@ -18,7 +18,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   if (!isAuthChecked) {
-    dispatch(checkAuth());
+    dispatch(checkAuthAction());
   }
 
   if (!isAuthChecked) {

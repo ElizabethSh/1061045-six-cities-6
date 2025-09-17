@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logIn } from "../../store/api-actions";
+import { logInAction } from "../../store/api-actions";
 import PageHeader from "../page-header/page-header";
 import { AppRoute } from "../../common/const";
 import { validateEmail } from "../../common/utils";
@@ -24,7 +24,7 @@ const AuthPage = () => {
 
     if (isValid) {
       dispatch(
-        logIn({
+        logInAction({
           email: emailRef.current.value,
           password: passwordRef.current.value,
         })
