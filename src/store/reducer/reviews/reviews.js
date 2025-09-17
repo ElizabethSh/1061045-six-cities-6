@@ -16,7 +16,7 @@ const reviews = (state = initialState, action) => {
     case ActionType.ADD_REVIEW:
       return {
         ...state,
-        placeReviews: [action.payload, ...state.placeReviews],
+        placeReviews: [...state.placeReviews, action.payload],
       };
 
     case ActionType.RESET_REVIEWS:

@@ -101,7 +101,7 @@ const Place = () => {
             </div>
           </div>
           <div className="property__container container">
-            <div className="property__wrapper">
+            <div className="property__wrapper" style={{ maxWidth: "720px" }}>
               {isPremium && renderPremiumMark()}
               <div className="property__name-wrapper">
                 <h1 className="property__name">{title}</h1>
