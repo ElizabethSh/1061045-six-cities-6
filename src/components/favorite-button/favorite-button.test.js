@@ -21,7 +21,7 @@ describe(`Test 'FavoriteButton'`, () => {
           <FavoriteButton
             isFavorite={true}
             buttonName={ButtonName.PROPERTY}
-            placeId={99}
+            placeId={"99"}
           />
         </MemoryRouter>
       </Provider>
@@ -44,7 +44,7 @@ describe(`Test 'FavoriteButton'`, () => {
           <FavoriteButton
             isFavorite={false}
             buttonName={ButtonName.PLACE_CARD}
-            placeId={42}
+            placeId={"42"}
           />
         </MemoryRouter>
       </Provider>
