@@ -96,7 +96,6 @@ export const addToFavoriteAction =
 export const sendPlaceReviewAction =
   (id, { rating, comment }) =>
   (dispatch, _getState, api) => {
-    console.log("rating, comment", rating, comment);
 
     return api
       .post(`${APIRoute.COMMENTS}/${id}`, { rating, comment })
