@@ -1,13 +1,12 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export const reviewProp = {
   comment: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   rating: PropTypes.number.isRequired,
   user: PropTypes.shape({
     avatarUrl: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
     isPro: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
   }),
