@@ -13,6 +13,11 @@ const reviews = (state = initialState, action) => {
         placeReviews: action.payload,
         isReviewsLoaded: true,
       };
+    case ActionType.ADD_REVIEW:
+      return {
+        ...state,
+        placeReviews: [action.payload, ...state.placeReviews],
+      };
 
     case ActionType.RESET_REVIEWS:
       return {

@@ -12,6 +12,7 @@ export const ActionType = {
 
   LOAD_REVIEWS: `review/loadReviews`,
   RESET_REVIEWS: `review/resetReviews`,
+  ADD_REVIEW: `review/addReview`,
 
   REQUIRED_AUTH: `user/requiredAuth`,
   CHECK_AUTH: `user/checkAuth`,

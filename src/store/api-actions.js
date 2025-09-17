@@ -1,5 +1,5 @@
 import { APIRoute } from "../common/const";
-import { loadReviews } from "./reducer/reviews/action";
+import { addReview, loadReviews } from "./reducer/reviews/action";
 import {
   checkAuthAttempt,
   setAuthStatus,
@@ -100,10 +100,6 @@ export const sendPlaceReviewAction =
 
     return api
       .post(`${APIRoute.COMMENTS}/${id}`, { rating, comment })
-      .then((response) => {
-        console.log(response);
-        return response;
-      })
-      .then(({ data }) => dispatch(loadReviews(data)))
+      .then(({ data }) => dispatch(addReview(data)))
       .catch(() => dispatch(changeErrorStatus({ isError: true, code: null })));
   };
