@@ -35,7 +35,7 @@ const PlaceReview = ({ placeId }) => {
         Reviews &middot;
         <span className="reviews__amount">{placeReviews.length}</span>
       </h2>
-      {Boolean(placeReviews.length) && <ReviewList reviews={placeReviews} />}
+      {Boolean(placeReviews.length) && <ReviewList />}
       {isLoggedIn && <ReviewForm placeId={placeId} />}
     </section>
   );
