@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import FavoriteButton from '../favorite-button/favorite-button';
-import {formatString, convertRatingToPersent} from '../../common/utils';
-import {placeProp} from '../../common/prop-types/place.prop';
-import {ButtonName, CardName} from '../../common/const';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import FavoriteButton from "../favorite-button/favorite-button";
+import { formatString, convertRatingToPersent } from "../../common/utils";
+import { placePropShortened } from "../../common/prop-types/place.prop";
+import { ButtonName, CardName } from "../../common/const";
 
 const CardSettings = {
   [CardName.FAVORITES]: {
@@ -14,7 +14,7 @@ const CardSettings = {
       height: 110,
     },
     cardInfoClass: `favorites__card-info`,
-    buttonName: ButtonName.FAVORITE
+    buttonName: ButtonName.FAVORITE,
   },
   [CardName.CITIES]: {
     cardClass: `cities__place-card`,
@@ -33,26 +33,12 @@ const CardSettings = {
     },
     cardInfoClass: ``,
     buttonName: ButtonName.NEAR_PLACE,
-  }
+  },
 };
 
-const PlaceCard = (props) => {
-  const {
-    place,
-    cardName,
-    onMouseEnter,
-    onMouseLeave,
-  } = props;
-
-  const {
-    title,
-    price,
-    previewImage,
-    type,
-    isFavorite,
-    isPremium,
-    rating,
-  } = place;
+const PlaceCard = ({ place, cardName, onMouseEnter, onMouseLeave }) => {
+  const { title, price, previewImage, type, isFavorite, isPremium, rating } =
+    place;
 
   const renderPremiumMark = () => {
     return (
@@ -69,23 +55,15 @@ const PlaceCard = (props) => {
           onMouseEnter(place);
         }
       }}
-
       onMouseLeave={() => {
         if (onMouseLeave) {
           onMouseLeave();
         }
       }}
-
-      className={
-        `${CardSettings[cardName].cardClass} place-card`
-      }
+      className={`${CardSettings[cardName].cardClass} place-card`}
     >
-      {
-        isPremium && renderPremiumMark()
-      }
-      <div className={
-        `${cardName}__image-wrapper place-card__image-wrapper`
-      }>
+      {isPremium && renderPremiumMark()}
+      <div className={`${cardName}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${place.id}`}>
           <img
             className="place-card__image"
@@ -96,9 +74,9 @@ const PlaceCard = (props) => {
           />
         </Link>
       </div>
-      <div className={
-        `${CardSettings[cardName].cardInfoClass} place-card__info`
-      }>
+      <div
+        className={`${CardSettings[cardName].cardInfoClass} place-card__info`}
+      >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -112,7 +90,7 @@ const PlaceCard = (props) => {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: convertRatingToPersent(rating)}} />
+            <span style={{ width: convertRatingToPersent(rating) }} />
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
@@ -126,10 +104,12 @@ const PlaceCard = (props) => {
 };
 
 PlaceCard.propTypes = {
-  place: PropTypes.shape(placeProp),
-  cardName: PropTypes.oneOf(
-      [CardName.CITIES, CardName.FAVORITES, CardName.NEAR_PLACES]
-  ).isRequired,
+  place: PropTypes.shape(placePropShortened),
+  cardName: PropTypes.oneOf([
+    CardName.CITIES,
+    CardName.FAVORITES,
+    CardName.NEAR_PLACES,
+  ]).isRequired,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
 };

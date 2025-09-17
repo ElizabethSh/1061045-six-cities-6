@@ -4,7 +4,7 @@ export const CITIES = [
   `Brussels`,
   `Amsterdam`,
   `Hamburg`,
-  `Dusseldorf`
+  `Dusseldorf`,
 ];
 
 export const CardName = {
@@ -15,41 +15,42 @@ export const CardName = {
 
 export const CardsListName = {
   NEAR_PLACES_LIST: `near-places__list`,
-  CITIES_PLACES_LIST: `cities__places-list tabs__content`
+  CITIES_PLACES_LIST: `cities__places-list tabs__content`,
 };
 
 export const ButtonName = {
   PROPERTY: `property`,
   PLACE_CARD: `place-card`,
   FAVORITE: `favorite`,
-  NEAR_PLACE: `near-place`
+  NEAR_PLACE: `near-place`,
 };
 
 export const SortType = {
   POPULAR: `popular`,
   PRICE_LOW_TO_HIGHT: `price: low to high`,
   PRICE_HIGHT_TO_LOW: `price: high to low`,
-  TOP_RATED: `top rated first`
+  TOP_RATED: `top rated first`,
 };
 
 export const AppRoute = {
-  ROOT: `/`,
-  LOGIN: `/login`,
-  FAVORITES: `/favorites`,
   CITY: `/city/:city`,
+  ERROR: `/error`,
+  FAVORITES: `/favorites`,
+  LOGIN: `/login`,
   OFFER: `/offer/:id`,
-  ERROR: `/error`
+  ROOT: `/`,
 };
 
 export const APIRoute = {
-  HOTELS: `/hotels`,
-  LOGIN: `/login`,
-  LOGOUT: `/logout`,
   COMMENTS: `/comments`,
   FAVORITE: `/favorite`,
+  LOGIN: `/login`,
+  LOGOUT: `/logout`,
+  OFFERS: `/offers`,
 };
 
 export const statusCode = {
   BAD_REQUEST: 400,
-  UNAUTORIZED: 401,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
 };

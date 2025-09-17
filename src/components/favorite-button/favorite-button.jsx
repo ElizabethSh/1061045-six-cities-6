@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addToFavorite,
-  fetchFavoritePlaces,
-  fetchNearPlaces,
+  addToFavoriteAction,
+  fetchFavoritePlacesAction,
+  fetchNearPlacesAction,
 } from "../../store/api-actions";
 import { AppRoute, ButtonName } from "../../common/const";
 import { changeFavoriteStatus } from "../../store/reducer/offers/action";
@@ -42,9 +42,7 @@ const ButtonSettings = {
   },
 };
 
-const FavoriteButton = (props) => {
-  const { isFavorite, buttonName, placeId } = props;
-
+const FavoriteButton = ({ isFavorite, buttonName, placeId }) => {
   const { placeInfo } = useSelector((state) => state.PLACE_INFO);
   const { isLoggedIn } = useSelector((state) => state.USER);
   const [favorite, setFavorite] = useState(!isFavorite);
@@ -60,26 +58,26 @@ const FavoriteButton = (props) => {
     }
 
     if (buttonName === ButtonName.PROPERTY) {
-      dispatch(addToFavorite(placeId, favoriteStatus)).then((data) =>
+      dispatch(addToFavoriteAction(placeId, favoriteStatus)).then((data) =>
         dispatch(loadPlaceInfo(data))
       );
     }
 
     if (buttonName === ButtonName.PLACE_CARD) {
-      dispatch(addToFavorite(placeId, favoriteStatus)).then((data) =>
+      dispatch(addToFavoriteAction(placeId, favoriteStatus)).then((data) =>
         dispatch(changeFavoriteStatus(data))
       );
     }
 
     if (buttonName === ButtonName.FAVORITE) {
-      dispatch(addToFavorite(placeId, favoriteStatus)).then(() =>
-        dispatch(fetchFavoritePlaces())
+      dispatch(addToFavoriteAction(placeId, favoriteStatus)).then(() =>
+        dispatch(fetchFavoritePlacesAction())
       );
     }
 
     if (buttonName === ButtonName.NEAR_PLACE) {
-      dispatch(addToFavorite(placeId, favoriteStatus)).then(() =>
-        dispatch(fetchNearPlaces(placeInfo.id))
+      dispatch(addToFavoriteAction(placeId, favoriteStatus)).then(() =>
+        dispatch(fetchNearPlacesAction(placeInfo.id))
       );
     }
 
@@ -112,7 +110,7 @@ const FavoriteButton = (props) => {
 FavoriteButton.propTypes = {
   isFavorite: PropTypes.bool.isRequired,
   buttonName: PropTypes.string.isRequired,
-  placeId: PropTypes.number.isRequired,
+  placeId: PropTypes.string.isRequired,
 };
 
 export default FavoriteButton;

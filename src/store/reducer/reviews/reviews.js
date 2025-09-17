@@ -1,4 +1,4 @@
-import {ActionType} from "../../action-type";
+import { ActionType } from "../../action-type";
 
 const initialState = {
   placeReviews: [],
@@ -8,22 +8,31 @@ const initialState = {
 const reviews = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.LOAD_REVIEWS:
-      return ({
+      return {
         ...state,
         placeReviews: action.payload,
-        isReviewsLoaded: true
-      });
+        isReviewsLoaded: true,
+      };
+    case ActionType.ADD_REVIEW:
+      return {
+        ...state,
+        placeReviews: [...state.placeReviews, action.payload],
+      };
 
     case ActionType.RESET_REVIEWS:
-      return ({
+      return {
         ...state,
         placeReviews: [],
-        isReviewsLoaded: false
-      });
+        isReviewsLoaded: false,
+      };
 
     default:
       return state;
   }
 };
 
-export {reviews};
+// Selectors
+export const getPlaceReviews = (state) => state.REVIEW.placeReviews;
+export const getIsReviewsLoaded = (state) => state.REVIEW.isReviewsLoaded;
+
+export { reviews };

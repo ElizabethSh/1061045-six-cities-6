@@ -2,14 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { MemoryRouter } from "react-router";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import configureStore from "redux-mock-store";
-import { createAPI } from "../api";
 import { SortType } from "../../common/const";
 import { offers, nearPlaces } from "./test-data";
-
-const api = createAPI(() => {});
-const mockStore = configureStore([thunk.withExtraArgument(api)]);
+import { mockStore } from "../../test-utils/mock-store";
 
 const TestWrapper = (props) => {
   const { children, url } = props;

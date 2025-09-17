@@ -1,29 +1,44 @@
 import axios from "axios";
 import { statusCode } from "../common/const";
+import { getToken } from "./token";
 
 const TIMEOUT = 5000;
-const BASE_URL = `https://6.react.htmlacademy.pro/six-cities`;
+const BASE_URL = `https://16.design.htmlacademy.pro/six-cities`;
 
-export const createAPI = (unAuthorized) => {
+const StatusCodeMapping = {
+  [statusCode.BAD_REQUEST]: true,
+  [statusCode.UNAUTHORIZED]: true,
+  [statusCode.NOT_FOUND]: true,
+};
+
+const shouldDisplayError = (response) => !!StatusCodeMapping[response.status];
+
+export const createAPI = () => {
   const api = axios.create({
     baseURL: BASE_URL,
-    tiomeout: TIMEOUT,
-    withCredentials: true,
+    timeout: TIMEOUT,
   });
 
-  const onSuccess = (response) => response;
+  api.interceptors.request.use((config) => {
+    const token = getToken();
 
-  const onError = (error) => {
-    const { response } = error;
-
-    if (response.status === statusCode.UNAUTORIZED) {
-      unAuthorized();
+    if (token && config.headers) {
+      config.headers["x-token"] = token;
     }
+    return config;
+  });
 
-    throw error;
-  };
-
-  axios.interceptors.response.use(onSuccess, onError);
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      // TODO: handle errors better
+      if (error.response && shouldDisplayError(error.response)) {
+        const detailMessage = error.response.data;
+        console.log(`Error: ${detailMessage.message}`);
+      }
+      throw error;
+    }
+  );
 
   return api;
 };

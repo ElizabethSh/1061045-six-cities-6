@@ -1,16 +1,11 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router";
 import { AppRoute } from "../../common/const";
 import App from "./app";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import { createAPI } from "../../services/api";
 import TestWrapper from "../../services/test-wrapper/test-wrapper";
-
-const api = createAPI(() => {});
-const mockStore = configureStore([thunk.withExtraArgument(api)]);
+import { mockStore } from "../../test-utils/mock-store";
 
 describe(`Test routing`, () => {
   it(`Render 'Loader' during auth checking`, () => {

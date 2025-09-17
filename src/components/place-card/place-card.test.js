@@ -1,12 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import configureStore from "redux-mock-store";
 import { MemoryRouter } from "react-router";
 import PlaceCard from "./place-card";
 import { CardName } from "../../common/const";
 import { Provider } from "react-redux";
-
-const mockStore = configureStore({});
+import { mockStore } from "../../test-utils/mock-store";
 
 describe(`Test 'PlaceCard'`, () => {
   it(`should render all main info`, () => {
@@ -18,7 +16,7 @@ describe(`Test 'PlaceCard'`, () => {
       isFavorite: true,
       isPremium: true,
       rating: 5,
-      id: 15,
+      id: "15",
       bedrooms: 2,
       description: `Nice place`,
       maxAdults: 2,
@@ -29,7 +27,7 @@ describe(`Test 'PlaceCard'`, () => {
       },
       images: [`img/apartment-01.jpg`],
       host: {
-        id: 25,
+        id: "25",
         name: `Maria`,
         isPro: true,
         avatarUrl: `img/avatar-angelina.jpg`,
