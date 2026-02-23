@@ -1,43 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {CardName} from '../../common/const';
-import PlaceCard from '../place-card/place-card';
-import {placeProp} from '../../common/prop-types/place.prop';
+import React from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { CardName } from "../../common/const";
+import PlaceCard from "../place-card/place-card";
+import { placeProp } from "../../common/prop-types/place.prop";
 
-const FavoritesLocations = (props) => {
-  const {places, city} = props;
-
+const FavoritesLocations = ({ places, city }) => {
   return (
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
-          <a className="locations__item-link" href="#">
+          <Link className="locations__item-link" to={`/city/${city}`}>
             <span>{city}</span>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="favorites__places">
-        {
-          places.map((place) => {
-            return (
-              <PlaceCard
-                key={place.id}
-                place={place}
-                cardName={CardName.FAVORITES}
-              />
-            );
-          })
-        }
+        {places.map((place) => {
+          return (
+            <PlaceCard
+              cardName={CardName.FAVORITES}
+              key={place.id}
+              place={place}
+            />
+          );
+        })}
       </div>
     </li>
   );
 };
 
 FavoritesLocations.propTypes = {
-  places: PropTypes.arrayOf(
-      PropTypes.shape(placeProp)
-  ).isRequired,
   city: PropTypes.string.isRequired,
+  places: PropTypes.arrayOf(PropTypes.shape(placeProp)).isRequired,
 };
 
 export default FavoritesLocations;
